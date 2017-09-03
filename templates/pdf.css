@@ -1,0 +1,73 @@
+/* define a page */
+@page {
+    size: 21cm 29.7cm;
+}
+
+/* reset chapter and figure counters on the body */
+body {
+	counter-reset: chapternum figurenum;
+	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+	line-height: 1.5;
+	font-size: 11pt;
+	padding: 30mm 45mm 30mm 45mm; /* change the margins as you want them to be. */
+}
+
+
+.fn::footnote-call {
+  content: counter(footnote);
+  font-size: 9pt;
+  vertical-align: super;
+  line-height: none;
+}
+
+.fn::footnote-marker {
+  font-weight: bold;
+}
+
+@page {
+  @footnotes {
+    border-top: 0.6pt solid black;
+    padding-top: 8pt;
+  }
+}
+
+h1,h2,h3,h4,h5 {
+	font-weight: bold;
+	page-break-after: avoid;
+	page-break-inside:avoid;
+}
+
+h1+p, h2+p, h3+p {
+	page-break-before: avoid;
+}
+
+table, figure {
+	page-break-inside: avoid;
+}
+
+ul.toc {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* create page numbers using target-counter in the TOC */
+ul.toc a::after {
+  content: leader('.') target-counter(attr(href), page);
+}
+
+ul.toc li {
+	line-height: 2;
+}
+
+ul.toc li a {
+	text-decoration: none;
+}
+
+a {
+	color: #000;
+}
+
+table {
+    width: 100%;
+}
