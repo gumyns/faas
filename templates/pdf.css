@@ -9,7 +9,7 @@ body {
 	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 	line-height: 1.5;
 	font-size: 11pt;
-	padding: 30mm 45mm 30mm 45mm; /* change the margins as you want them to be. */
+	padding: 15mm 25mm 15mm 25mm; /* change the margins as you want them to be. */
 }
 
 
@@ -70,4 +70,39 @@ a {
 
 table {
     width: 100%;
+}
+
+.bordered {
+    border: 1px solid black;
+}
+
+.allBordered {
+    border-width: 0px 0px 1px 1px;
+    border-color: black;
+    border-style: solid;
+}
+.allBordered * {
+    border-width: 1px 1px 0px 0px;
+    border-color: black;
+    border-style: solid;
+    text-align: center;
+}
+
+.grayBg {
+    background: gainsboro;
+}
+
+.verticalPadding {
+    margin-top: 4mm;
+}
+
+.alignRight {
+    text-align: right;
+}
+.alignLeft {
+    text-align: left;
+}
+
+.width25 {
+    width: 25%;
 }

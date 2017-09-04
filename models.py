@@ -1,19 +1,18 @@
 class Owner:
-    def __init__(self, name, full_address, nip, account, keyword):
+    def __init__(self, name, full_address, nip, account):
         self.name = name
         self.address = full_address
         self.nip = nip
         self.account = account
-        self.keyword = keyword
 
 
 class Client:
-    def __init__(self, name, full_address, nip, hourlyRate, keyword):
+    def __init__(self, name, full_address, nip, hourlyRate, paymentDelay):
         self.name = name
         self.address = full_address
         self.nip = nip
         self.hourlyRate = hourlyRate
-        self.keyword = keyword
+        self.paymentDelay = paymentDelay
 
 
 class Account:
@@ -27,5 +26,29 @@ class Invoice:
         self.client = client
         self.delivery = delivery
 
-    def toJson(self):
-        print("well...")
+    def asFormatter(self):
+        return {
+            'date_created': None,
+            'number': None,
+            'ownerName': self.owner.name,
+            'ownerAddress': self.owner.address,
+            'ownerVatId': self.owner.nip,
+            'clientName': self.client.name,
+            'clientAddress': self.client.address,
+            'clientVatId': self.client.nip,
+            'paymentType': None,
+            'paymentDueDate': None,
+            'paymentBankName': self.owner.account.bank_name,
+            'paymentAccount': self.owner.account.number,
+            'articleNumber': None,
+            'articleName': None,
+            'articleCount': None,
+            'articleNetPrice': None,
+            'articleNetValue': None,
+            'articleVatRate': None,
+            'articleVatAmount': None,
+            'articleGrossValue': None,
+            'totalGrossValue': None,
+            'totalNetValue': None,
+            'totalVatAmount': None,
+        }

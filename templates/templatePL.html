@@ -9,12 +9,12 @@
 <body>
     <table>
         <tr>
-            <td rowspan="2">Faktura</td>
-            <td>Data Wystawienia:</td>
+            <td rowspan="2" style="width: 50%;">Faktura</td>
+            <td class="alignRight">Data Wystawienia:</td>
             <td>{date_created}</td>
         </tr>
         <tr>
-            <td>Data wykonania usługi:</td>
+            <td class="alignRight">Data wykonania usługi:</td>
             <td>{date_created}</td>
         </tr>
 
@@ -24,36 +24,36 @@
             <td>Nr: {number}</td>
         </tr>
     </table>
-    <table>
+    <table cellspacing="0">
         <tr>
             <td><!-- owner data -->
-                <table>
+                <table class="bordered">
                     <tr>
-                        <td>Sprzedawca:</td>
+                        <td class="alignRight">Sprzedawca:</td>
                         <td>{ownerName}</td>
                     </tr>
                     <tr>
-                        <td>Adres:</td>
+                        <td class="alignRight">Adres:</td>
                         <td>{ownerAddress}</td>
                     </tr>
                     <tr>
-                        <td>NIP:</td>
+                        <td class="alignRight">NIP:</td>
                         <td>{ownerVatId}</td>
                     </tr>
                 </table>
             </td><!-- client data -->
             <td>
-                <table>
+                <table class="bordered">
                     <tr>
-                        <td>Nabywca:</td>
+                        <td class="alignRight">Nabywca:</td>
                         <td>{clientName}</td>
                     </tr>
                     <tr>
-                        <td>Adres:</td>
+                        <td class="alignRight">Adres:</td>
                         <td>{clientAddress}</td>
                     </tr>
                     <tr>
-                        <td>NIP:</td>
+                        <td class="alignRight">NIP:</td>
                         <td>{clientVatId}</td>
                     </tr>
                 </table>
@@ -62,27 +62,27 @@
 
     </table>
 
-    <table>
+    <table class="bordered verticalPadding">
         <tr>
-            <td>Sposób płatności:</td>
+            <td class="alignRight width25">Sposób płatności:</td>
             <td>{paymentType}</td>
         </tr>
         <tr>
-            <td>Termin płatności:</td>
+            <td class="alignRight width25">Termin płatności:</td>
             <td>{paymentDueDate}</td>
         </tr>
         <tr>
-            <td>Bank:</td>
+            <td class="alignRight width25">Bank:</td>
             <td>{paymentBankName}</td>
         </tr>
          <tr>
-            <td>Numer konta:</td>
+            <td class="alignRight width25">Numer konta:</td>
             <td>{paymentAccount}</td>
         </tr>
     </table>
 
-    <table>
-        <tr>
+    <table class="allBordered verticalPadding" cellspacing="0">
+        <tr class="grayBg">
             <th>Lp.</th>
             <th>Nazwa</th>
             <th>Ilość</th>
@@ -94,7 +94,7 @@
         </tr>
         <tr>
             <td>{articleNumber}</td>
-            <td>{articleName}</td>
+            <td class="alignLeft">{articleName}</td>
             <td>{articleCount}</td>
             <td>{articleNetPrice}</td>
             <td>{articleNetValue}</td>
@@ -103,7 +103,7 @@
             <td>{articleGrossValue}</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="3">Razem do zapłaty: {totalGrossValue}</td>
+            <td rowspan="2" colspan="3" class="grayBg">Razem do zapłaty: {totalGrossValue}</td>
             <td>Razem:</td>
             <td>{totalNetValue}</td>
             <td>x</td>
