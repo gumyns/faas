@@ -1,5 +1,6 @@
-import json
+# coding=utf-8
 
+import json
 import datetime
 
 
@@ -49,7 +50,7 @@ class Account(Json):
 
 
 class Invoice(Json):
-    def __init__(self, owner, client, amount, delivery, date = datetime.datetime.now(), name='usługa informatyczna'):
+    def __init__(self, owner, client, amount, delivery, date = datetime.datetime.now(), name='usługa informatyczna'.decode('utf-8')):
         Json.__init__(self)
         self.owner = owner
         self.client = client
