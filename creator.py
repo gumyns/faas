@@ -1,6 +1,5 @@
-#!/bin/bash python
-
 # coding=utf-8
+#!/bin/bash python
 import json
 import os
 
@@ -9,9 +8,9 @@ from models import Owner, Account, Client
 owner = Owner('Sample Owner Company', '43-190 Mikołów\nul. Fajna 66', 1111111111,
               Account('Cool bank', '33 5555 5555 5555 5555 5555 5555'), 'sample')
 
-client = Client('Sample client company', '43-190 Mikołów\nul. Fajna 77', 60, 2222222222, 'sample')
+client = Client('Sample client company', '43-190 Mikołów\nul. Fajna 77', 2222222222, 60, 'sample')
 
-deliver_to = Client('Sample deliver company', '43-190 Mikołów\nul. Fajna 77', 0,3333333333, 'sampleDeliver')
+deliver_to = Client('Sample deliver company', '43-190 Mikołów\nul. Fajna 77',3333333333, 20, 'sampleDeliver')
 
 
 def to_json(complex_object):
