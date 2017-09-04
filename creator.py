@@ -10,11 +10,11 @@ if not os.path.exists('clients'):
     os.makedirs('clients')
 
 owner = Owner('Sample Owner Company', '43-190 Mikołów\nul. Fajna 66', 1111111111,
-              Account('Cool bank', '33 5555 5555 5555 5555 5555 5555'))
+              Account('Cool bank', '33 5555 5555 5555 5555 5555 5555', "123", "Przelew"))
 
 client = Client('Sample client company', '43-190 Mikołów\nul. Fajna 77', 2222222222, 60, 'templatePL', 14)
 
-deliver_to = Client('Sample deliver company', '43-190 Mikołów\nul. Fajna 77', 3333333333, 20, 0)
+deliver_to = Client('Sample deliver company', '43-190 Mikołów\nul. Fajna 77', 3333333333, 20, None, 0)
 
 
 def create(file_name, source):

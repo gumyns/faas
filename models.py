@@ -1,5 +1,7 @@
 import json
 
+import datetime
+
 
 class Json:
     def __init__(self, dict=None):
@@ -7,6 +9,10 @@ class Json:
             vars(self).update(dict)
         else:
             pass
+
+    @staticmethod
+    def to_json(o):
+        return json.dumps(o.__dict__, default=lambda o: o.__dict__, sort_keys=True, indent=2)
 
     def to_json(self):
         return json.dumps(self.__dict__, default=lambda o: o.__dict__, sort_keys=True, indent=2)
@@ -33,24 +39,27 @@ class Client(Json):
 
 
 class Account(Json):
-    def __init__(self, bank_name=None, number=None):
+    def __init__(self, bank_name=None, number=None, swift=None, transfer=None):
         Json.__init__(self)
         self.bank_name = bank_name
         self.number = number
+        self.swift = swift
+        self.transfer = transfer
 
 
 class Invoice(Json):
-    def __init__(self, owner, client, amount, delivery):
+    def __init__(self, owner, client, amount, delivery, date = datetime.datetime.now()):
         Json.__init__(self)
         self.owner = owner
         self.client = client
         self.delivery = delivery
         self.amount = float(amount)
+        self.date = date
 
     def asFormatter(self):
         self.calculate()
         return {
-            'date_created': None,
+            'date_created': self.date.strftime("%Y-%m-%d"),
             'number': None,
             'ownerName': self.owner.name,
             'ownerAddress': self.owner.address,
@@ -58,14 +67,15 @@ class Invoice(Json):
             'clientName': self.client.name,
             'clientAddress': self.client.address,
             'clientVatId': self.client.nip,
-            'paymentType': None,
-            'paymentDueDate': None,
+            'paymentType': self.owner.account.transfer,
+            'paymentDueDate': self.dueDate.strftime("%Y-%m-%d"),
             'paymentBankName': self.owner.account.bank_name,
+            'paymentSwift': self.owner.account.swift,
             'paymentAccount': self.owner.account.number,
             'articleNumber': 1,
             'articleName': None,
             'articleCount': self.amount,
-            'articleNetPrice': "{0:.2f}".format(self.netPrice),
+            'articleNetPrice': "{0:.2f}".format(self.client.hourlyRate),
             'articleNetValue': "{0:.2f}".format(self.netPrice),
             'articleVatRate': "23%",
             'articleVatAmount': "{0:.2f}".format(self.taxPrice),
@@ -79,3 +89,4 @@ class Invoice(Json):
         self.netPrice = float(self.client.hourlyRate) * self.amount
         self.grossPrice = self.netPrice * 1.23
         self.taxPrice = self.grossPrice - self.netPrice
+        self.dueDate = self.date + datetime.timedelta(days=int(self.client.paymentDelay))
