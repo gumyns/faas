@@ -3,6 +3,9 @@
 import json
 import datetime
 
+import slownie
+
+
 class Json:
     def __init__(self, dict=None):
         if dict is not None:
@@ -87,7 +90,8 @@ class Invoice(Json):
             'totalGrossValue': "{0:.2f}".format(self.grossPrice),
             'totalNetValue': "{0:.2f}".format(self.netPrice),
             'totalVatAmount': "{0:.2f}".format(self.taxPrice),
-            'currency': self.client.currency
+            'currency': self.client.currency,
+            'priceStringPL': self.priceStringPL
         }
 
     def calculate(self):
@@ -101,7 +105,5 @@ class Invoice(Json):
             nextNumber, self.date.month, self.date.year)
         self.filename = "{}_{}_{}{}".format(self.owner.name, self.client.name, self.date.strftime("%Y%m%d"), nextNumber) \
             .replace(' ', '_').replace('.', '_')
-
-        # self.priceStringPL = slownie.slownie(self.grossPrice)
-        # print(self.priceStringPL)
+        self.priceStringPL = slownie.slownie(self.grossPrice)
 

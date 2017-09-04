@@ -102,7 +102,9 @@
         <td>{articleGrossValue}</td>
     </tr>
     <tr class="pricePadding">
-        <td rowspan="2" colspan="2" class="grayBg width50 mediumFont">Razem do zapłaty/Total due:<br> {totalGrossValue} {currency}</td>
+        <td rowspan="2" colspan="2" class="grayBg width50 mediumFont">Razem do zapłaty/Total due:<br> {totalGrossValue}
+            {currency}
+        </td>
         <td colspan="2">Razem/Total:</td>
         <td>{totalNetValue}</td>
         <td>x</td>
@@ -120,6 +122,17 @@
 <table class="bordered verticalPadding">
     <tr>
         <td>Uwagi/Notes: Podatek VAT rozlicza nabywca , zgodnie z art. 28b ustawy o VAT (reverse charge).</td>
+    </tr>
+</table>
+<table class="bordered verticalPadding">
+    <tr class="paidPadding">
+        <td class="alignRight">Zapłacono/Paid:</td><td>0 {currency}</td>
+    </tr>
+    <tr class="paidPadding">
+        <td class="alignRight">Pozostało do zapłaty/Outstanding:</td><td>{totalGrossValue} {currency}</td>
+    </tr>
+    <tr class="paidPadding">
+        <td class="alignRight">Słownie/In words:</td><td>{priceStringPL} {currency}</td>
     </tr>
 </table>
 </body>

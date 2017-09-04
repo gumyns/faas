@@ -109,6 +109,7 @@ table {
 
 .bankPadding {padding: 10px 15px;}
 .pricePadding > td {padding: 10px 5px;}
+.paidPadding > td {padding: 3px 3px;}
 
 .bigFont{font-size: 19pt;}
 .mediumFont{font-size: 15pt;}
