@@ -1,9 +1,7 @@
 # coding=utf-8
 
 import json
-
 import datetime
-
 
 class Json:
     def __init__(self, dict=None):
@@ -103,3 +101,7 @@ class Invoice(Json):
             nextNumber, self.date.month, self.date.year)
         self.filename = "{}_{}_{}{}".format(self.owner.name, self.client.name, self.date.strftime("%Y%m%d"), nextNumber) \
             .replace(' ', '_').replace('.', '_')
+
+        # self.priceStringPL = slownie.slownie(self.grossPrice)
+        # print(self.priceStringPL)
+

@@ -9,6 +9,7 @@ import shutil
 import subprocess
 
 from models import Json, Invoice
+from slownie import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("owner", help="The seller of products issued on the invoice.", type=str)
