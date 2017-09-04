@@ -12,7 +12,7 @@ if not os.path.exists('clients'):
 owner = Owner('Sample Owner Company', '43-190 Mikołów\nul. Fajna 66', 1111111111,
               Account('Cool bank', '33 5555 5555 5555 5555 5555 5555'))
 
-client = Client('Sample client company', '43-190 Mikołów\nul. Fajna 77', 2222222222, 60, 14)
+client = Client('Sample client company', '43-190 Mikołów\nul. Fajna 77', 2222222222, 60, 'templatePL', 14)
 
 deliver_to = Client('Sample deliver company', '43-190 Mikołów\nul. Fajna 77', 3333333333, 20, 0)
 

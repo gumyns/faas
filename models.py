@@ -22,13 +22,14 @@ class Owner(Json):
 
 
 class Client(Json):
-    def __init__(self, name, full_address, nip, hourlyRate, paymentDelay):
+    def __init__(self, name, full_address, nip, hourlyRate, template, paymentDelay):
         Json.__init__(self)
         self.name = name
         self.address = full_address
         self.nip = nip
         self.hourlyRate = hourlyRate
         self.paymentDelay = paymentDelay
+        self.template = template
 
 
 class Account(Json):
@@ -44,8 +45,10 @@ class Invoice(Json):
         self.owner = owner
         self.client = client
         self.delivery = delivery
+        self.amount = float(amount)
 
     def asFormatter(self):
+        self.calculate()
         return {
             'date_created': None,
             'number': None,
@@ -59,15 +62,20 @@ class Invoice(Json):
             'paymentDueDate': None,
             'paymentBankName': self.owner.account.bank_name,
             'paymentAccount': self.owner.account.number,
-            'articleNumber': None,
+            'articleNumber': 1,
             'articleName': None,
-            'articleCount': None,
-            'articleNetPrice': None,
-            'articleNetValue': None,
-            'articleVatRate': None,
-            'articleVatAmount': None,
-            'articleGrossValue': None,
-            'totalGrossValue': None,
-            'totalNetValue': None,
-            'totalVatAmount': None,
+            'articleCount': self.amount,
+            'articleNetPrice': "{0:.2f}".format(self.netPrice),
+            'articleNetValue': "{0:.2f}".format(self.netPrice),
+            'articleVatRate': "23%",
+            'articleVatAmount': "{0:.2f}".format(self.taxPrice),
+            'articleGrossValue': "{0:.2f}".format(self.grossPrice),
+            'totalGrossValue': "{0:.2f}".format(self.grossPrice),
+            'totalNetValue': "{0:.2f}".format(self.netPrice),
+            'totalVatAmount': "{0:.2f}".format(self.taxPrice),
         }
+
+    def calculate(self):
+        self.netPrice = float(self.client.hourlyRate) * self.amount
+        self.grossPrice = self.netPrice * 1.23
+        self.taxPrice = self.grossPrice - self.netPrice

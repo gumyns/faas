@@ -29,7 +29,7 @@ with open("clients/{}.json".format(sys.argv[2]), 'r') as new_file:
 
 invoice = Invoice(owner, client, sys.argv[3], None)
 
-with open("templates/templatePL.html", 'r') as htmlInput:
+with open("templates/{}.html".format(client.template), 'r') as htmlInput:
     html = htmlInput.read().decode('utf-8').format(**invoice.asFormatter())
     if not os.path.exists('output'):
         os.makedirs('output')

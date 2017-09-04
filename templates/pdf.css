@@ -9,9 +9,8 @@ body {
 	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 	line-height: 1.5;
 	font-size: 11pt;
-	padding: 15mm 25mm 15mm 25mm; /* change the margins as you want them to be. */
+	padding: 35mm 10mm 35mm 10mm; /* change the margins as you want them to be. */
 }
-
 
 .fn::footnote-call {
   content: counter(footnote);
@@ -105,4 +104,7 @@ table {
 
 .width25 {
     width: 25%;
+}
+.width50 {
+    width: 50%;
 }
