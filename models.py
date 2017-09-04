@@ -1,13 +1,29 @@
-class Owner:
-    def __init__(self, name, full_address, nip, account):
+import json
+
+
+class Json:
+    def __init__(self, dict=None):
+        if dict is not None:
+            vars(self).update(dict)
+        else:
+            pass
+
+    def to_json(self):
+        return json.dumps(self.__dict__, default=lambda o: o.__dict__, sort_keys=True, indent=2)
+
+
+class Owner(Json):
+    def __init__(self, name=None, full_address=None, nip=None, account=None):
+        Json.__init__(self)
         self.name = name
         self.address = full_address
         self.nip = nip
         self.account = account
 
 
-class Client:
+class Client(Json):
     def __init__(self, name, full_address, nip, hourlyRate, paymentDelay):
+        Json.__init__(self)
         self.name = name
         self.address = full_address
         self.nip = nip
@@ -15,13 +31,16 @@ class Client:
         self.paymentDelay = paymentDelay
 
 
-class Account:
-    def __init__(self, bank_name, number):
+class Account(Json):
+    def __init__(self, bank_name=None, number=None):
+        Json.__init__(self)
         self.bank_name = bank_name
         self.number = number
 
-class Invoice:
-    def __init__(self, owner, client, delivery):
+
+class Invoice(Json):
+    def __init__(self, owner, client, amount, delivery):
+        Json.__init__(self)
         self.owner = owner
         self.client = client
         self.delivery = delivery
