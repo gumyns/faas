@@ -28,14 +28,15 @@ class Owner(Json):
 
 
 class Client(Json):
-    def __init__(self, name, full_address, nip, hourlyRate, template, paymentDelay):
+    def __init__(self, name, full_address, nip, hourly_rate, template, payment_delay, currency="PLN"):
         Json.__init__(self)
         self.name = name
         self.address = full_address
         self.nip = nip
-        self.hourlyRate = hourlyRate
-        self.paymentDelay = paymentDelay
+        self.hourly_rate = hourly_rate
+        self.payment_delay = payment_delay
         self.template = template
+        self.currency = currency
 
 
 class Account(Json):
@@ -48,13 +49,14 @@ class Account(Json):
 
 
 class Invoice(Json):
-    def __init__(self, owner, client, amount, delivery, date = datetime.datetime.now()):
+    def __init__(self, owner, client, amount, delivery, date = datetime.datetime.now(), name='usługa informatyczna'):
         Json.__init__(self)
         self.owner = owner
         self.client = client
         self.delivery = delivery
         self.amount = float(amount)
         self.date = date
+        self.name = name
 
     def asFormatter(self):
         self.calculate()
@@ -73,9 +75,9 @@ class Invoice(Json):
             'paymentSwift': self.owner.account.swift,
             'paymentAccount': self.owner.account.number,
             'articleNumber': 1,
-            'articleName': None,
+            'articleName': self.name,
             'articleCount': self.amount,
-            'articleNetPrice': "{0:.2f}".format(self.client.hourlyRate),
+            'articleNetPrice': "{0:.2f}".format(self.client.hourly_rate),
             'articleNetValue': "{0:.2f}".format(self.netPrice),
             'articleVatRate': "23%",
             'articleVatAmount': "{0:.2f}".format(self.taxPrice),
@@ -83,10 +85,11 @@ class Invoice(Json):
             'totalGrossValue': "{0:.2f}".format(self.grossPrice),
             'totalNetValue': "{0:.2f}".format(self.netPrice),
             'totalVatAmount': "{0:.2f}".format(self.taxPrice),
+            'currency': self.client.currency
         }
 
     def calculate(self):
-        self.netPrice = float(self.client.hourlyRate) * self.amount
+        self.netPrice = float(self.client.hourly_rate) * self.amount
         self.grossPrice = self.netPrice * 1.23
         self.taxPrice = self.grossPrice - self.netPrice
-        self.dueDate = self.date + datetime.timedelta(days=int(self.client.paymentDelay))
+        self.dueDate = self.date + datetime.timedelta(days=int(self.client.payment_delay))

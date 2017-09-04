@@ -106,3 +106,7 @@ table {
 .width33 {width: 33%;}
 .width40 {width: 40%;}
 .width50 {width: 50%;}
+
+.bankPadding {
+    padding: 10px 15px;
+}

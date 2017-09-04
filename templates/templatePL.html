@@ -27,7 +27,7 @@
     <table cellspacing="0">
         <tr>
             <td><!-- owner data -->
-                <table class="bordered">
+                <table class="bordered bankPadding">
                     <tr>
                         <td class="alignRight">Sprzedawca:</td>
                         <td>{ownerName}</td>
@@ -43,7 +43,7 @@
                 </table>
             </td><!-- client data -->
             <td>
-                <table class="bordered">
+                <table class="bordered bankPadding">
                     <tr>
                         <td class="alignRight">Nabywca:</td>
                         <td>{clientName}</td>
@@ -62,7 +62,7 @@
 
     </table>
 
-    <table class="bordered verticalPadding">
+    <table class="bordered verticalPadding bankPadding">
         <tr>
             <td class="alignRight width25">Sposób płatności:</td>
             <td>{paymentType}</td>
@@ -103,7 +103,7 @@
             <td>{articleGrossValue}</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="3" class="grayBg width50">Razem do zapłaty: {totalGrossValue} PLN</td>
+            <td rowspan="2" colspan="3" class="grayBg width50">Razem do zapłaty: {totalGrossValue} {currency}</td>
             <td>Razem:</td>
             <td>{totalNetValue}</td>
             <td>x</td>
