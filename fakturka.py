@@ -37,4 +37,6 @@ with open("templates/{}.html".format(client.template), 'r') as htmlInput:
         htmlOutput.write(html.encode('utf-8'))
         htmlOutput.close()
     shutil.copyfile('templates/pdf.css', 'output/pdf.css')
-    subprocess.call('wkhtmltopdf fakturka.html fakturka.pdf', shell=True, cwd='output')
+    subprocess.call('wkhtmltopdf fakturka.html "{}.pdf"'.format(invoice.filename.encode("utf-8")), shell=True, cwd='output')
+    os.remove('output/fakturka.html')
+    os.remove('output/pdf.css')

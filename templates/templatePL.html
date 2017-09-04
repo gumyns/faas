@@ -9,7 +9,7 @@
 <body>
     <table>
         <tr>
-            <td rowspan="2" style="width: 50%;">Faktura</td>
+            <td rowspan="2" class="width50 bigFont">Faktura</td>
             <td class="alignRight">Data Wystawienia:</td>
             <td>{date_created}</td>
         </tr>
@@ -21,7 +21,7 @@
     </table>
     <table>
         <tr>
-            <td>Nr: {number}</td>
+            <td class="mediumFont">Nr: {number}</td>
         </tr>
     </table>
     <table cellspacing="0">
@@ -92,7 +92,7 @@
             <th>Kwota VAT</th>
             <th>Wartość brutto</th>
         </tr>
-        <tr>
+        <tr class="pricePadding">
             <td>{articleNumber}</td>
             <td class="alignLeft">{articleName}</td>
             <td>{articleCount}</td>
@@ -102,15 +102,15 @@
             <td>{articleVatAmount}</td>
             <td>{articleGrossValue}</td>
         </tr>
-        <tr>
-            <td rowspan="2" colspan="3" class="grayBg width50">Razem do zapłaty: {totalGrossValue} {currency}</td>
+        <tr class="pricePadding">
+            <td rowspan="2" colspan="3" class="grayBg width50 mediumFont">Razem do zapłaty: {totalGrossValue} {currency}</td>
             <td>Razem:</td>
             <td>{totalNetValue}</td>
             <td>x</td>
             <td>{totalVatAmount}</td>
             <td>{totalGrossValue}</td>
         </tr>
-         <tr>
+        <tr class="pricePadding">
             <td>W tym:</td>
             <td>{totalNetValue}</td>
             <td>{articleVatRate}</td>

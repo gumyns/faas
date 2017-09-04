@@ -7,8 +7,8 @@
 body {
 	counter-reset: chapternum figurenum;
 	font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
-	line-height: 1.5;
-	font-size: 11pt;
+	line-height: 1.2;
+	font-size: 10pt;
 	padding: 35mm 10mm 35mm 10mm; /* change the margins as you want them to be. */
 }
 
@@ -88,7 +88,7 @@ table {
 }
 
 .grayBg {
-    background: gainsboro;
+    background: #eee;
 }
 
 .verticalPadding {
@@ -107,6 +107,8 @@ table {
 .width40 {width: 40%;}
 .width50 {width: 50%;}
 
-.bankPadding {
-    padding: 10px 15px;
-}
+.bankPadding {padding: 10px 15px;}
+.pricePadding > td {padding: 10px 5px;}
+
+.bigFont{font-size: 19pt;}
+.mediumFont{font-size: 15pt;}

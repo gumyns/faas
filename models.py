@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import json
+
 import datetime
 
 
@@ -20,12 +21,13 @@ class Json:
 
 
 class Owner(Json):
-    def __init__(self, name=None, full_address=None, nip=None, account=None):
+    def __init__(self, name=None, full_address=None, nip=None, account=None, annual_number=True):
         Json.__init__(self)
         self.name = name
         self.address = full_address
         self.nip = nip
         self.account = account
+        self.annual_number = annual_number
 
 
 class Client(Json):
@@ -50,7 +52,8 @@ class Account(Json):
 
 
 class Invoice(Json):
-    def __init__(self, owner, client, amount, delivery, date = datetime.datetime.now(), name='usługa informatyczna'.decode('utf-8')):
+    def __init__(self, owner, client, amount, delivery, date=datetime.datetime.now(),
+                 name='usługa informatyczna'.decode('utf-8')):
         Json.__init__(self)
         self.owner = owner
         self.client = client
@@ -63,7 +66,7 @@ class Invoice(Json):
         self.calculate()
         return {
             'date_created': self.date.strftime("%Y-%m-%d"),
-            'number': None,
+            'number': self.number,
             'ownerName': self.owner.name,
             'ownerAddress': self.owner.address,
             'ownerVatId': self.owner.nip,
@@ -94,3 +97,9 @@ class Invoice(Json):
         self.grossPrice = self.netPrice * 1.23
         self.taxPrice = self.grossPrice - self.netPrice
         self.dueDate = self.date + datetime.timedelta(days=int(self.client.payment_delay))
+        nextNumber = 1  # TODO
+        self.number = "{}/{}".format(nextNumber,
+                                     self.date.year) if self.owner.annual_number is True else "{}/{}/{}".format(
+            nextNumber, self.date.month, self.date.year)
+        self.filename = "{}_{}_{}{}".format(self.owner.name, self.client.name, self.date.strftime("%Y%m%d"), nextNumber) \
+            .replace(' ', '_').replace('.', '_')
