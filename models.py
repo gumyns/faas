@@ -20,3 +20,12 @@ class Account:
     def __init__(self, bank_name, number):
         self.bank_name = bank_name
         self.number = number
+
+class Invoice:
+    def __init__(self, owner, client, delivery):
+        self.owner = owner
+        self.client = client
+        self.delivery = delivery
+
+    def toJson(self):
+        print("well...")
