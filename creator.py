@@ -87,7 +87,15 @@ def createClient():
     payment_delay = raw_input("Termin platnosci w dniach: ")
     template = raw_input("Wzor (html bez rozszerzenia): ")
     save_name = raw_input("Nazwa (bez spacji): ")
-    create('clients/{}.json'.format(save_name), Client(name, "{}\n{} {}".format(street, postal, city), nip, rate, template, payment_delay, currency))
+    print('''Data na fakturze:
+1. Ostatni dzien roboczy miesiaca
+2. Pierwszy dzien roboczy miesiaca
+3. Dzien generowania faktury''')
+    date_day = Getch().__call__()
+    if date_day == '1': date_day = 0
+    elif date_day == '2': date_day = 1
+    else: date_day = 2
+    create('clients/{}.json'.format(save_name), Client(name, "{}\n{} {}".format(street, postal, city), nip, rate, template, payment_delay, currency, date_day))
     clear()
     print("Klient {} utworzony".format(save_name))
     step1()

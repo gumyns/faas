@@ -31,7 +31,7 @@ class Owner(Json):
 
 
 class Client(Json):
-    def __init__(self, name, full_address, nip, hourly_rate, template, payment_delay, currency="PLN"):
+    def __init__(self, name, full_address, nip, hourly_rate, template, payment_delay, currency="PLN", date_day=0):
         Json.__init__(self)
         self.name = name
         self.address = full_address
@@ -40,6 +40,7 @@ class Client(Json):
         self.payment_delay = payment_delay
         self.template = template
         self.currency = currency
+        self.date_day = date_day
 
 
 class Account(Json):
