@@ -31,9 +31,9 @@ Select option:''')
     user_input = Getch().__call__()
 
     if user_input == '1':
-        owners()
+        createOwner()
     elif user_input == '2':
-        print("case 2")
+        createClient()
     elif user_input == '3':
         owner = Owner('Sample Owner Company', '43-190 Mikołów\nul. Fajna 66', 1111111111,
                       Account('Cool bank', '33 5555 5555 5555 5555 5555 5555', "123", "Przelew"))
@@ -52,7 +52,8 @@ Select option:''')
         clear()
         step1()
 
-def owners():
+
+def createOwner():
     clear()
     name = raw_input("Nazwa firmy: ")
     street = raw_input("Ulica i numer domu: ")
@@ -71,6 +72,24 @@ def owners():
     create('owners/{}.json'.format(save_name), Owner(name, "{}\n{} {}".format(street, postal, city), nip, Account(bank_name, account, swift, transfer), annual_number))
     clear()
     print("Owner {} utworzony".format(save_name))
+    step1()
+
+
+def createClient():
+    clear()
+    name = raw_input("Nazwa firmy klienta: ")
+    street = raw_input("Ulica i numer domu: ")
+    city = raw_input("Miasto: ")
+    postal = raw_input("Kod pocztowy: ")
+    nip = raw_input("NIP/VAT ID: ")
+    rate = raw_input("Stawka godzinowa: ")
+    currency = raw_input("Waluta: ")
+    payment_delay = raw_input("Termin platnosci w dniach: ")
+    template = raw_input("Wzor (html bez rozszerzenia): ")
+    save_name = raw_input("Nazwa (bez spacji): ")
+    create('clients/{}.json'.format(save_name), Client(name, "{}\n{} {}".format(street, postal, city), nip, rate, template, payment_delay, currency))
+    clear()
+    print("Klient {} utworzony".format(save_name))
     step1()
 
 
