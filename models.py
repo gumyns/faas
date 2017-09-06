@@ -31,7 +31,7 @@ class Owner(Json):
 
 
 class Client(Json):
-    def __init__(self, name, full_address, nip, hourly_rate, template, payment_delay, currency="PLN", date_day=0):
+    def __init__(self, name, full_address, nip, hourly_rate, template, payment_delay, currency="PLN", date_day_type=0):
         Json.__init__(self)
         self.name = name
         self.address = full_address
@@ -40,7 +40,7 @@ class Client(Json):
         self.payment_delay = payment_delay
         self.template = template
         self.currency = currency
-        self.date_day = date_day
+        self.date_day_type = date_day_type
 
 
 class Account(Json):
@@ -60,7 +60,7 @@ class Invoice(Json):
         self.client = client
         self.delivery = delivery
         self.amount = float(amount)
-        self.date = date
+        self.date = self.invoice_issue_date(date, client.date_day_type)
         self.name = name
 
     def asFormatter(self):
@@ -107,16 +107,25 @@ class Invoice(Json):
             .replace(' ', '_').replace('.', '_')
         self.priceStringPL = slownie.slownie(self.grossPrice)
 
+    def invoice_issue_date(self, date, date_calculation_type):
+        if date_calculation_type == 0:
+            return date.replace(day=1) - datetime.timedelta(days=1)
+        if date_calculation_type == 1:
+            return date.replace(day=1)
+        return date
+
 
 class Getch:
     """Gets a single character from standard input.  Does not echo to the screen."""
+
     def __init__(self):
         try:
             self.impl = _GetchWindows()
         except ImportError:
             self.impl = _GetchUnix()
 
-    def __call__(self): return self.impl()
+    def __call__(self):
+        return self.impl()
 
 
 class _GetchUnix:

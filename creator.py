@@ -1,15 +1,18 @@
 # coding=utf-8
 # !/bin/bash python
 import os
-from models import Getch, Json, Owner, Account, Client
+
+from models import Getch, Owner, Account, Client
 
 if not os.path.exists('owners'):
     os.makedirs('owners')
 if not os.path.exists('clients'):
     os.makedirs('clients')
 
+
 def clear():
-    os.system('cls' if os.name=='nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 
 def create(file_name, source):
     if not os.path.isfile(file_name):
@@ -69,7 +72,9 @@ def createOwner():
     annual_number = Getch().__call__() == '1'
     transfer = "Przelew"
     save_name = raw_input("Nazwa (bez spacji): ")
-    create('owners/{}.json'.format(save_name), Owner(name, "{}\n{} {}".format(street, postal, city), nip, Account(bank_name, account, swift, transfer), annual_number))
+    create('owners/{}.json'.format(save_name),
+           Owner(name, "{}\n{} {}".format(street, postal, city), nip, Account(bank_name, account, swift, transfer),
+                 annual_number))
     clear()
     print("Owner {} utworzony".format(save_name))
     step1()
@@ -88,14 +93,19 @@ def createClient():
     template = raw_input("Wzor (html bez rozszerzenia): ")
     save_name = raw_input("Nazwa (bez spacji): ")
     print('''Data na fakturze:
-1. Ostatni dzien roboczy miesiaca
-2. Pierwszy dzien roboczy miesiaca
+1. Ostatni dzien roboczy poprzedniego miesiaca
+2. Pierwszy dzien roboczy obecnego miesiaca
 3. Dzien generowania faktury''')
     date_day = Getch().__call__()
-    if date_day == '1': date_day = 0
-    elif date_day == '2': date_day = 1
-    else: date_day = 2
-    create('clients/{}.json'.format(save_name), Client(name, "{}\n{} {}".format(street, postal, city), nip, rate, template, payment_delay, currency, date_day))
+    if date_day == '1':
+        date_day = 0
+    elif date_day == '2':
+        date_day = 1
+    else:
+        date_day = 2
+    create('clients/{}.json'.format(save_name),
+           Client(name, "{}\n{} {}".format(street, postal, city), nip, rate, template, payment_delay, currency,
+                  date_day))
     clear()
     print("Klient {} utworzony".format(save_name))
     step1()
