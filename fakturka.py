@@ -1,15 +1,15 @@
 # coding=utf-8
 # !/bin/bash python
 
-import json
 import argparse
-import sys
+import json
 import os
 import shutil
 import subprocess
+import sys
 
+import jpk
 from models import Json, Invoice
-from slownie import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument("owner", help="The seller of products issued on the invoice.", type=str)
@@ -29,6 +29,8 @@ with open("clients/{}.json".format(sys.argv[2]), 'r') as new_file:
     client = json.loads(new_file.read().decode('utf-8'), object_hook=Json)
 
 invoice = Invoice(owner, client, sys.argv[3], None)
+
+jpk.generate(owner)
 
 with open("templates/{}.html".format(client.template), 'r') as htmlInput:
     html = htmlInput.read().decode('utf-8').format(**invoice.asFormatter())

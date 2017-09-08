@@ -1,7 +1,8 @@
 # coding=utf-8
-
-import json
 import datetime
+import json
+import xml.etree.ElementTree as ET
+
 import slownie
 
 
@@ -28,6 +29,25 @@ class Owner(Json):
         self.nip = nip
         self.account = account
         self.annual_number = annual_number
+
+    @staticmethod
+    def id_xml(source, target):
+        ET.SubElement(target, "etd:NIP").text = source.nip
+        ET.SubElement(target, "etd:PelnaNazwa").text = source.name
+        ET.SubElement(target, "etd:REGON").text = "2"  # TODO
+
+    @staticmethod
+    def address_xml(source, target):
+        ET.SubElement(target, "tns:KodKraju").text = "PL"
+        ET.SubElement(target, "tns:Wojewodztwo").text = "2"
+        ET.SubElement(target, "tns:Powiat").text = "2"
+        ET.SubElement(target, "tns:Gmina").text = "2"
+        ET.SubElement(target, "tns:Ulica").text = "2"
+        ET.SubElement(target, "tns:NrDomu").text = "2"
+        ET.SubElement(target, "tns:NrLokalu").text = "2"
+        ET.SubElement(target, "tns:Miejscowosc").text = "2"
+        ET.SubElement(target, "tns:KodPocztowy").text = "2"
+        ET.SubElement(target, "tns:Poczta").text = "2"
 
 
 class Client(Json):
@@ -130,7 +150,7 @@ class Getch:
 
 class _GetchUnix:
     def __init__(self):
-        import tty, sys
+        pass
 
     def __call__(self):
         import sys, tty, termios
@@ -146,7 +166,7 @@ class _GetchUnix:
 
 class _GetchWindows:
     def __init__(self):
-        import msvcrt
+        pass
 
     def __call__(self):
         import msvcrt
