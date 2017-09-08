@@ -5,6 +5,8 @@ import xml.etree.ElementTree as ET
 from models import Owner
 
 
+# http://www.mf.gov.pl/documents/764034/5134536/Schemat_JPK_VAT%282%29_v1-0.pdf
+
 def generate(owner):
     if not os.path.exists('output'):
         os.makedirs('output')
