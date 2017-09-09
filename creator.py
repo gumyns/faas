@@ -3,12 +3,14 @@
 import os
 
 from models import Getch, Owner, Account, Client, Address
+from utils.db import DB
 
 if not os.path.exists('owners'):
     os.makedirs('owners')
 if not os.path.exists('clients'):
     os.makedirs('clients')
 
+db = DB()
 
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -63,7 +65,14 @@ def createOwner():
     name = raw_input("Nazwa firmy: ")
     street = raw_input("Ulica: ")
     house_number = raw_input("Numer domu: ")
-    city = raw_input("Miasto: ")
+    provinces = DB().get_province_list()
+    for province in DB().get_province_list():
+        print u'{}'.format(province.__str__().decode("utf-8"))
+    province = provinces[int(raw_input("Podaj numer wojewodztwa: ")) - 1]
+    print u'Wybrano: {}'.format(province.name)
+    cities = db.search_city(province, raw_input("Miasto: "))
+    city = cities[0].city
+    print u'Znaleziono: {}'.format(city)
     postal = raw_input("Kod pocztowy: ")
     nip = raw_input("NIP/VAT ID: ")
     bank_name = raw_input("Nazwa banku: ")

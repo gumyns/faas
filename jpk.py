@@ -2,8 +2,6 @@ import os
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
 
-from models import Owner
-
 
 # http://www.mf.gov.pl/documents/764034/5134536/Schemat_JPK_VAT%282%29_v1-0.pdf
 
@@ -30,9 +28,9 @@ def generate(owner):
     ET.SubElement(header, "tns:DomyslnyKodWaluty").text = "PLN"
     ET.SubElement(header, "tns:KodUrzedu").text = "0202"
 
-    firm = ET.SubElement(jpk, "tns:Podmiot1")
-    Owner.id_xml(owner, ET.SubElement(firm, "tns:IdentyfikatorPodmiotu"))
-    Owner.address_xml(owner, ET.SubElement(firm, "tns:AdresPodmiotu"))
+    # firm = ET.SubElement(jpk, "tns:Podmiot1")
+    # Owner.id_xml(owner, ET.SubElement(firm, "tns:IdentyfikatorPodmiotu"))
+    # Owner.address_xml(owner, ET.SubElement(firm, "tns:AdresPodmiotu"))
 
     file_name = "output/jpk.xml"
     ET.ElementTree(jpk).write(file_name, encoding='utf-8', xml_declaration=True)
