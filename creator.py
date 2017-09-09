@@ -66,11 +66,13 @@ def createOwner():
     name = raw_input("Nazwa firmy: ")
     street = raw_input("Ulica: ")
     house_number = raw_input("Numer domu: ")
+
     provinces = DB().get_province_list()
     for province in DB().get_province_list():
         print u'{}'.format(province.__str__().decode("utf-8"))
     province = provinces[int(raw_input("Podaj numer wojewodztwa: ")) - 1]
     print u'Wybrano: {}'.format(province.name)
+
     cities = db.search_city(province, raw_input("Miasto: "))
     if len(cities) > 1:
         print u'Znaleziono więcej miast, wybierz jedno z poniższych: '
@@ -94,7 +96,17 @@ def createOwner():
     if len(troublemaker) == 0:
         troublemaker = city
     troublemaker = db.search_for_trouble(province_id, troublemaker)
-    print u'Znaleziono: {}'.format(troublemaker)
+    if len(troublemaker) > 1:
+        print u'Znaleziono więcej urzędów, wybierz jedno z poniższych: '
+        for i, x in enumerate(troublemaker):
+            print u'{}. {}'.format(i + 1, x[1])
+        troublemaker = troublemaker[int(raw_input("Wybierz urzad: ")) - 1]
+        print u'Wybrano: {}'.format(troublemaker[1])
+    else:
+        troublemaker = troublemaker[0]
+        print u'Znaleziono: {}'.format(troublemaker[1])
+    troublemaker = troublemaker[0]
+
     bank_name = raw_input("Nazwa banku: ")
     account = raw_input("Numer konta: ")
     swift = raw_input("Numer SWIFT (tylko FVAT UE, PL puste):")

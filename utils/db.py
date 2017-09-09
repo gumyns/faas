@@ -63,15 +63,16 @@ class DB:
         return name
 
     def search_for_trouble(self, province, city):
-        troublemaker = None
+        troublemakers = []
         target = city
         while True:
-            query = self.db.execute('select KOD from SKARB where WOJ=(?) and NAZWA like (?)',
+            query = self.db.execute('select KOD, NAZWA from SKARB where WOJ=(?) and NAZWA like (?)',
                                     (province, u'%{}%'.format(target),))
             cursor = query.fetchall()
             if len(cursor) > 0:
-                troublemaker = cursor[0][0]
+                for x in cursor:
+                    troublemakers.append([x[0], x[1]])
             query.close()
-            if troublemaker is not None:
-                return troublemaker
+            if len(troublemakers) > 0:
+                return troublemakers
             target = target[:-1]
