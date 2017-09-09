@@ -20,21 +20,34 @@ class Json:
         return json.dumps(self.__dict__, default=lambda o: o.__dict__, sort_keys=True, indent=2)
 
 
+class Address:
+    def __init__(self, postal_code=None, city=None, province=None, district=None, commune=None, street=None,
+                 house_number=None, flat_number=None, raw=None):
+        self.postal_code = postal_code
+        self.city = city
+        self.province = province  # wojewodztwo
+        self.district = district  # powiat
+        self.commune = commune  # gmina
+        self.street = street
+        self.house_number = house_number
+        self.flat_number = flat_number
+
+
 class Owner(Json):
-    def __init__(self, name=None, full_address=None, nip=None, account=None, annual_number=True):
+    def __init__(self, name=None, address=None, nip=None, account=None, annual_number=True):
         Json.__init__(self)
         self.name = name
-        self.address = full_address
+        self.address = address
         self.nip = nip
         self.account = account
         self.annual_number = annual_number
 
 
 class Client(Json):
-    def __init__(self, name, full_address, nip, hourly_rate, template, payment_delay, currency="PLN", date_day_type=0):
+    def __init__(self, name, address, nip, hourly_rate, template, payment_delay, currency="PLN", date_day_type=0):
         Json.__init__(self)
         self.name = name
-        self.address = full_address
+        self.address = address
         self.nip = nip
         self.hourly_rate = hourly_rate
         self.payment_delay = payment_delay
@@ -69,10 +82,12 @@ class Invoice(Json):
             'date_created': self.date.strftime("%Y-%m-%d"),
             'number': self.number,
             'ownerName': self.owner.name,
-            'ownerAddress': self.owner.address,
+            'ownerAddress': "{} {}\n{} {}".format(self.owner.address.street, self.owner.address.house_number,
+                                                  self.owner.address.postal_code, self.owner.address.city),
             'ownerVatId': self.owner.nip,
             'clientName': self.client.name,
-            'clientAddress': self.client.address,
+            'clientAddress': "{} {}\n{} {}".format(self.owner.address.street, self.owner.address.house_number,
+                                                   self.owner.address.postal_code, self.owner.address.city),
             'clientVatId': self.client.nip,
             'paymentType': self.owner.account.transfer,
             'paymentDueDate': self.dueDate.strftime("%Y-%m-%d"),

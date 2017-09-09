@@ -2,7 +2,7 @@
 # !/bin/bash python
 import os
 
-from models import Getch, Owner, Account, Client
+from models import Getch, Owner, Account, Client, Address
 
 if not os.path.exists('owners'):
     os.makedirs('owners')
@@ -41,9 +41,11 @@ Select option:''')
         owner = Owner('Sample Owner Company', '43-190 Mikołów\nul. Fajna 66', 1111111111,
                       Account('Cool bank', '33 5555 5555 5555 5555 5555 5555', "123", "Przelew"))
 
-        client = Client('Sample client company', '43-190 Mikołów\nul. Fajna 77', 2222222222, 60, 'templatePL', 14)
+        client = Client('Sample client company', Address('43-190', 'Mikołów', street='Fajna', house_number='77'),
+                        2222222222, 60, 'templatePL', 14)
 
-        deliver_to = Client('Sample deliver company', '43-190 Mikołów\nul. Fajna 77', 3333333333, 20, None, 0)
+        deliver_to = Client('Sample deliver company',
+                            Address('43-190', 'Mikołów', street='Not Cool', house_number='66'), 3333333333, 20, None, 0)
 
         create('owners/owner.json', owner)
         create('clients/client.json', client)
@@ -59,7 +61,8 @@ Select option:''')
 def createOwner():
     clear()
     name = raw_input("Nazwa firmy: ")
-    street = raw_input("Ulica i numer domu: ")
+    street = raw_input("Ulica: ")
+    house_number = raw_input("Numer domu: ")
     city = raw_input("Miasto: ")
     postal = raw_input("Kod pocztowy: ")
     nip = raw_input("NIP/VAT ID: ")
@@ -73,7 +76,8 @@ def createOwner():
     transfer = "Przelew"
     save_name = raw_input("Nazwa (bez spacji): ")
     create('owners/{}.json'.format(save_name),
-           Owner(name, "{}\n{} {}".format(street, postal, city), nip, Account(bank_name, account, swift, transfer),
+           Owner(name, Address(postal_code=postal, city=city, street=street, house_number=house_number), nip,
+                 Account(bank_name, account, swift, transfer),
                  annual_number))
     clear()
     print("Owner {} utworzony".format(save_name))
@@ -83,7 +87,8 @@ def createOwner():
 def createClient():
     clear()
     name = raw_input("Nazwa firmy klienta: ")
-    street = raw_input("Ulica i numer domu: ")
+    street = raw_input("Ulica: ")
+    house_number = raw_input("Numer domu: ")
     city = raw_input("Miasto: ")
     postal = raw_input("Kod pocztowy: ")
     nip = raw_input("NIP/VAT ID: ")
@@ -104,8 +109,8 @@ def createClient():
     else:
         date_day = 2
     create('clients/{}.json'.format(save_name),
-           Client(name, "{}\n{} {}".format(street, postal, city), nip, rate, template, payment_delay, currency,
-                  date_day))
+           Client(name, Address(postal, city, street=street, house_number=house_number),
+                  nip, rate, template, payment_delay, currency, date_day))
     clear()
     print("Klient {} utworzony".format(save_name))
     step1()
