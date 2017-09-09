@@ -61,3 +61,18 @@ class DB:
         name = cursor[0][0]
         query.close()
         return name
+
+    def search_for_trouble(self, province, city):
+        troublemaker = None
+        target = city
+        while True:
+            print u'Searching {}'.format(target)
+            query = self.db.execute('select KOD from SKARB where WOJ=(?) and NAZWA like (?)',
+                                    (province, u'%{}%'.format(target),))
+            cursor = query.fetchall()
+            if len(cursor) > 0:
+                troublemaker = cursor[0][0]
+            query.close()
+            if troublemaker is not None:
+                return troublemaker
+            target = target[:-1]

@@ -81,14 +81,20 @@ def createOwner():
     else:
         city = cities[0]
         print u'Znaleziono: {}'.format(city.city)
-
+    province_id = province.id
     province = city.province
     district = city.district
     commune = city.city
-    city = city
+    city = city.city
 
     postal = raw_input("Kod pocztowy: ")
     nip = raw_input("NIP/VAT ID: ")
+
+    troublemaker = raw_input("Wpisz miasto urzedu skarbowego (puste, jesli to samo co wyzej): ")
+    if len(troublemaker) == 0:
+        troublemaker = city
+    troublemaker = db.search_for_trouble(province_id, troublemaker)
+    print u'Znaleziono: {}'.format(troublemaker)
     bank_name = raw_input("Nazwa banku: ")
     account = raw_input("Numer konta: ")
     swift = raw_input("Numer SWIFT (tylko FVAT UE):")
