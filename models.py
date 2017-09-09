@@ -34,13 +34,14 @@ class Address:
 
 
 class Owner(Json):
-    def __init__(self, name=None, address=None, nip=None, account=None, annual_number=True):
+    def __init__(self, name=None, address=None, nip=None, account=None, annual_number=True, gov_code=None):
         Json.__init__(self)
         self.name = name
         self.address = address
         self.nip = nip
         self.account = account
         self.annual_number = annual_number
+        self.gov_code = gov_code
 
 
 class Client(Json):

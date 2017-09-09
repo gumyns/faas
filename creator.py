@@ -97,7 +97,7 @@ def createOwner():
     print u'Znaleziono: {}'.format(troublemaker)
     bank_name = raw_input("Nazwa banku: ")
     account = raw_input("Numer konta: ")
-    swift = raw_input("Numer SWIFT (tylko FVAT UE):")
+    swift = raw_input("Numer SWIFT (tylko FVAT UE, PL puste):")
     print('''Numerowanie faktur:
 1. Roczne
 2. Miesieczne''')
@@ -106,8 +106,8 @@ def createOwner():
     save_name = raw_input("Nazwa (nazwa pliku, bez spacji): ")
     create('owners/{}.json'.format(save_name),
            Owner(name, Address(postal_code=postal, city=city, province=province, district=district, commune=commune,
-                               street=street, house_number=house_number), nip,
-                 Account(bank_name, account, swift, transfer), annual_number))
+                               street=street, house_number=house_number), nip=nip, gov_code=troublemaker,
+                 annual_number=annual_number, account=Account(bank_name, account, swift, transfer)))
     clear()
     print("Owner {} utworzony".format(save_name))
     step1()
