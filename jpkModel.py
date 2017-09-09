@@ -1,3 +1,4 @@
+# coding=utf-8
 import json
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
@@ -116,8 +117,9 @@ class Podmiot1(Serializable):
 
 
 class SprzedazWiersz(Serializable):
-    def __init__(self, name):
-        Serializable.__init__(self, name)
+    def __init__(self, invoice):
+        Serializable.__init__(self, "tns:SprzedazWiersz")
+        self.typ = Attr("typ", "G")  # whatever :)
         self.LpSprzedazy = Elem("tns:LpSprzedazy")
         self.NrKontrahenta = Elem("tns:NrKontrahenta")
         self.NazwaKontrahenta = Elem("tns:NazwaKontrahenta")
@@ -125,43 +127,81 @@ class SprzedazWiersz(Serializable):
         self.DowodSprzedazy = Elem("tns:DowodSprzedazy")
         self.DataWystawienia = Elem("tns:DataWystawienia")
         self.DataSprzedazy = Elem("tns:DataSprzedazy")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, zwolnione od podatku
         self.K_10 = Elem("tns:K_10")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług poza terytorium kraju
         self.K_11 = Elem("tns:K_11")
+        # Kwota netto - w tym świadczenie usług, o których mowa w art. 100 ust. 1 pkt 4 ustawy
         self.K_12 = Elem("tns:K_12")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 0%
         self.K_13 = Elem("tns:K_13")
+        # Kwota netto - w tym dostawa towarów, o której mowa w art. 129 ustawy
         self.K_14 = Elem("tns:K_14")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 5%
         self.K_15 = Elem("tns:K_15")
+        # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 5%
         self.K_16 = Elem("tns:K_16")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 7% albo 8%
         self.K_17 = Elem("tns:K_17")
+        # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 7% albo 8%
         self.K_18 = Elem("tns:K_18")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 22% albo 23%
         self.K_19 = Elem("tns:K_19")
+        # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 22% albo 23%
         self.K_20 = Elem("tns:K_20")
+        # Kwota netto - Wewnątrzwspólnotowa dostawa towarów
         self.K_21 = Elem("tns:K_21")
+        # Kwota netto - Eksport towarów
         self.K_22 = Elem("tns:K_22")
+        # Kwota netto - Wewnątrzwspólnotowe nabycie towarów
         self.K_23 = Elem("tns:K_23")
+        # Kwota podatku należnego - Wewnątrzwspólnotowe nabycie towarów
         self.K_24 = Elem("tns:K_24")
+        # Kwota netto - Import towarów podlegający rozliczeniu zgodnie z art. 33a ustawy
         self.K_25 = Elem("tns:K_25")
+        # Kwota podatku należnego - Import towarów podlegający rozliczeniu zgodnie z art. 33a ustawy
         self.K_26 = Elem("tns:K_26")
+        # Kwota netto - Import usług z wyłączeniem usług nabywanych od podatników podatku od wartości dodanej, do których stosuje sięart. 28b ustawy
         self.K_27 = Elem("tns:K_27")
+        # Kwota podatku należnego - Import usług z wyłączeniem usług nabywanych od podatników podatku od wartości dodanej, do których stosuje się art. 28b ustawy
         self.K_28 = Elem("tns:K_28")
+        # Kwota netto - Import usług nabywanych od podatników podatku od wartości dodanej, do których stosuje się art. 28b ustawy
         self.K_29 = Elem("tns:K_29")
+        # Kwota podatku należnego - Import usług nabywanych od podatników podatku od wartości dodanej, do których stosuje się art. 28b ustawy
         self.K_30 = Elem("tns:K_30")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 7 lub 8 ustawy (wypełnia dostawca)
         self.K_31 = Elem("tns:K_31")
+        # Kwota netto - Dostawa towarów, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 5 ustawy (wypełnia nabywca)
         self.K_32 = Elem("tns:K_32")
+        # Kwota podatku należnego - Dostawa towarów, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 5 ustawy (wypełnia nabywca)
         self.K_33 = Elem("tns:K_33")
+        # Kwota netto - Dostawa towarów oraz świadczenie usług, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 7 lub 8 ustawy (wypełnia nabywca)
         self.K_34 = Elem("tns:K_34")
+        # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 7 lub 8 ustawy (wypełnia nabywca)
         self.K_35 = Elem("tns:K_35")
+        # Kwota podatku należnego od towarów i usług objętych spisem z natury, o którym mowa w art. 14 ust. 5 ustawy
         self.K_36 = Elem("tns:K_36")
+        # Zwrot odliczonej lub zwróconej kwoty wydatkowanej na zakup kas rejestrujących, o którym mowa w art. 111 ust. 6 ustawy
         self.K_37 = Elem("tns:K_37")
+        # Kwota podatku należnego od wewnątrzwspólnotowego nabycia środków transportu, wykazanego welemencie K_24, podlegająca wpłacie w terminie, o którym mowa w art. 103 ust. 3, w związku z ust. 4 ustawy
         self.K_38 = Elem("tns:K_38")
+        # Kwota podatku od wewnątrzwspólnotowego nabycia paliw silnikowych, podlegająca wpłacie w terminach, o których mowa w art. 103 ust. 5a i 5b ustawy
         self.K_39 = Elem("tns:K_39")
+
+
+class SprzedazCtrl(Serializable):
+    def __init__(self, count, tax):
+        Serializable.__init__(self, "tns:SprzedazCtrl")
+        self.rows = Elem("tns:LiczbaWierszySprzedazy", count)
+        self.tax = Elem("tns:PodatekNalezny", tax)
 
 
 class JPK(Serializable):
     """
         JPK xml definition
     """
-    def __init__(self, owner):
+
+    def __init__(self, owner, invoices):
         Serializable.__init__(self, "tns:JPK")
         self.etd = Attr("xmlns:etd", "http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2016/01/25/eD/DefinicjeTypy/")
         self.kck = Attr("xmlns:kck", "http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2013/05/23/eD/KodyCECHKRAJOW/")
@@ -169,6 +209,7 @@ class JPK(Serializable):
         self.xsi = Attr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
         self.header = TNaglowek()()
         self.podmiot1 = Podmiot1(owner)()
+        # self.sale_ctrl = SprzedazCtrl(len(invoices), 0)()
 
 
 ###################################################################################################
@@ -180,7 +221,7 @@ var2 = Elem("tns:Identyfikator", value=var)
 with open("owners/theon.json") as new_file:
     owner = json.loads(new_file.read().decode('utf-8'), object_hook=Json)
 
-jpk = JPK(owner)()()
+jpk = JPK(owner, [None])()()
 
 file_name = "output/jpk.xml"
 ET.ElementTree(jpk).write(file_name, encoding='utf-8', xml_declaration=True)
