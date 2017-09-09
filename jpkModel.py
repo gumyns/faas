@@ -194,17 +194,16 @@ class SprzedazWiersz(Serializable):
 
 
 class SprzedazCtrl(Serializable):
-    def __init__(self, count, tax):
+    def __init__(self, invoices):
         Serializable.__init__(self, "tns:SprzedazCtrl")
-        self.rows = Elem("tns:LiczbaWierszySprzedazy", str(count))
-        self.tax = Elem("tns:PodatekNalezny", str(tax))
+        self.rows = Elem("tns:LiczbaWierszySprzedazy", str(len(invoices)))
+        self.tax = Elem("tns:PodatekNalezny", str(0))
 
 
 class JPK(Serializable):
     """
         JPK xml definition
     """
-
     def __init__(self, owner, invoices):
         Serializable.__init__(self, "tns:JPK")
         self.etd = Attr("xmlns:etd", "http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2016/01/25/eD/DefinicjeTypy/")
@@ -216,14 +215,10 @@ class JPK(Serializable):
         d = dict()
         for i, invoice in enumerate(invoices): d["invoice{}".format(i)] = SprzedazWiersz(invoice)()
         vars(self).update(d)
-        self.sale_ctrl = SprzedazCtrl(len(invoices), 0)()
+        self.sale_ctrl = SprzedazCtrl(invoices)()
 
 
 ###################################################################################################
-
-
-var = Elem("tns:IdentyfikatorPodmiotu", [Attr("a", "a")], "123")
-var2 = Elem("tns:Identyfikator", value=var)
 
 with open("owners/theon.json") as new_file:
     owner = json.loads(new_file.read().decode('utf-8'), object_hook=Json)
