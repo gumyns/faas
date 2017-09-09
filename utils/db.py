@@ -20,6 +20,10 @@ class City:
         self.commune = city[2]
         self.city = city[3]
 
+    def as_string(self):
+        return u'Województwo: {}, powiat: {}, miejscowość: {}, typ: {}' \
+            .format(self.province, self.district, self.city, self.commune)
+
 
 class DB:
     def __init__(self):
@@ -35,15 +39,25 @@ class DB:
         return provinces
 
     def search_city(self, province, name):
-        query = self.db.execute('select WOJ, POW, GMI, NAZWA from TERC where WOJ=(?) and NAZWA like (?) and POW!=""',
+        query = self.db.execute('select WOJ, POW, NAZDOD, NAZWA from TERC where WOJ=(?) and NAZWA like (?) and POW!=""',
                                 (province.id, name + '%',))
         cursor = query.fetchall()
         cities = []
         for city in cursor:
             if len(city[2]) > 0:
-                cities.append(City(province, city))
-        # TODO here we need to fill up all objects with data
-        if len(cities) > 1:
-            print "Wiyncyj miast!"
+                target = [
+                    province.name,
+                    self.search_district_name(province, city[1]),
+                    city[2],
+                    city[3]
+                ]
+                cities.append(City(province, target))
         query.close()
         return cities
+
+    def search_district_name(self, province, id):
+        query = self.db.execute('select NAZWA from TERC where WOJ=(?) and GMI!="" and POW=(?)', (province.id, id,))
+        cursor = query.fetchall()
+        name = cursor[0][0]
+        query.close()
+        return name

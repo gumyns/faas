@@ -12,6 +12,7 @@ if not os.path.exists('clients'):
 
 db = DB()
 
+
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -68,11 +69,24 @@ def createOwner():
     provinces = DB().get_province_list()
     for province in DB().get_province_list():
         print u'{}'.format(province.__str__().decode("utf-8"))
-    province = provinces[int(raw_input("Podaj numer wojewodztwa: ")) - 1]
+    province = provinces[int(raw_input(u"Podaj numer województwa: ")) - 1]
     print u'Wybrano: {}'.format(province.name)
     cities = db.search_city(province, raw_input("Miasto: "))
-    city = cities[0].city
-    print u'Znaleziono: {}'.format(city)
+    if len(cities) > 1:
+        print u'Znaleziono więcej miast, wybierz jedno z poniższych: '
+        for i, city in enumerate(cities):
+            print u'{}. {}'.format(i + 1, city.as_string())
+        city = cities[int(raw_input(u"Wybierz miejscowość: ")) - 1]
+        print u'Wybrano: {}, {}'.format(city.city, city.commune)
+    else:
+        city = cities[0]
+        print u'Znaleziono: {}'.format(city.city)
+
+    province = city.province
+    district = city.district
+    commune = city.city
+    city = city
+
     postal = raw_input("Kod pocztowy: ")
     nip = raw_input("NIP/VAT ID: ")
     bank_name = raw_input("Nazwa banku: ")
@@ -83,11 +97,11 @@ def createOwner():
 2. Miesieczne''')
     annual_number = Getch().__call__() == '1'
     transfer = "Przelew"
-    save_name = raw_input("Nazwa (bez spacji): ")
+    save_name = raw_input("Nazwa (nazwa pliku, bez spacji): ")
     create('owners/{}.json'.format(save_name),
-           Owner(name, Address(postal_code=postal, city=city, street=street, house_number=house_number), nip,
-                 Account(bank_name, account, swift, transfer),
-                 annual_number))
+           Owner(name, Address(postal_code=postal, city=city, province=province, district=district, commune=commune,
+                               street=street, house_number=house_number), nip,
+                 Account(bank_name, account, swift, transfer), annual_number))
     clear()
     print("Owner {} utworzony".format(save_name))
     step1()
