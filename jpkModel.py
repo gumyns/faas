@@ -1,4 +1,5 @@
 # coding=utf-8
+import datetime
 import json
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
@@ -77,17 +78,17 @@ class TNaglowek(Serializable):
         JPK header definition
     """
 
-    def __init__(self):
+    def __init__(self, owner):
         Serializable.__init__(self, "tns:Naglowek")
         self.code = Elem("tns:KodFormularza", "JPK_VAT",
                          [Attr("kodSystemowy", "JPK_VAT (2)"), Attr("wersjaSchemy", "1-0")])
         self.variant = Elem("tns:WariantFormularza", "2")
         self.target = Elem("tns:CelZlozenia", "1")
-        self.create_date = Elem("tns:DataWytworzeniaJPK", "2017-02-17T09:30:47")
+        self.create_date = Elem("tns:DataWytworzeniaJPK", datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S"))
         self.from_date = Elem("tns:DataOd", "2017-01-01")
         self.to_date = Elem("tns:DataDo", "2017-01-31")
         self.currency = Elem("tns:DomyslnyKodWaluty", "PLN")
-        self.code = Elem("tns:KodUrzedu", "0202")
+        self.code = Elem("tns:KodUrzedu", owner.gov_code)
 
 
 class IdentyfikatorPodmiotu(Serializable):
@@ -99,25 +100,25 @@ class IdentyfikatorPodmiotu(Serializable):
 
 
 class AdresPodmiotu(Serializable):
-    def __init__(self, owner):
+    def __init__(self, address):
         Serializable.__init__(self, "tns:AdresPodmiotu")
         self.country_code = Elem("tns:KodKraju", "PL")
-        self.woj = Elem("tns:Wojewodztwo", "2")  # TODO
-        self.powiat = Elem("tns:Powiat", "2")  # TODO
-        self.gmina = Elem("tns:Gmina", "2")  # TODO
-        self.ul = Elem("tns:Ulica", "2")  # TODO
-        self.nr_dom = Elem("tns:NrDomu", "2")  # TODO
-        self.nr_lok = Elem("tns:NrLokalu", "2")  # TODO
-        self.city = Elem("tns:Miejscowosc", "2")  # TODO
-        self.postal = Elem("tns:KodPocztowy", "2")  # TODO
-        self.post = Elem("tns:Poczta", "2")  # TODO
+        self.woj = Elem("tns:Wojewodztwo", address.province.upper())
+        self.powiat = Elem("tns:Powiat", address.district.upper())
+        self.gmina = Elem("tns:Gmina", address.commune.upper())
+        self.ul = Elem("tns:Ulica", address.street.upper())
+        self.nr_dom = Elem("tns:NrDomu", address.house_number)
+        self.nr_lok = Elem("tns:NrLokalu", address.flat_number)
+        self.city = Elem("tns:Miejscowosc", address.city.upper())
+        self.postal = Elem("tns:KodPocztowy", address.postal_code)
+        self.post = Elem("tns:Poczta", address.city.upper())
 
 
 class Podmiot1(Serializable):
     def __init__(self, owner):
         Serializable.__init__(self, "tns:Podmiot1")
         self.id = IdentyfikatorPodmiotu(owner)()
-        self.addr = AdresPodmiotu(owner)()
+        self.addr = AdresPodmiotu(owner.address)()
 
 
 class SprzedazWiersz(Serializable):
@@ -210,7 +211,7 @@ class JPK(Serializable):
         self.kck = Attr("xmlns:kck", "http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2013/05/23/eD/KodyCECHKRAJOW/")
         self.tns = Attr("xmlns:tns", "http://jpk.mf.gov.pl/wzor/2016/10/26/10261/")
         self.xsi = Attr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-        self.header = TNaglowek()()
+        self.header = TNaglowek(owner)()
         self.podmiot1 = Podmiot1(owner)()
         d = dict()
         for i, invoice in enumerate(invoices): d["invoice{}".format(i)] = SprzedazWiersz(invoice)()
@@ -230,3 +231,5 @@ ET.ElementTree(jpk).write(file_name, encoding='utf-8', xml_declaration=True)
 
 parsed = xml.dom.minidom.parse(file_name)
 print(parsed.toprettyxml())
+with open(file_name, 'w') as new_file:
+    new_file.write(parsed.toprettyxml().encode("utf-8"))

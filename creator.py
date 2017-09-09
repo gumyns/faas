@@ -63,22 +63,30 @@ Select option:''')
 
 def createOwner():
     clear()
+
     name = raw_input("Nazwa firmy: ")
+
     street = raw_input("Ulica: ")
+
     house_number = raw_input("Numer domu: ")
+
+    flat_number = raw_input("Numer mieszkania: ")
 
     provinces = DB().get_province_list()
     for province in DB().get_province_list():
         print u'{}'.format(province.__str__().decode("utf-8"))
-    province = provinces[int(raw_input("Podaj numer wojewodztwa: ")) - 1]
+    print u'Podaj numer województwa:',
+    province = provinces[int(raw_input()) - 1]
     print u'Wybrano: {}'.format(province.name)
 
-    cities = db.search_city(province, raw_input("Miasto: "))
+    print u'Wyszukaj miejscowość: ',
+    cities = db.search_city(province, raw_input())
     if len(cities) > 1:
         print u'Znaleziono więcej miast, wybierz jedno z poniższych: '
         for i, city in enumerate(cities):
             print u'{}. {}'.format(i + 1, city.as_string())
-        city = cities[int(raw_input("Wybierz miejscowosc: ")) - 1]
+        print u'Wybierz miejscowość: ',
+        city = cities[int(raw_input()) - 1]
         print u'Wybrano: {}, {}'.format(city.city, city.commune)
     else:
         city = cities[0]
@@ -90,6 +98,7 @@ def createOwner():
     city = city.city
 
     postal = raw_input("Kod pocztowy: ")
+
     nip = raw_input("NIP/VAT ID: ")
 
     troublemaker = raw_input("Wpisz miasto urzedu skarbowego (puste, jesli to samo co wyzej): ")
@@ -97,10 +106,11 @@ def createOwner():
         troublemaker = city
     troublemaker = db.search_for_trouble(province_id, troublemaker)
     if len(troublemaker) > 1:
-        print u'Znaleziono więcej urzędów, wybierz jedno z poniższych: '
+        print u'Znaleziono więcej urzędów, wybierz jeden z poniższych: '
         for i, x in enumerate(troublemaker):
             print u'{}. {}'.format(i + 1, x[1])
-        troublemaker = troublemaker[int(raw_input("Wybierz urzad: ")) - 1]
+        print u'Wybierz urząd:',
+        troublemaker = troublemaker[int(raw_input()) - 1]
         print u'Wybrano: {}'.format(troublemaker[1])
     else:
         troublemaker = troublemaker[0]
@@ -108,18 +118,24 @@ def createOwner():
     troublemaker = troublemaker[0]
 
     bank_name = raw_input("Nazwa banku: ")
+
     account = raw_input("Numer konta: ")
+
     swift = raw_input("Numer SWIFT (tylko FVAT UE, PL puste):")
+
     print('''Numerowanie faktur:
 1. Roczne
 2. Miesieczne''')
+
     annual_number = Getch().__call__() == '1'
+
     transfer = "Przelew"
+
     save_name = raw_input("Nazwa (nazwa pliku, bez spacji): ")
     create('owners/{}.json'.format(save_name),
-           Owner(name, Address(postal_code=postal, city=city, province=province, district=district, commune=commune,
-                               street=street, house_number=house_number), nip=nip, gov_code=troublemaker,
-                 annual_number=annual_number, account=Account(bank_name, account, swift, transfer)))
+           Owner(name, Address(postal, city, province, district, commune, street, house_number, flat_number), nip,
+                 gov_code=troublemaker, annual_number=annual_number,
+                 account=Account(bank_name, account, swift, transfer)))
     clear()
     print("Owner {} utworzony".format(save_name))
     step1()
