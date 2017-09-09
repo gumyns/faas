@@ -66,7 +66,6 @@ class DB:
         troublemaker = None
         target = city
         while True:
-            print u'Searching {}'.format(target)
             query = self.db.execute('select KOD from SKARB where WOJ=(?) and NAZWA like (?)',
                                     (province, u'%{}%'.format(target),))
             cursor = query.fetchall()
