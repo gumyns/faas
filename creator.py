@@ -2,8 +2,9 @@
 # !/bin/bash python
 import os
 
-from models import Getch, Owner, Account, Client, Address
+from models import Owner, Account, Client, Address
 from utils.db import DB
+from utils.getch import Getch
 
 if not os.path.exists('owners'):
     os.makedirs('owners')
