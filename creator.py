@@ -69,14 +69,14 @@ def createOwner():
     provinces = DB().get_province_list()
     for province in DB().get_province_list():
         print u'{}'.format(province.__str__().decode("utf-8"))
-    province = provinces[int(raw_input(u"Podaj numer województwa: ")) - 1]
+    province = provinces[int(raw_input("Podaj numer wojewodztwa: ")) - 1]
     print u'Wybrano: {}'.format(province.name)
     cities = db.search_city(province, raw_input("Miasto: "))
     if len(cities) > 1:
         print u'Znaleziono więcej miast, wybierz jedno z poniższych: '
         for i, city in enumerate(cities):
             print u'{}. {}'.format(i + 1, city.as_string())
-        city = cities[int(raw_input(u"Wybierz miejscowość: ")) - 1]
+        city = cities[int(raw_input("Wybierz miejscowosc: ")) - 1]
         print u'Wybrano: {}, {}'.format(city.city, city.commune)
     else:
         city = cities[0]
