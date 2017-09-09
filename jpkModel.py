@@ -10,6 +10,7 @@ class Attr:
     """
         XML Attribute object
     """
+
     def __init__(self, name, value):
         self.name = name
         self.value = value
@@ -22,6 +23,7 @@ class Elem:
     """
         XML Element object
     """
+
     def __init__(self, name, value=None, attr=None):
         self.name = name
         self.value = value
@@ -54,6 +56,7 @@ class Serializable:
     """
         Serializable helper, callable converts class members to Element object
     """
+
     def __init__(self, name):
         self.name = name
 
@@ -73,6 +76,7 @@ class TNaglowek(Serializable):
     """
         JPK header definition
     """
+
     def __init__(self):
         Serializable.__init__(self, "tns:Naglowek")
         self.code = Elem("tns:KodFormularza", "JPK_VAT",
@@ -128,72 +132,72 @@ class SprzedazWiersz(Serializable):
         self.DataWystawienia = Elem("tns:DataWystawienia")
         self.DataSprzedazy = Elem("tns:DataSprzedazy")
         # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, zwolnione od podatku
-        self.K_10 = Elem("tns:K_10")
+        self.K_10 = Elem("tns:K_10", str(0))
         # Kwota netto - Dostawa towarów oraz świadczenie usług poza terytorium kraju
-        self.K_11 = Elem("tns:K_11")
+        self.K_11 = Elem("tns:K_11", str(0))
         # Kwota netto - w tym świadczenie usług, o których mowa w art. 100 ust. 1 pkt 4 ustawy
-        self.K_12 = Elem("tns:K_12")
+        self.K_12 = Elem("tns:K_12", str(0))
         # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 0%
-        self.K_13 = Elem("tns:K_13")
+        self.K_13 = Elem("tns:K_13", str(0))
         # Kwota netto - w tym dostawa towarów, o której mowa w art. 129 ustawy
-        self.K_14 = Elem("tns:K_14")
+        self.K_14 = Elem("tns:K_14", str(0))
         # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 5%
-        self.K_15 = Elem("tns:K_15")
+        self.K_15 = Elem("tns:K_15", str(0))
         # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 5%
-        self.K_16 = Elem("tns:K_16")
+        self.K_16 = Elem("tns:K_16", str(0))
         # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 7% albo 8%
-        self.K_17 = Elem("tns:K_17")
+        self.K_17 = Elem("tns:K_17", str(0))
         # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 7% albo 8%
-        self.K_18 = Elem("tns:K_18")
+        self.K_18 = Elem("tns:K_18", str(0))
         # Kwota netto - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 22% albo 23%
-        self.K_19 = Elem("tns:K_19")
+        self.K_19 = Elem("tns:K_19", str(0))
         # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług na terytorium kraju, opodatkowane stawką 22% albo 23%
-        self.K_20 = Elem("tns:K_20")
+        self.K_20 = Elem("tns:K_20", str(0))
         # Kwota netto - Wewnątrzwspólnotowa dostawa towarów
-        self.K_21 = Elem("tns:K_21")
+        self.K_21 = Elem("tns:K_21", str(0))
         # Kwota netto - Eksport towarów
-        self.K_22 = Elem("tns:K_22")
+        self.K_22 = Elem("tns:K_22", str(0))
         # Kwota netto - Wewnątrzwspólnotowe nabycie towarów
-        self.K_23 = Elem("tns:K_23")
+        self.K_23 = Elem("tns:K_23", str(0))
         # Kwota podatku należnego - Wewnątrzwspólnotowe nabycie towarów
-        self.K_24 = Elem("tns:K_24")
+        self.K_24 = Elem("tns:K_24", str(0))
         # Kwota netto - Import towarów podlegający rozliczeniu zgodnie z art. 33a ustawy
-        self.K_25 = Elem("tns:K_25")
+        self.K_25 = Elem("tns:K_25", str(0))
         # Kwota podatku należnego - Import towarów podlegający rozliczeniu zgodnie z art. 33a ustawy
-        self.K_26 = Elem("tns:K_26")
+        self.K_26 = Elem("tns:K_26", str(0))
         # Kwota netto - Import usług z wyłączeniem usług nabywanych od podatników podatku od wartości dodanej, do których stosuje sięart. 28b ustawy
-        self.K_27 = Elem("tns:K_27")
+        self.K_27 = Elem("tns:K_27", str(0))
         # Kwota podatku należnego - Import usług z wyłączeniem usług nabywanych od podatników podatku od wartości dodanej, do których stosuje się art. 28b ustawy
-        self.K_28 = Elem("tns:K_28")
+        self.K_28 = Elem("tns:K_28", str(0))
         # Kwota netto - Import usług nabywanych od podatników podatku od wartości dodanej, do których stosuje się art. 28b ustawy
-        self.K_29 = Elem("tns:K_29")
+        self.K_29 = Elem("tns:K_29", str(0))
         # Kwota podatku należnego - Import usług nabywanych od podatników podatku od wartości dodanej, do których stosuje się art. 28b ustawy
-        self.K_30 = Elem("tns:K_30")
+        self.K_30 = Elem("tns:K_30", str(0))
         # Kwota netto - Dostawa towarów oraz świadczenie usług, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 7 lub 8 ustawy (wypełnia dostawca)
-        self.K_31 = Elem("tns:K_31")
+        self.K_31 = Elem("tns:K_31", str(0))
         # Kwota netto - Dostawa towarów, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 5 ustawy (wypełnia nabywca)
-        self.K_32 = Elem("tns:K_32")
+        self.K_32 = Elem("tns:K_32", str(0))
         # Kwota podatku należnego - Dostawa towarów, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 5 ustawy (wypełnia nabywca)
-        self.K_33 = Elem("tns:K_33")
+        self.K_33 = Elem("tns:K_33", str(0))
         # Kwota netto - Dostawa towarów oraz świadczenie usług, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 7 lub 8 ustawy (wypełnia nabywca)
-        self.K_34 = Elem("tns:K_34")
+        self.K_34 = Elem("tns:K_34", str(0))
         # Kwota podatku należnego - Dostawa towarów oraz świadczenie usług, dla których podatnikiem jest nabywca zgodnie z art. 17 ust. 1 pkt 7 lub 8 ustawy (wypełnia nabywca)
-        self.K_35 = Elem("tns:K_35")
+        self.K_35 = Elem("tns:K_35", str(0))
         # Kwota podatku należnego od towarów i usług objętych spisem z natury, o którym mowa w art. 14 ust. 5 ustawy
-        self.K_36 = Elem("tns:K_36")
+        self.K_36 = Elem("tns:K_36", str(0))
         # Zwrot odliczonej lub zwróconej kwoty wydatkowanej na zakup kas rejestrujących, o którym mowa w art. 111 ust. 6 ustawy
-        self.K_37 = Elem("tns:K_37")
+        self.K_37 = Elem("tns:K_37", str(0))
         # Kwota podatku należnego od wewnątrzwspólnotowego nabycia środków transportu, wykazanego welemencie K_24, podlegająca wpłacie w terminie, o którym mowa w art. 103 ust. 3, w związku z ust. 4 ustawy
-        self.K_38 = Elem("tns:K_38")
+        self.K_38 = Elem("tns:K_38", str(0))
         # Kwota podatku od wewnątrzwspólnotowego nabycia paliw silnikowych, podlegająca wpłacie w terminach, o których mowa w art. 103 ust. 5a i 5b ustawy
-        self.K_39 = Elem("tns:K_39")
+        self.K_39 = Elem("tns:K_39", str(0))
 
 
 class SprzedazCtrl(Serializable):
     def __init__(self, count, tax):
         Serializable.__init__(self, "tns:SprzedazCtrl")
-        self.rows = Elem("tns:LiczbaWierszySprzedazy", count)
-        self.tax = Elem("tns:PodatekNalezny", tax)
+        self.rows = Elem("tns:LiczbaWierszySprzedazy", str(count))
+        self.tax = Elem("tns:PodatekNalezny", str(tax))
 
 
 class JPK(Serializable):
@@ -209,7 +213,10 @@ class JPK(Serializable):
         self.xsi = Attr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
         self.header = TNaglowek()()
         self.podmiot1 = Podmiot1(owner)()
-        # self.sale_ctrl = SprzedazCtrl(len(invoices), 0)()
+        d = dict()
+        for i, invoice in enumerate(invoices): d["invoice{}".format(i)] = SprzedazWiersz(invoice)()
+        vars(self).update(d)
+        self.sale_ctrl = SprzedazCtrl(len(invoices), 0)()
 
 
 ###################################################################################################
