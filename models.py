@@ -2,8 +2,6 @@
 import datetime
 import glob
 import json
-
-
 import os
 
 from utils import slownie
@@ -74,8 +72,7 @@ class Account(Json):
 
 
 class Invoice(Json):
-    def __init__(self, owner, client, amount, delivery, date=datetime.datetime.now(),
-                 name='usługa informatyczna'.decode('utf-8')):
+    def __init__(self, owner, client, amount, delivery, date=datetime.datetime.now(), name=u'usługa informatyczna'):
         Json.__init__(self)
         self.owner = owner
         self.client = client
@@ -83,19 +80,26 @@ class Invoice(Json):
         self.amount = float(amount)
         self.date = self.invoice_issue_date(date, client.date_day_type)
         self.name = name
+        self.netPrice = None
+        self.grossPrice = None
+        self.taxPrice = None
+        self.dueDate = None
+        self.number = None
+        self.filename = None
+        self.priceStringPL = None
 
-    def asFormatter(self, owner):
-        self.calculate(owner)
+    def asFormatter(self):
+        self.calculate()
         return {
             'date_created': self.date.strftime("%Y-%m-%d"),
             'number': self.number,
             'ownerName': self.owner.name,
-            'ownerAddress': "{} {}\n{} {}".format(self.owner.address.street, self.owner.address.house_number,
-                                                  self.owner.address.postal_code, self.owner.address.city),
+            'ownerAddress': u"{} {}\n{} {}".format(self.owner.address.street, self.owner.address.house_number,
+                                                   self.owner.address.postal_code, self.owner.address.city),
             'ownerVatId': self.owner.nip,
             'clientName': self.client.name,
-            'clientAddress': "{} {}\n{} {}".format(self.owner.address.street, self.owner.address.house_number,
-                                                   self.owner.address.postal_code, self.owner.address.city),
+            'clientAddress': u"{} {}\n{} {}".format(self.owner.address.street, self.owner.address.house_number,
+                                                    self.owner.address.postal_code, self.owner.address.city),
             'clientVatId': self.client.nip,
             'paymentType': self.owner.account.transfer,
             'paymentDueDate': self.dueDate.strftime("%Y-%m-%d"),
@@ -117,31 +121,27 @@ class Invoice(Json):
             'priceStringPL': self.priceStringPL
         }
 
-    def calculate(self, owner):
+    def calculate(self):
         self.netPrice = float(self.client.hourly_rate) * self.amount
         self.grossPrice = self.netPrice * 1.23
         self.taxPrice = self.grossPrice - self.netPrice
         self.dueDate = self.date + datetime.timedelta(days=int(self.client.payment_delay))
         # fixme extract folder as argument?
-        search_folder = 'output/{}/{}/json'.format(owner.name.replace(' ', '_'), str(self.date.year))
+        search_folder = 'output/{}/{}/json'.format(self.owner.name.replace(' ', '_'), str(self.date.year))
+        print search_folder
         if self.owner.annual_number:
-            print(search_folder)
             next_number = len(os.listdir(search_folder)) + 1
-            print(str(next_number))
+            self.number = "{}/{}".format(next_number, self.date.strftime("%Y"))
         else:
-            print(search_folder)
-            next_number = len(
-                glob.glob('{}/{}{}*.json'.format(search_folder, str(self.date.year), str(self.date.month)))) + 1
+            next_number = len(glob.glob('{}/{}*.json'.format(search_folder, self.date.strftime("%Y%m")))) + 1
+            self.number = "{}/{}/{}".format(next_number, self.date.month, self.date.strftime("%Y"))
 
-        self.number = "{}/{}".format(next_number,
-                                     self.date.year) if self.owner.annual_number is True else "{}/{}/{}".format(
-            next_number, self.date.month, self.date.year)
-        self.filename = "{}_{}_{}".format(str(self.date.year) + str(self.date.month) + str(self.date.day),
-                                          self.client.name, next_number) \
-            .replace(' ', '_').replace('.', '_')
+        self.filename = "{}_{}_{}" \
+            .format(self.date.strftime("%Y%m%d"), self.client.name, next_number).replace(' ', '_').replace('.', '_')
         self.priceStringPL = slownie.slownie(self.grossPrice)
 
-    def invoice_issue_date(self, date, date_calculation_type):
+    @staticmethod
+    def invoice_issue_date(date, date_calculation_type):
         if date_calculation_type == 0:
             return date.replace(day=1) - datetime.timedelta(days=1)
         if date_calculation_type == 1:
