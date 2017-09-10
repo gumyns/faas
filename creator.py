@@ -5,13 +5,7 @@ import os
 from utils.db import DB
 from utils.getch import Getch
 from utils.models import Owner, Account, Client, Address
-
-if not os.path.exists('owners'):
-    os.makedirs('owners')
-if not os.path.exists('clients'):
-    os.makedirs('clients')
-
-db = DB()
+from utils.settings import Settings
 
 
 def clear():
@@ -31,7 +25,8 @@ Type:
 1. To create owner data.
 2. To create client data.
 3. To generate sample data.
-4. To exit.
+4. To change settings.
+5. To exit.
 Any other key to exit.
 Select option:''')
 
@@ -56,6 +51,8 @@ Select option:''')
         create('clients/delivery.json', deliver_to)
         print('Created sample clients!')
     elif user_input == '4':
+        change_settings(Settings.get())
+    elif user_input == '5':
         exit()
     else:
         clear()
@@ -174,5 +171,30 @@ def createClient():
     step1()
 
 
+def change_settings(s):
+    clear()
+    print(u'''Change settings:
+1. Output directory. Current: {}
+2. Wkhtmltopdf binary file. Current: {}
+3. Nothing, go back
+'''.format(s.output_path, s.wkhtmltopdf_path))
+    user_input = Getch().__call__()
+    if user_input == '1':
+        s.output_path = raw_input("Path: ")
+        s.save()
+    elif user_input == '2':
+        s.wkhtmltopdf_path = raw_input("Path: ")
+        s.save()
+    clear()
+    step1()
+    return s
+
+
+if not os.path.exists('owners'):
+    os.makedirs('owners')
+if not os.path.exists('clients'):
+    os.makedirs('clients')
+
+db = DB()
 clear()
 step1()
