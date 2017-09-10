@@ -1,9 +1,8 @@
 import calendar
+import datetime
 import unittest
 
-import datetime
-
-from models import Invoice, Client
+from utils.models import Invoice, Client
 
 
 class TestInvoiceDateCalculations(unittest.TestCase):

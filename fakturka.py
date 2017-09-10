@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 import jpk
-from models import Json, Invoice
+from utils.models import Json, Invoice
 
 
 # region lib
