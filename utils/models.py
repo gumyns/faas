@@ -10,7 +10,7 @@ from utils import slownie
 
 class Address:
     def __init__(self, postal_code=None, city=None, province=None, district=None, commune=None, street=None,
-                 house_number=None, flat_number=None, raw=None):
+                 house_number=None, flat_number=None):
         self.postal_code = postal_code
         self.city = city
         self.province = province  # wojewodztwo

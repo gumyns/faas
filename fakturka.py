@@ -20,9 +20,6 @@ parser.add_argument("amount", help="The amount of the service in invoice.", type
 parser.add_argument("--delivery", help="The company's that is receiving the delivery of the invoice.", type=str)
 arguments = parser.parse_args()
 
-owner = None
-client = None
-
 with open(Settings.owner_file("{}.json".format(arguments.owner)), 'r') as new_file:
     owner = json.loads(new_file.read().decode('utf-8'), object_hook=Json)
 
