@@ -130,7 +130,7 @@ def createOwner():
     transfer = "Przelew"
 
     save_name = raw_input("Nazwa (nazwa pliku, bez spacji): ")
-    create('owners/{}.json'.format(save_name),
+    create(Settings.output_relative('owners', u'{}.json'.format(save_name)),
            Owner(name, Address(postal, city, province, district, commune, street, house_number, flat_number), nip,
                  gov_code=troublemaker, annual_number=annual_number,
                  account=Account(bank_name, account, swift, transfer)))
@@ -180,10 +180,10 @@ def change_settings(s):
 '''.format(s.output_path, s.wkhtmltopdf_path))
     user_input = Getch().__call__()
     if user_input == '1':
-        s.output_path = raw_input("Path: ")
+        s.output_path = os.path.abspath(raw_input("Path: "))
         s.save()
     elif user_input == '2':
-        s.wkhtmltopdf_path = raw_input("Path: ")
+        s.wkhtmltopdf_path = os.path.abspath(raw_input("Path: "))
         s.save()
     clear()
     step1()
