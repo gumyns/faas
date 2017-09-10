@@ -1,28 +1,11 @@
 # coding=utf-8
 import datetime
 import glob
-import json
 import os
 
+from json_helper import Json
+from settings import Settings
 from utils import slownie
-
-
-class Json:
-    def __init__(self, dict=None):
-        if dict is not None:
-            vars(self).update(dict)
-        else:
-            pass
-
-    @staticmethod
-    def to_json(o):
-        return json.dumps(o.__dict__, default=lambda o: o.__dict__, sort_keys=True, indent=2)
-
-    def to_json(self):
-        return json.dumps(self.__dict__,
-                          default=lambda o: o.__dict__ if not isinstance(o, datetime.datetime)
-                          else datetime.datetime.isoformat(
-                              o), sort_keys=True, indent=2)
 
 
 class Address:
@@ -90,6 +73,7 @@ class Invoice(Json):
 
     def asFormatter(self):
         self.calculate()
+        print self.owner.address
         return {
             'date_created': self.date.strftime("%Y-%m-%d"),
             'number': self.number,
@@ -126,14 +110,12 @@ class Invoice(Json):
         self.grossPrice = self.netPrice * 1.23
         self.taxPrice = self.grossPrice - self.netPrice
         self.dueDate = self.date + datetime.timedelta(days=int(self.client.payment_delay))
-        # fixme extract folder as argument?
-        search_folder = 'output/{}/{}/json'.format(self.owner.name.replace(' ', '_'), str(self.date.year))
-        print search_folder
         if self.owner.annual_number:
-            next_number = len(os.listdir(search_folder)) + 1
+            next_number = len(os.listdir(Settings.invoice_json_dir(self.owner, self))) + 1
             self.number = "{}/{}".format(next_number, self.date.strftime("%Y"))
         else:
-            next_number = len(glob.glob('{}/{}*.json'.format(search_folder, self.date.strftime("%Y%m")))) + 1
+            next_number = len(glob.glob(
+                '{}/{}*.json'.format(Settings.invoice_json_dir(self.owner, self), self.date.strftime("%Y%m")))) + 1
             self.number = "{}/{}/{}".format(next_number, self.date.month, self.date.strftime("%Y"))
 
         self.filename = "{}_{}_{}" \

@@ -1,7 +1,7 @@
 import json
 import os
 
-from models import Json
+from json_helper import Json
 
 
 class Settings(Json):

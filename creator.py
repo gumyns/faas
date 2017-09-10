@@ -37,7 +37,8 @@ Select option:''')
     elif user_input == '2':
         createClient()
     elif user_input == '3':
-        owner = Owner('Sample Owner Company', '43-190 Mikołów\nul. Fajna 66', 1111111111,
+        owner = Owner('Sample Owner Company', Address('43-190', 'Mikołów', street='Fajna', house_number='77'),
+                      1111111111,
                       Account('Cool bank', '33 5555 5555 5555 5555 5555 5555', "123", "Przelew"))
 
         client = Client('Sample client company', Address('43-190', 'Mikołów', street='Fajna', house_number='77'),
@@ -46,9 +47,9 @@ Select option:''')
         deliver_to = Client('Sample deliver company',
                             Address('43-190', 'Mikołów', street='Not Cool', house_number='66'), 3333333333, 20, None, 0)
 
-        create('owners/owner.json', owner)
-        create('clients/client.json', client)
-        create('clients/delivery.json', deliver_to)
+        create(Settings.owner_file('owner.json'), owner)
+        create(Settings.client_file('client.json'), client)
+        create(Settings.client_file('delivery.json'), deliver_to)
         print('Created sample clients!')
     elif user_input == '4':
         change_settings(Settings.get())
@@ -130,7 +131,7 @@ def createOwner():
     transfer = "Przelew"
 
     save_name = raw_input("Nazwa (nazwa pliku, bez spacji): ")
-    create(Settings.output_relative('owners', u'{}.json'.format(save_name)),
+    create(Settings.owner_file(u'{}.json'.format(save_name)),
            Owner(name, Address(postal, city, province, district, commune, street, house_number, flat_number), nip,
                  gov_code=troublemaker, annual_number=annual_number,
                  account=Account(bank_name, account, swift, transfer)))
@@ -163,7 +164,7 @@ def createClient():
         date_day = 1
     else:
         date_day = 2
-    create('clients/{}.json'.format(save_name),
+    create(Settings.client_file('{}.json'.format(save_name)),
            Client(name, Address(postal, city, street=street, house_number=house_number),
                   nip, rate, template, payment_delay, currency, date_day))
     clear()
@@ -189,11 +190,6 @@ def change_settings(s):
     step1()
     return s
 
-
-if not os.path.exists('owners'):
-    os.makedirs('owners')
-if not os.path.exists('clients'):
-    os.makedirs('clients')
 
 db = DB()
 clear()

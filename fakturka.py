@@ -8,7 +8,8 @@ import shutil
 import sys
 
 from utils.htmlToPdf import generate_pdf
-from utils.models import Json, Invoice
+from utils.json_helper import Json
+from utils.models import Invoice
 from utils.settings import Settings
 
 # region script
