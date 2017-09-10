@@ -1,6 +1,10 @@
 # coding=utf-8
 import datetime
+import glob
 import json
+
+
+import os
 
 from utils import slownie
 
@@ -17,7 +21,10 @@ class Json:
         return json.dumps(o.__dict__, default=lambda o: o.__dict__, sort_keys=True, indent=2)
 
     def to_json(self):
-        return json.dumps(self.__dict__, default=lambda o: o.__dict__, sort_keys=True, indent=2)
+        return json.dumps(self.__dict__,
+                          default=lambda o: o.__dict__ if not isinstance(o, datetime.datetime)
+                          else datetime.datetime.isoformat(
+                              o), sort_keys=True, indent=2)
 
 
 class Address:
@@ -77,8 +84,8 @@ class Invoice(Json):
         self.date = self.invoice_issue_date(date, client.date_day_type)
         self.name = name
 
-    def asFormatter(self):
-        self.calculate()
+    def asFormatter(self, owner):
+        self.calculate(owner)
         return {
             'date_created': self.date.strftime("%Y-%m-%d"),
             'number': self.number,
@@ -110,16 +117,27 @@ class Invoice(Json):
             'priceStringPL': self.priceStringPL
         }
 
-    def calculate(self):
+    def calculate(self, owner):
         self.netPrice = float(self.client.hourly_rate) * self.amount
         self.grossPrice = self.netPrice * 1.23
         self.taxPrice = self.grossPrice - self.netPrice
         self.dueDate = self.date + datetime.timedelta(days=int(self.client.payment_delay))
-        nextNumber = 1  # TODO
-        self.number = "{}/{}".format(nextNumber,
+        # fixme extract folder as argument?
+        search_folder = 'output/{}/{}/json'.format(owner.name.replace(' ', '_'), str(self.date.year))
+        if self.owner.annual_number:
+            print(search_folder)
+            next_number = len(os.listdir(search_folder)) + 1
+            print(str(next_number))
+        else:
+            print(search_folder)
+            next_number = len(
+                glob.glob('{}/{}{}*.json'.format(search_folder, str(self.date.year), str(self.date.month)))) + 1
+
+        self.number = "{}/{}".format(next_number,
                                      self.date.year) if self.owner.annual_number is True else "{}/{}/{}".format(
-            nextNumber, self.date.month, self.date.year)
-        self.filename = "{}_{}_{}{}".format(self.owner.name, self.client.name, self.date.strftime("%Y%m%d"), nextNumber) \
+            next_number, self.date.month, self.date.year)
+        self.filename = "{}_{}_{}".format(str(self.date.year) + str(self.date.month) + str(self.date.day),
+                                          self.client.name, next_number) \
             .replace(' ', '_').replace('.', '_')
         self.priceStringPL = slownie.slownie(self.grossPrice)
 
@@ -129,4 +147,3 @@ class Invoice(Json):
         if date_calculation_type == 1:
             return date.replace(day=1)
         return date
-
