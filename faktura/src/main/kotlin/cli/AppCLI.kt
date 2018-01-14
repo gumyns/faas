@@ -5,10 +5,11 @@ import utils.AppMode
 
 class AppCLI(val cli: CommandLine) : AppMode {
   override fun run() {
-    if (cli.hasOption("from-project-json")) {
-      CliFromProjectJson(cli).handle()
-    } else if (cli.hasOption("amount")) {
-      CliOwnerClientInvoice(cli).handle()
+    when {
+      cli.hasOption("from-project-json") -> CliFromProjectJson(cli).handle()
+      cli.hasOption("amount") -> CliOwnerClientInvoice(cli).handle()
+      cli.hasOption("create-backup") -> CliCreateBackup(cli).handle()
+      cli.hasOption("restore-backup") -> CliRestoreBackup(cli).handle()
     }
   }
 }

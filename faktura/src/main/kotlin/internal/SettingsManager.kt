@@ -21,6 +21,9 @@ class SettingsManager {
     }
   }
 
+  val workingDir
+    get() = File(settings.workingDir).apply { mkdirs() }
+
   val tempDir
     get() = File(settings.workingDir, "temp").apply { mkdirs() }
 
