@@ -23,10 +23,11 @@ class InvoiceGenerator(val settings: SettingsManager) {
     netPrice = hours.multiply(client.hourlyRate)
     if (client.type == ClientType.UE) {
       taxPrice = 0.toBigDecimal()
+      taxRate = 0.toBigDecimal()
       grossPrice = netPrice
 
     } else {
-      taxPrice = netPrice!!.multiply(BigDecimal("0.23"))
+      taxPrice = netPrice!!.multiply(taxRate)
       grossPrice = netPrice!! + taxPrice!!
 
     }
