@@ -20,7 +20,7 @@ class PdfGeneratingTest : Spek({
 		it("work motherfucker...") {
 			val options = Options.getFrom(DocumentKind.ODT).to(ConverterTypeTo.PDF).via(ConverterTypeVia.ODFDOM)
 			val converter = ConverterRegistry.getRegistry().getConverter(options)
-			val `in` = javaClass.classLoader.getResourceAsStream("templates/Faktura-single.odt")
+			val `in` = javaClass.classLoader.getResourceAsStream("templates/Faktura.odt")
 			File("build/test-output/").mkdirs()
 			val out = FileOutputStream(File("build/test-output/ODTHelloWord2PDF.pdf"))
 			converter.convert(`in`, out, options)
@@ -76,7 +76,7 @@ class PdfGeneratingTest : Spek({
 		"nip": "123",
 		"hourlyRate": 25,
 		"paymentDelay": 14,
-		"template": "FakturaUE-EN-multiple",
+		"template": "FakturaUE-EN",
 		"currency": "EUR",
 		"dateDayType": "LAST"
 	},

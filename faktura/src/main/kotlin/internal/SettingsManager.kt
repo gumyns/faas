@@ -60,10 +60,8 @@ class SettingsManager {
   fun copyNeededFiles() {
     val classLoader = javaClass.classLoader
     arrayOf(
-      "Faktura-single.odt",
-      "Faktura-multiple.odt",
-      "FakturaUE-EN-single.odt",
-      "FakturaUE-EN-multiple.odt"
+      "Faktura.odt",
+      "FakturaUE-EN.odt"
     ).forEach {
       if (!File(templatesDir, it).exists()) {
         File(templatesDir, it).apply {
