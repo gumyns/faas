@@ -7,6 +7,8 @@ class AppCLI(val cli: CommandLine) : AppMode {
   override fun run() {
     if (cli.hasOption("from-project-json")) {
       CliFromProjectJson(cli).handle()
+    } else if (cli.hasOption("amount")) {
+      CliOwnerClientInvoice(cli).handle()
     }
   }
 }

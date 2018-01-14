@@ -25,11 +25,9 @@ class InvoiceGenerator(val settings: SettingsManager) {
       taxPrice = 0.toBigDecimal()
       taxRate = 0.toBigDecimal()
       grossPrice = netPrice
-
     } else {
       taxPrice = netPrice!!.multiply(taxRate)
       grossPrice = netPrice!! + taxPrice!!
-
     }
     date = generateIssueDate(client).time
     dueDate = generateIssueDate(client).apply {
