@@ -20,13 +20,14 @@ class CliRestoreBackup(cli: CommandLine) : BaseCliHandler(cli) {
       var entry = it.nextEntry
       while (entry != null) {
         File(settings.workingDir, entry.name).apply {
-          when (isDirectory) {
-            true -> mkdirs()
-            else -> writeBytes(it.readBytes())
+          when (entry.isDirectory) {
+            true -> mkdirs().also { println("Created directory $absolutePath") }
+            else -> writeBytes(it.readBytes()).also { println("Restored file $absolutePath") }
           }
         }
         entry = it.nextEntry
       }
+      println("Restoring data done!")
     }
   }
 }

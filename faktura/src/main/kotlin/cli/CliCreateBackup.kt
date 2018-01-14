@@ -2,6 +2,7 @@ package cli
 
 import internal.SettingsManager
 import org.apache.commons.cli.CommandLine
+import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -10,7 +11,9 @@ class CliCreateBackup(cli: CommandLine) : BaseCliHandler(cli) {
   private val settings = SettingsManager()
 
   fun handle() {
-    ZipOutputStream(FileOutputStream("backup.zip")).use {
+    println("Creating backup...")
+    val file = File("backup.zip")
+    ZipOutputStream(FileOutputStream(file)).use {
       it.putNextEntry(ZipEntry("owners/"))
       settings.ownersDir.listFiles().forEach { file ->
         it.putNextEntry(ZipEntry("owners/${file.name}"))
@@ -43,5 +46,6 @@ class CliCreateBackup(cli: CommandLine) : BaseCliHandler(cli) {
       it.write(settings.projectsFile.readBytes())
       it.closeEntry()
     }
+    println("Backup created and saved to '${file.absolutePath}'")
   }
 }
