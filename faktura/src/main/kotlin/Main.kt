@@ -1,4 +1,3 @@
-
 import cli.AppCLI
 import cli.OptionSet
 import interactive.AppInteractive
@@ -10,39 +9,39 @@ import org.apache.commons.cli.ParseException
 import utils.AppMode
 
 class Main {
-	companion object {
-		private val usage = "java -jar faktura.jar"
-		private val header = "Apka do generowania faktur"
+  companion object {
+    private val usage = "java -jar faktura.jar"
+    private val header = "Apka do generowania faktur"
 
-		@JvmStatic fun main(args: Array<String>) {
-			val options = OptionSet.options
-			val cli: CommandLine
-			val app: AppMode?
+    @JvmStatic fun main(args: Array<String>) {
+      val options = OptionSet.options
+      val cli: CommandLine
+      val app: AppMode?
 
-			SettingsManager().copyNeededFiles()
+      SettingsManager().copyNeededFiles()
 
-			try {
-				cli = DefaultParser().parse(options, args)
-			} catch (e: ParseException) {
-				System.out.println(e.message)
-				HelpFormatter().printHelp(usage, header, options, null)
-				System.exit(1)
-				return
-			}
+      try {
+        cli = DefaultParser().parse(options, args)
+      } catch (e: ParseException) {
+        System.out.println(e.message)
+        HelpFormatter().printHelp(usage, header, options, null)
+        System.exit(1)
+        return
+      }
 
-			if (args.isEmpty()) {
-				HelpFormatter().printHelp(usage, header, options, null)
-				System.exit(1)
-			}
+      if (args.isEmpty()) {
+        HelpFormatter().printHelp(usage, header, options, null)
+        System.exit(1)
+      }
 
-			app = if (cli.hasOption("interactive")) {
-				AppInteractive()
-			} else {
-				AppCLI(cli)
-			}
-			app.run()
-			println("BB")
-			System.exit(0)
-		}
-	}
+      app = if (cli.hasOption("interactive")) {
+        AppInteractive()
+      } else {
+        AppCLI(cli)
+      }
+      app.run()
+      println("BB")
+      System.exit(0)
+    }
+  }
 }

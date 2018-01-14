@@ -1,5 +1,5 @@
 package model
 
 enum class ClientType {
-	PL, UE
+  PL, UE
 }
