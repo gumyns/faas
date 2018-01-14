@@ -21,8 +21,15 @@ class InvoiceGenerator(val settings: SettingsManager) {
   fun generate(owner: Owner, client: Client, hours: BigDecimal, itemName: String? = null): Invoice = Invoice(owner, client).apply {
     amount = hours
     netPrice = hours.multiply(client.hourlyRate)
-    taxPrice = netPrice!!.multiply(BigDecimal("0.23"))
-    grossPrice = netPrice!! + taxPrice!!
+    if (client.type == ClientType.UE) {
+      taxPrice = 0.toBigDecimal()
+      grossPrice = netPrice
+
+    } else {
+      taxPrice = netPrice!!.multiply(BigDecimal("0.23"))
+      grossPrice = netPrice!! + taxPrice!!
+
+    }
     date = generateIssueDate(client).time
     dueDate = generateIssueDate(client).apply {
       set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) + (client.paymentDelay ?: 0))
