@@ -1,0 +1,4 @@
+rootProject.name = 'faas'
+include 'toptotal-parser'
+include 'faktura'
+

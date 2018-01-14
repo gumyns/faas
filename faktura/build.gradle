@@ -1,0 +1,67 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+    }
+}
+
+group 'pl.gumyns.fakturka'
+version '0.1'
+
+apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+junitPlatform {
+    filters {
+        engines {
+            include 'spek'
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "http://dl.bintray.com/jetbrains/spek" }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "commons-cli:commons-cli:1.3.1"
+    compile "com.google.code.gson:gson:2.8.1"
+    compile "org.beryx:text-io:3.1.3"
+    compile 'fr.opensagres.xdocreport:xdocreport:2.0.1'
+    compile 'fr.opensagres.xdocreport:org.apache.poi.xwpf.converter.pdf:1.0.6'
+    compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.odt:2.0.1'
+    compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter.odt.odfdom:2.0.1'
+    compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.velocity:2.0.1'
+    testCompile "junit:junit:4.12"
+    testCompile 'org.jetbrains.spek:spek-api:1.1.5'
+    testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'
+}
+
+mainClassName = "Main"
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'Main'
+        )
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
