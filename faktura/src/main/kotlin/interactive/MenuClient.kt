@@ -2,10 +2,7 @@ package interactive
 
 import com.google.gson.Gson
 import internal.SettingsManager
-import model.Client
-import model.ClientType
-import model.Currency
-import model.InvoiceDate
+import model.*
 import utils.newBigDecimalInputReader
 import utils.newRangeInputReader
 import java.io.File
@@ -62,6 +59,7 @@ object MenuClient : BaseMenu() {
         showValue(textTerminal, index++, "Termin płatności w dniach", paymentDelay)
         showValue(textTerminal, index++, "Wzór faktury", template)
         showValue(textTerminal, index++, "Typ daty", dateDayType.description)
+        showValue(textTerminal, index++, "Typ liczebności", productType.description)
         showValue(textTerminal, index++, "Typ", type)
       }
       showSave(textTerminal, index++)
@@ -104,7 +102,13 @@ object MenuClient : BaseMenu() {
           append(BaseMenu.selectOption)
         }.toString()
       ) - 1]
-      10 -> client.type = newEnumInputReader(ClientType::class.java).read("Typ klienta")
+      10 -> client.productType = ProductType.values()[newRangeInputReader(1..(ProductType.values().size)).read(
+        StringBuilder("Typ określa liczebność na fakturze.\n").apply {
+          ProductType.values().forEachIndexed { index, type -> append("${index + 1}. ${type.description}\n") }
+          append(BaseMenu.selectOption)
+        }.toString()
+      ) - 1]
+      11 -> client.type = newEnumInputReader(ClientType::class.java).read("Typ klienta")
     }
   }
 }

@@ -13,6 +13,7 @@ data class Invoice(
   var netPrice: BigDecimal? = null,
   var grossPrice: BigDecimal? = null,
   var taxPrice: BigDecimal? = null,
+  var taxRate: BigDecimal = 0.23.toBigDecimal(),
   var dueDate: Date? = null,
   var number: String? = null,
   var filename: String? = null,

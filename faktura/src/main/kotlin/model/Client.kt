@@ -15,7 +15,8 @@ data class Client(
   var paymentDelay: Int? = null,
   var template: String? = null,
   var currency: Currency = Currency.PLN,
-  var dateDayType: InvoiceDate = InvoiceDate.LAST
+  var dateDayType: InvoiceDate = InvoiceDate.LAST,
+  var productType: ProductType = ProductType.TOTAL
 )
 
 fun Gson.getClient(it: File) = gson.fromJson(it.reader(), Client::class.java)

@@ -1,6 +1,7 @@
 package model
 
 import generated.*
+import java.text.DecimalFormat
 import java.util.*
 import javax.xml.datatype.DatatypeFactory
 
@@ -75,7 +76,6 @@ fun JPK.Faktura.initialize(invoice: Invoice) = apply {
   }
 //	p136
 //	p137
-////	@XmlElement(name = "P_15", namespace = "http://jpk.mf.gov.pl/wzor/2016/03/09/03095/", required = true)
 //	p15
 
   isP106E2 = false
@@ -94,19 +94,31 @@ fun JPK.FakturaCtrl.initialize(invoices: List<Invoice>) = apply {
 fun JPK.FakturaWiersz.initialize(invoice: Invoice) = apply {
   typ = "G"
   // Kolejny numer faktury, nadany w ramach jednej lub więcej serii, który w sposób jednoznaczny indentyfikuje fakturę
-  p2B = invoice.number
+  p2B = invoice.number!!.split("/")[0] // TODO this is weird...
   // Nazwa (rodzaj) towaru lub usługi. Pole opcjonalne wyłącznie dla przypadku określonego w art 106j ust.3 pkt 2 ustawy (faktura korekta)
   p7 = invoice.name
   // Miara dostarczonych towarów lub zakres wykonanych usług. Pole opcjonalne dla przypadku określonego w	art 106e ust. 5 pkt 3 ustawy.
-  p8A = "SZT" // todo
+  p8A = when (invoice.client.productType) {
+    ProductType.TOTAL -> "szt"
+    else -> "h"
+  }
   // Ilość (liczba) dostarczonych towarów lub zakres wykonanych usług.	Pole opcjonalne dla przypadku określonego w art 106e ust. 5 pkt 3 ustawy.
-  p8B = 1.toBigDecimal() // TODO
+  p8B = when (invoice.client.productType) {
+    ProductType.TOTAL -> 1.toBigDecimal()
+    else -> invoice.amount
+  }
   // Cena jednostkowa towaru lub usługi bez kwoty podatku (cena jednostkowa netto). Pole opcjonalne dla przypadków określonych
   // w art. 106e ust.2 i 3 ustawy (gdy	przynajmniej jedno z pól P_106E_2 i P_106E_3 przyjmuje wartość "true")
   // oraz dla przypadku określonego w art 106e ust. 5 pkt 3 ustawy
-  p9A = null // TODO
+  p9A = when (invoice.client.productType) {
+    ProductType.TOTAL -> invoice.netPrice
+    else -> invoice.client.hourlyRate
+  }
   // W	przypadku zastosowania art.106e ustawy, cena wraz z kwotą	podatku (cena jednostkowa brutto)
-  p9B = null // TODO
+  p9B = when (invoice.client.productType) {
+    ProductType.TOTAL -> invoice.grossPrice
+    else -> invoice.client.hourlyRate?.multiply(invoice.taxRate)?.add(invoice.client.hourlyRate)
+  }
   // Kwoty wszelkich opustów lub obniżek cen, w tym w formie rabatu z tytułu wcześniejszej zapłaty, o ile nie zostały
   // one uwzględnione w cenie jednostkowej netto. Pole opcjonalne dla przypadków określonych w art. 106e ust.2 i 3 ustawy
   // (gdy przynajmniej jedno z pól	P_106E_2 i P_106E_3 przyjmuje wartość "true")
@@ -121,7 +133,7 @@ fun JPK.FakturaWiersz.initialize(invoice: Invoice) = apply {
   // Stawka podatku. Pole opcjonalne dla przypadków określonych w art.	106e ust.2 i 3 ustawy
   // (gdy przynajmniej jedno z pól P_106E_2 i P_106E_3 przyjmuje wartość	"true"),
   // a także art. 106e ust.4 pkt 3 i ust. 5 pkt 1 -	3 ustawy.
-  p12 = if (invoice.client.type == ClientType.UE) "0" else "23"
+  p12 = if (invoice.client.type == ClientType.UE) "0" else DecimalFormat("0.00").format(invoice.taxRate)
 }
 
 fun JPK.FakturaWierszCtrl.initialize(invoices: List<Invoice>) = apply {
