@@ -7,6 +7,7 @@ import fr.opensagres.xdocreport.converter.Options
 import fr.opensagres.xdocreport.core.document.DocumentKind
 import fr.opensagres.xdocreport.document.registry.XDocReportRegistry
 import fr.opensagres.xdocreport.template.TemplateEngineKind
+import fr.opensagres.xdocreport.template.velocity.internal.VelocityTemplateEngine
 import model.Invoice
 import model.ProductType
 import java.io.File
@@ -14,6 +15,7 @@ import java.io.FileOutputStream
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.*
 
 class PdfGenerator(val settings: SettingsManager) {
   val gson by lazy { Gson() }
@@ -28,6 +30,7 @@ class PdfGenerator(val settings: SettingsManager) {
     val template = XDocReportRegistry.getRegistry().loadReport(invoice.client.template?.let { template ->
       settings.templatesDir.listFiles().firstOrNull { it.nameWithoutExtension == template }?.inputStream()
     }, TemplateEngineKind.Velocity)
+    template.templateEngine = VelocityTemplateEngine(Properties())
     // fill template with invoice data and save to file
     template.createContext().apply {
       put("obj", invoice)
