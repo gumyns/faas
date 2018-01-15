@@ -13,8 +13,7 @@ object MenuSettings {
       println("""Change settings:
 1. Output directory. Current:
 ${settings.workingDir}
-2. Wkhtmltopdf binary file. Current:
-${settings.wkhtmltopdf ?: "Not found, pdf generation won't work"}
+2. Restore default invoice templates
 3. Nothing, go back""")
       selection = app.console.newIntInputReader()
         .withMinVal(1)
@@ -34,16 +33,7 @@ ${settings.wkhtmltopdf ?: "Not found, pdf generation won't work"}
           }
         }
         2 -> {
-          manager.settings = manager.settings.apply {
-            val path = app.console.newStringInputReader()
-              .read("wkhtmltopdf directory")
-            try {
-              val file = File(path)
-              wkhtmltopdf = file.absolutePath + '/'
-              // TODO check if wkhtmltopdf really exists in that dir
-            } catch (ex: Exception) {
-            }
-          }
+          manager.copyTemplateFiles({ true })
         }
         3 -> break@main
       }

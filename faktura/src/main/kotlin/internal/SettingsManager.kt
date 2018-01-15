@@ -55,22 +55,25 @@ class SettingsManager {
         return settings
       }
       return Settings(
-        File(jarDir, "output").absolutePath, null
+        File(jarDir, "output").absolutePath
       ).also { this.settings = it }
     }
     set(value) = settingsFile.writeText(gson.toJson(value))
 
   fun copyNeededFiles() {
+    copyTemplateFiles { !File(templatesDir, it).exists() }
+  }
+
+  fun copyTemplateFiles(onCondition:(String)->Boolean) {
     val classLoader = javaClass.classLoader
     arrayOf(
       "Faktura.odt",
       "FakturaUE-EN.odt"
-    ).forEach {
-      if (!File(templatesDir, it).exists()) {
+    ).filter { onCondition.invoke(it) }
+      .forEach {
         File(templatesDir, it).apply {
           createNewFile()
           copyInputStreamToFile(classLoader.getResourceAsStream("templates/$it"))
-        }
       }
     }
   }
