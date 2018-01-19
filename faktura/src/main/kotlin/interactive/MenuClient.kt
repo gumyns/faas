@@ -8,7 +8,6 @@ import model.InvoiceDate
 import model.ProductType
 import pl.gumyns.faktura.api.settings.SettingsManager
 import pl.gumyns.faktura.api.settings.jsonFiles
-import utils.newBigDecimalInputReader
 import utils.newRangeInputReader
 import java.io.File
 
@@ -58,7 +57,6 @@ object MenuClient : BaseMenu() {
         showValue(textTerminal, index++, "Nazwa firmy", name)
         showValue(textTerminal, index++, "Adres", MenuAddress.shortDescription(address))
         showValue(textTerminal, index++, "NIP", nip)
-        showValue(textTerminal, index++, "Stawka godzinowa", hourlyRate)
         showValue(textTerminal, index++, "Waluta", currency)
         showValue(textTerminal, index++, "Termin płatności w dniach", paymentDelay)
         showValue(textTerminal, index++, "Wzór faktury", template)
@@ -92,27 +90,26 @@ object MenuClient : BaseMenu() {
       2 -> client.name = newStringInputReader().read("Nazwa firmy")
       3 -> MenuAddress.showAddress(app, client.address)
       4 -> client.nip = newStringInputReader().read("NIP")
-      5 -> client.hourlyRate = newBigDecimalInputReader().read("Stawka godzinowa")
-      6 -> client.currency = newEnumInputReader(CurrCodeType::class.java).read("Waluta")
-      7 -> client.paymentDelay = newIntInputReader().withMinVal(0).read("Termin płatności w dniach")
-      8 -> client.template = SettingsManager().templatesDir.templateList
+      5 -> client.currency = newEnumInputReader(CurrCodeType::class.java).read("Waluta")
+      6 -> client.paymentDelay = newIntInputReader().withMinVal(0).read("Termin płatności w dniach")
+      7 -> client.template = SettingsManager().templatesDir.templateList
         .let {
           it.forEachIndexed { index, name -> textTerminal.println("${index + 1}. $name") }
           it[newRangeInputReader(1..it.size).read("Wzór faktury") - 1]
         }
-      9 -> client.dateDayType = InvoiceDate.values()[newRangeInputReader(1..(InvoiceDate.values().size)).read(
+      8 -> client.dateDayType = InvoiceDate.values()[newRangeInputReader(1..(InvoiceDate.values().size)).read(
         StringBuilder("Typ daty określa jaka data jest na fakturze przy założeniu, że generanowanie odbywa się do ostatniego dnia miesiąca.\n").apply {
           InvoiceDate.values().forEachIndexed { index, date -> append("${index + 1}. ${date.description}\n") }
           append(BaseMenu.selectOption)
         }.toString()
       ) - 1]
-      10 -> client.productType = ProductType.values()[newRangeInputReader(1..(ProductType.values().size)).read(
+      9 -> client.productType = ProductType.values()[newRangeInputReader(1..(ProductType.values().size)).read(
         StringBuilder("Typ określa liczebność na fakturze.\n").apply {
           ProductType.values().forEachIndexed { index, type -> append("${index + 1}. ${type.description}\n") }
           append(BaseMenu.selectOption)
         }.toString()
       ) - 1]
-      11 -> client.type = newEnumInputReader(ClientType::class.java).read("Typ klienta")
+      10 -> client.type = newEnumInputReader(ClientType::class.java).read("Typ klienta")
     }
   }
 }

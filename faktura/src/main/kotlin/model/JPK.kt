@@ -112,11 +112,11 @@ fun JPK.FakturaWiersz.initialize(invoice: Invoice, product: ProductEntry) = appl
   // w art. 106e ust.2 i 3 ustawy (gdy	przynajmniej jedno z pól P_106E_2 i P_106E_3 przyjmuje wartość "true")
   // oraz dla przypadku określonego w art 106e ust. 5 pkt 3 ustawy
   p9A = when (invoice.client.productType) {
-    ProductType.TOTAL -> invoice.netPrice
-    else -> invoice.client.hourlyRate
+    ProductType.TOTAL -> product.netValue
+    else -> product.price
   }
   // W	przypadku zastosowania art.106e ustawy, cena wraz z kwotą	podatku (cena jednostkowa brutto)
-  p9B = invoice.grossPrice
+  p9B = product.totalPrice
   // Kwoty wszelkich opustów lub obniżek cen, w tym w formie rabatu z tytułu wcześniejszej zapłaty, o ile nie zostały
   // one uwzględnione w cenie jednostkowej netto. Pole opcjonalne dla przypadków określonych w art. 106e ust.2 i 3 ustawy
   // (gdy przynajmniej jedno z pól	P_106E_2 i P_106E_3 przyjmuje wartość "true")
@@ -125,9 +125,9 @@ fun JPK.FakturaWiersz.initialize(invoice: Invoice, product: ProductEntry) = appl
   // Wartość dostarczonych towarów lub wykonanych usług, objętych transakcją, bez kwoty podatku (wartość sprzedaży netto).
   // Pole opcjonalne dla przypadków	określonych w art. 106e ust.2 i 3 ustawy (gdy przynajmniej jedno z pól P_106E_2 i P_106E_3 przyjmuje wartość "true")
   // oraz dla przypadku określonego w art. 106e ust. 5 pkt 3 ustawy.
-  p11 = invoice.netPrice
+  p11 = product.netValue
   // W przypadku zastosowania art. 106e ust.7 i 8 ustawy, wartość sprzedaży brutto
-  p11A = invoice.grossPrice
+  p11A = product.totalPrice
   // Stawka podatku. Pole opcjonalne dla przypadków określonych w art.	106e ust.2 i 3 ustawy
   // (gdy przynajmniej jedno z pól P_106E_2 i P_106E_3 przyjmuje wartość	"true"),
   // a także art. 106e ust.4 pkt 3 i ust. 5 pkt 1 -	3 ustawy.

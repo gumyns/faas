@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import generated.CurrCodeType
 import interactive.MenuProjectsAPI.gson
 import java.io.File
-import java.math.BigDecimal
 
 data class Client(
   var id: String? = null,
@@ -12,7 +11,6 @@ data class Client(
   var name: String? = null,
   var address: Address = Address(),
   var nip: String? = null,
-  var hourlyRate: BigDecimal? = null,
   var paymentDelay: Int? = null,
   var template: String? = null,
   var currency: CurrCodeType = CurrCodeType.PLN,

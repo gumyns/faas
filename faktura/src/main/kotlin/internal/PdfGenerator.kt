@@ -45,7 +45,7 @@ class PdfGenerator(val settings: SettingsManager) {
       })
       put("productPrice", DecimalFormat("0.00").format(when (invoice.client.productType) {
         ProductType.TOTAL -> invoice.netPrice
-        ProductType.HOURS -> invoice.client.hourlyRate
+        ProductType.HOURS -> invoice.products.firstOrNull()?.price
       }))
     }.also { context ->
         FileOutputStream(File(settings.pdfDir, invoice.filename + ".pdf")).use {
