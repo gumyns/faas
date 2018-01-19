@@ -4,9 +4,9 @@ import generated.CurrCodeType
 import java.math.BigDecimal
 
 open class Product(
-  val id: String? = null,
-  val name: String? = null,
-  val price: BigDecimal? = null,
-  val taxRate: BigDecimal? = null,
-  val currency: CurrCodeType = CurrCodeType.PLN
+  var id: String? = null,
+  var name: String? = null,
+  var price: BigDecimal? = null,
+  var taxRate: BigDecimal? = null,
+  var currency: CurrCodeType = CurrCodeType.PLN
 )

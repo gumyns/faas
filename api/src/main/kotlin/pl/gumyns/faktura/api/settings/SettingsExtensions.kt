@@ -20,8 +20,6 @@ class ClientsDir(directory: Directory) : Directory(directory, "clients") {
 
   fun find(name: String) = jsonFiles.find { nameWithoutExtension == name }
 }
-
-
 //endregion
 
 //region OwnersDir
@@ -40,6 +38,13 @@ class TemplatesDir(directory: Directory) : Directory(directory, "templates") {
 
   fun find(name: String) = jsonFiles.find { nameWithoutExtension == name }
 }
-
 //endregion
 
+//region ProductsDir
+class ProductsDir(directory: Directory) : Directory(directory, "products") {
+  val productList
+    get() = jsonFiles.map { it.nameWithoutExtension }
+
+  fun find(name: String) = jsonFiles.find { nameWithoutExtension == name }
+}
+//endregion

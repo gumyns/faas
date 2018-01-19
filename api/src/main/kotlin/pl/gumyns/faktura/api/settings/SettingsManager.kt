@@ -32,6 +32,9 @@ class SettingsManager {
   val clientsDir
     get() = ClientsDir(workingDir).apply { mkdirs() }
 
+  val productsDir
+    get() = ProductsDir(workingDir).apply { mkdirs() }
+
   val invoicesDir
     get() = Directory(workingDir, "invoices").apply { mkdirs() }
 
