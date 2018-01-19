@@ -1,7 +1,9 @@
 package model
 
+import generated.CurrCodeType
+
 data class Account(
-  var currency: Currency = Currency.PLN,
+  var currency: CurrCodeType = CurrCodeType.PLN,
   var bankName: String? = null,
   var number: String? = null,
   var swift: String? = null,

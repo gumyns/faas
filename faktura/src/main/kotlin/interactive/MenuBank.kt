@@ -1,7 +1,7 @@
 package interactive
 
+import generated.CurrCodeType
 import model.Account
-import model.Currency
 import model.showOrderedList
 import utils.newRangeInputReader
 
@@ -54,7 +54,7 @@ object MenuBank : BaseMenu() {
       2 -> account.number = newStringInputReader().read("Numer konta")
       3 -> account.swift = newStringInputReader().read("Numer SWIFT (tylko FVAT UE, PL puste)")
       4 -> account.transfer = newStringInputReader().read("Typ płatności")
-      5 -> account.currency = newEnumInputReader(Currency::class.java).read("Waluta")
+      5 -> account.currency = newEnumInputReader(CurrCodeType::class.java).read("Waluta")
     }
   }
 

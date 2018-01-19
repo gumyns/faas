@@ -1,7 +1,11 @@
 package interactive
 
 import com.google.gson.Gson
-import model.*
+import generated.CurrCodeType
+import model.Client
+import model.ClientType
+import model.InvoiceDate
+import model.ProductType
 import pl.gumyns.faktura.api.settings.SettingsManager
 import pl.gumyns.faktura.api.settings.jsonFiles
 import utils.newBigDecimalInputReader
@@ -89,7 +93,7 @@ object MenuClient : BaseMenu() {
       3 -> MenuAddress.showAddress(app, client.address)
       4 -> client.nip = newStringInputReader().read("NIP")
       5 -> client.hourlyRate = newBigDecimalInputReader().read("Stawka godzinowa")
-      6 -> client.currency = newEnumInputReader(Currency::class.java).read("Waluta")
+      6 -> client.currency = newEnumInputReader(CurrCodeType::class.java).read("Waluta")
       7 -> client.paymentDelay = newIntInputReader().withMinVal(0).read("Termin płatności w dniach")
       8 -> client.template = SettingsManager().templatesDir.templateList
         .let {

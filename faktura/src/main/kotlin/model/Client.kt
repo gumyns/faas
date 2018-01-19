@@ -1,6 +1,7 @@
 package model
 
 import com.google.gson.Gson
+import generated.CurrCodeType
 import interactive.MenuProjectsAPI.gson
 import java.io.File
 import java.math.BigDecimal
@@ -14,7 +15,7 @@ data class Client(
   var hourlyRate: BigDecimal? = null,
   var paymentDelay: Int? = null,
   var template: String? = null,
-  var currency: Currency = Currency.PLN,
+  var currency: CurrCodeType = CurrCodeType.PLN,
   var dateDayType: InvoiceDate = InvoiceDate.LAST,
   var productType: ProductType = ProductType.TOTAL
 )

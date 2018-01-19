@@ -1,8 +1,8 @@
 package interactive
 
 import com.google.gson.Gson
+import generated.CurrCodeType
 import generated.JPK
-import model.Currency
 import model.Invoice
 import model.Owner
 import model.initialize
@@ -47,14 +47,14 @@ object MenuJPK : BaseMenu() {
       .filter { it.nameWithoutExtension.contains(owner.id!!) }
       .map { gson.fromJson(it.reader(), Invoice::class.java) }
 
-    Currency.values().forEach { currency ->
+    CurrCodeType.values().forEach { currency ->
       val file = File(manager.jpkDir, "jpk_$currency.xml")
       val invoices = ownersInvoices.filter { it.client.currency == currency }
       if (invoices.isNotEmpty()) {
         JAXBContext.newInstance(JPK::class.java).createMarshaller().apply {
           setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, java.lang.Boolean.TRUE)
           marshal(JPK().apply {
-            naglowek = JPK.Naglowek().initialize(owner, currency.jpkCurrency, from, to)
+            naglowek = JPK.Naglowek().initialize(owner, currency, from, to)
             podmiot1 = JPK.Podmiot1().initialize(owner)
             faktura = invoices.map { JPK.Faktura().initialize(it) }
             fakturaCtrl = JPK.FakturaCtrl().initialize(invoices)
