@@ -7,6 +7,7 @@ open class Product(
   var id: String? = null,
   var name: String? = null,
   var price: BigDecimal? = null,
-  var taxRate: BigDecimal? = null,
-  var currency: CurrCodeType = CurrCodeType.PLN
+  var taxType: TaxType = TaxType.TAX_23,
+  var currency: CurrCodeType = CurrCodeType.PLN,
+  var taxRate: BigDecimal? = taxType.rate
 )

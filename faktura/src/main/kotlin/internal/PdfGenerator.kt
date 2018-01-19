@@ -12,6 +12,7 @@ import model.Invoice
 import model.ProductType
 import org.odftoolkit.odfdom.doc.OdfTextDocument
 import pl.gumyns.faktura.api.product.ProductEntry
+import pl.gumyns.faktura.api.product.TaxType
 import pl.gumyns.faktura.api.settings.SettingsManager
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -23,7 +24,7 @@ import java.util.*
 
 class PdfGenerator(val settings: SettingsManager) {
   val invoiceLineTemplates = arrayOf("\$no", "\$name", "\$amount", "\$price", "\$netPrice", "\$taxRate", "\$taxPrice", "\$grossPrice")
-  val productProperties = arrayOf(null, ProductEntry::name, ProductEntry::amount, ProductEntry::price, ProductEntry::netValue, ProductEntry::taxRate, ProductEntry::taxPrice, ProductEntry::totalPrice)
+  val productProperties = arrayOf(null, ProductEntry::name, ProductEntry::amount, ProductEntry::price, ProductEntry::netValue, ProductEntry::taxType, ProductEntry::taxPrice, ProductEntry::totalPrice)
   val invoiceLineIndexes = arrayOfNulls<Int>(invoiceLineTemplates.size)
   val gson by lazy { Gson() }
 
@@ -52,6 +53,7 @@ class PdfGenerator(val settings: SettingsManager) {
                   val property = productProperties[index]
                   val value = property?.get(entry)
                   this.setDisplayText(when (property) {
+                    ProductEntry::taxType -> (value as? TaxType)?.showValue
                     ProductEntry::amount -> value.toString()
                     ProductEntry::taxRate -> DecimalFormat("0%").format(BigDecimal(value.toString()))
                     else -> when (value) {

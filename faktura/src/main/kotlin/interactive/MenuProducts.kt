@@ -2,8 +2,8 @@ package interactive
 
 import com.google.gson.Gson
 import generated.CurrCodeType
-import model.TaxRate
 import pl.gumyns.faktura.api.product.Product
+import pl.gumyns.faktura.api.product.TaxType
 import pl.gumyns.faktura.api.settings.SettingsManager
 import pl.gumyns.faktura.api.settings.jsonFiles
 import utils.newBigDecimalInputReader
@@ -59,7 +59,7 @@ object MenuProducts : BaseMenu() {
         showValue(textTerminal, index++, "ID", id)
         showValue(textTerminal, index++, "Nazwa produktu", name)
         showValue(textTerminal, index++, "Cena jednostkowa", price)
-        showValue(textTerminal, index++, "Podatek", "%d%%".format(taxRate?.multiply(100.toBigDecimal())?.toInt()))
+        showValue(textTerminal, index++, "Podatek", taxType)
         showValue(textTerminal, index++, "Waluta", currency)
       }
       showSave(textTerminal, index++)
@@ -87,7 +87,10 @@ object MenuProducts : BaseMenu() {
       1 -> product.id = newStringInputReader().read("Krótka nazwa produktu (ID w systemie)")
       2 -> product.name = newStringInputReader().read("Nazwa produktu")
       3 -> product.price = newBigDecimalInputReader().read("Cena jednostkowa")
-      4 -> product.taxRate = newEnumInputReader(TaxRate::class.java).read("Stawka podatku").rate
+      4 -> {
+        product.taxType = newEnumInputReader(TaxType::class.java).read("Stawka podatku")
+        product.taxRate = product.taxType.rate
+      }
       5 -> product.currency = newEnumInputReader(CurrCodeType::class.java).read("Waluta")
     }
   }
