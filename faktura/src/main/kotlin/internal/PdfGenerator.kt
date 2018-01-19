@@ -23,9 +23,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PdfGenerator(val settings: SettingsManager) {
-  val invoiceLineTemplates = arrayOf("\$no", "\$name", "\$amount", "\$price", "\$netPrice", "\$taxRate", "\$taxPrice", "\$grossPrice")
-  val productProperties = arrayOf(null, ProductEntry::name, ProductEntry::amount, ProductEntry::price, ProductEntry::netValue, ProductEntry::taxType, ProductEntry::taxPrice, ProductEntry::totalPrice)
-  val invoiceLineIndexes = arrayOfNulls<Int>(invoiceLineTemplates.size)
   val gson by lazy { Gson() }
 
   private val priceFormatter = object {
@@ -38,42 +35,95 @@ class PdfGenerator(val settings: SettingsManager) {
     val odt = OdfTextDocument.loadDocument(file)
     odt.getTableByName("ProductTable").apply {
       getRowByIndex(1).apply {
+        val invoiceLineTemplates = arrayOf("\$no", "\$name", "\$amount", "\$price", "\$netPrice", "\$taxRate", "\$taxPrice", "\$grossPrice")
+        val productProperties = arrayOf(null, ProductEntry::name, ProductEntry::amount, ProductEntry::price, ProductEntry::netValue, ProductEntry::taxType, ProductEntry::taxPrice, ProductEntry::totalPrice)
+        val invoiceLineIndexes = arrayOfNulls<Int>(invoiceLineTemplates.size)
+
         (0..(cellCount - 1))
           .filter { invoiceLineTemplates.indexOf(getCellByIndex(it).displayText) >= 0 }
           .forEach { invoiceLineIndexes[invoiceLineTemplates.indexOf(getCellByIndex(it).displayText)] = it }
-      }
 
-      insertRowsBefore(2, invoice.products.size)
-      invoice.products.forEachIndexed { index, entry ->
-        getRowByIndex(index + 1).apply {
-          invoiceLineIndexes.forEachIndexed { index, i ->
-            if (i != null) {
-              getCellByIndex(i).apply {
-                if (productProperties[index] != null) {
+        // take care of products
+        insertRowsBefore(2, invoice.products.size)
+        invoice.products.forEachIndexed { rowIndex, entry ->
+          getRowByIndex(rowIndex + 1).apply {
+            invoiceLineIndexes.forEachIndexed { index, i ->
+              if (i != null) {
+                getCellByIndex(i).apply {
+                  if (productProperties[index] != null) {
+                    val property = productProperties[index]
+                    val value = property?.get(entry)
+                    this.setDisplayText(when (property) {
+                      ProductEntry::taxType -> (value as? TaxType)?.showValue
+                      ProductEntry::amount -> value.toString()
+                      ProductEntry::taxRate -> DecimalFormat("0%").format(BigDecimal(value.toString()))
+                      else -> when (value) {
+                        is BigDecimal -> DecimalFormat("0.00").format(value)
+                        else -> value.toString()
+                      }
+                    }, when (property) {
+                      ProductEntry::name -> "ProductStyle"
+                      else -> "ProductStyleCenter"
+                    })
+                  } else {
+                    this.setDisplayText("${rowIndex + 1}.", "ProductStyleCenter")
+                  }
+                }
+              }
+            }
+          }
+        }
+        removeRowsByIndex(invoice.products.size + 1, 1)
+      }
+      // take care of sums
+      getRowByIndex(rowCount - 1).apply {
+        val invoiceLineTemplates = arrayOf("\$netPrice", "\$taxRate", "\$taxPrice", "\$grossPrice")
+        val productProperties = arrayOf(ProductEntry::netValue, ProductEntry::taxType, ProductEntry::taxPrice, ProductEntry::totalPrice)
+        val invoiceLineIndexes = arrayOfNulls<Int>(invoiceLineTemplates.size)
+
+        (0..(cellCount - 1))
+          .filter { invoiceLineTemplates.indexOf(getCellByIndex(it).displayText) >= 0 }
+          .forEach { invoiceLineIndexes[invoiceLineTemplates.indexOf(getCellByIndex(it).displayText)] = it }
+
+        val taxMap = invoice.products
+          .groupBy { it.taxType }
+          .mapValues {
+            it.value.reduce { acc, entry ->
+              acc.apply {
+                netValue = netValue?.add(entry.netValue)
+                taxPrice = taxPrice?.add(entry.taxPrice)
+                totalPrice = totalPrice?.add(entry.totalPrice)
+              }
+            }
+          }
+
+        println("$taxMap")
+
+        appendRows(taxMap.keys.size - 1)
+        taxMap.values.forEachIndexed { index, taxType ->
+          getRowByIndex(rowCount - 1 - index).apply {
+            invoiceLineIndexes.forEachIndexed { index, i ->
+              if (i != null) {
+                getCellByIndex(i).apply {
                   val property = productProperties[index]
-                  val value = property?.get(entry)
+                  val value = property.get(taxType)
                   this.setDisplayText(when (property) {
                     ProductEntry::taxType -> (value as? TaxType)?.showValue
-                    ProductEntry::amount -> value.toString()
                     ProductEntry::taxRate -> DecimalFormat("0%").format(BigDecimal(value.toString()))
                     else -> when (value) {
                       is BigDecimal -> DecimalFormat("0.00").format(value)
                       else -> value.toString()
                     }
-                  }, when (property) {
-                    ProductEntry::name -> "ProductStyle"
-                    else -> "ProductStyleCenter"
-                  })
-                } else {
-                  this.setDisplayText("${i + 1}.", "ProductStyleCenter")
+                  }, "ProductStyleCenter")
                 }
               }
             }
           }
         }
       }
-      removeRowsByIndex(invoice.products.size + 1, 1)
     }
+
+
     // save copy in memory
     val buffer = ByteArrayOutputStream()
     odt.save(buffer)

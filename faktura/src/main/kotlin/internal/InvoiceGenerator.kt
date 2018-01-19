@@ -24,8 +24,8 @@ class InvoiceGenerator(val settings: SettingsManager) {
   fun generate(owner: Owner, client: Client, product: Product) =
     generate(owner, client, arrayOf(product))
 
-  fun generate(owner: Owner, client: Client, products: Array<Product>, itemName: String? = null): Invoice =
-    Invoice(owner, client, products.map { ProductEntry(products.first()) }.toTypedArray()).apply {
+  fun generate(owner: Owner, client: Client, products: Array<Product>): Invoice =
+    Invoice(owner, client, products.map { ProductEntry(it) }.toTypedArray()).apply {
       date = generateIssueDate(client).time
       dueDate = generateIssueDate(client).apply {
         set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) + (client.paymentDelay ?: 0))
