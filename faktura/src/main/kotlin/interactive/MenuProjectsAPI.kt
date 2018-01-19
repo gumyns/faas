@@ -7,6 +7,7 @@ import pl.gumyns.faktura.api.settings.SettingsManager
 import pl.gumyns.faktura.api.settings.jsonFiles
 import utils.newRangeInputReader
 
+@Deprecated("it goes away, won't be used in the future")
 object MenuProjectsAPI : BaseMenu() {
   val gson = Gson()
   val manager = SettingsManager()

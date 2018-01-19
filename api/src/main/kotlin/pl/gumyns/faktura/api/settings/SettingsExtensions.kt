@@ -18,7 +18,7 @@ class ClientsDir(directory: Directory) : Directory(directory, "clients") {
   val clientList
     get() = jsonFiles.map { it.nameWithoutExtension }
 
-  fun find(name: String) = jsonFiles.find { nameWithoutExtension == name }
+  fun find(name: String) = jsonFiles.find { it.nameWithoutExtension == name }
 }
 //endregion
 
@@ -27,7 +27,7 @@ class OwnersDir(directory: Directory) : Directory(directory, "owners") {
   val ownerList
     get() = jsonFiles.map { it.nameWithoutExtension }
 
-  fun find(name: String) = jsonFiles.find { nameWithoutExtension == name }
+  fun find(name: String) = jsonFiles.find { it.nameWithoutExtension == name }
 }
 //endregion
 
@@ -36,7 +36,7 @@ class TemplatesDir(directory: Directory) : Directory(directory, "templates") {
   val templateList
     get() = odtFiles.map { it.nameWithoutExtension }
 
-  fun find(name: String) = jsonFiles.find { nameWithoutExtension == name }
+  fun find(name: String) = jsonFiles.find { it.nameWithoutExtension == name }
 }
 //endregion
 
@@ -45,6 +45,6 @@ class ProductsDir(directory: Directory) : Directory(directory, "products") {
   val productList
     get() = jsonFiles.map { it.nameWithoutExtension }
 
-  fun find(name: String) = jsonFiles.find { nameWithoutExtension == name }
+  fun find(name: String) = jsonFiles.find { it.nameWithoutExtension == name }
 }
 //endregion

@@ -2,6 +2,8 @@ package internal
 
 import com.google.gson.Gson
 import model.*
+import pl.gumyns.faktura.api.product.Product
+import pl.gumyns.faktura.api.product.ProductEntry
 import pl.gumyns.faktura.api.settings.SettingsManager
 import java.io.File
 import java.math.BigDecimal
@@ -17,46 +19,38 @@ class InvoiceGenerator(val settings: SettingsManager) {
   }
 
   fun generate(owner: Owner, map: Map<Client, BigDecimal>): List<Invoice> =
-    map.map { entry -> generate(owner, entry.key, entry.value) }
+    map.map { entry -> generate(owner, entry.key, arrayOf()) }
 
-  fun generate(owner: Owner, client: Client, hours: BigDecimal, itemName: String? = null): Invoice = Invoice(owner, client).apply {
-    amount = hours
-    netPrice = hours.multiply(client.hourlyRate)
-    if (client.type == ClientType.UE) {
-      taxPrice = 0.toBigDecimal()
-      taxRate = 0.toBigDecimal()
-      grossPrice = netPrice
-    } else {
-      taxPrice = netPrice!!.multiply(taxRate)
-      grossPrice = netPrice!! + taxPrice!!
+  fun generate(owner: Owner, client: Client, product: Product) =
+    generate(owner, client, arrayOf(product))
+
+  fun generate(owner: Owner, client: Client, products: Array<Product>, itemName: String? = null): Invoice =
+    Invoice(owner, client, products.map { ProductEntry(products.first()) }.toTypedArray()).apply {
+      date = generateIssueDate(client).time
+      dueDate = generateIssueDate(client).apply {
+        set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) + (client.paymentDelay ?: 0))
+      }.time
+      val invoiceDate = GregorianCalendar.getInstance().apply {
+        time = Date(System.currentTimeMillis())
+        set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) - 5)
+      }
+      number = when (owner.annualNumber) {
+        InvoiceNumber.YEARLY -> settings.invoicesDir.listFiles()
+          .filter { it.nameWithoutExtension.endsWith(invoiceDate[Calendar.YEAR].toString()) }
+          .run { size + 1 }
+          .let { "$it/${invoiceDate[Calendar.YEAR]}" }
+        InvoiceNumber.MONTHLY -> settings.invoicesDir.listFiles()
+          .filter { it.nameWithoutExtension.endsWith("${invoiceDate[Calendar.MONTH] + 1}_${invoiceDate[Calendar.YEAR]}") }
+          .run { size + 1 }
+          .let { "$it/${invoiceDate[Calendar.MONTH] + 1}/${invoiceDate[Calendar.YEAR]}" }
+      }
+
+      filename = "${SimpleDateFormat("yyyyMMdd").format(date)}_${owner.id}_${client.id}_$number"
+        .replace(' ', '_').replace('.', '_').replace('/', '_')
+
+      saveInvoice(this)
+      PdfGenerator(settings).generate(this)
     }
-    date = generateIssueDate(client).time
-    dueDate = generateIssueDate(client).apply {
-      set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) + (client.paymentDelay ?: 0))
-    }.time
-    name = itemName ?: "usługa informatyczna"
-
-    val invoiceDate = GregorianCalendar.getInstance().apply {
-      time = Date(System.currentTimeMillis())
-      set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) - 5)
-    }
-    number = when (owner.annualNumber) {
-      InvoiceNumber.YEARLY -> settings.invoicesDir.listFiles()
-        .filter { it.nameWithoutExtension.endsWith(invoiceDate[Calendar.YEAR].toString()) }
-        .run { size + 1 }
-        .let { "$it/${invoiceDate[Calendar.YEAR]}" }
-      InvoiceNumber.MONTHLY -> settings.invoicesDir.listFiles()
-        .filter { it.nameWithoutExtension.endsWith("${invoiceDate[Calendar.MONTH] + 1}_${invoiceDate[Calendar.YEAR]}") }
-        .run { size + 1 }
-        .let { "$it/${invoiceDate[Calendar.MONTH] + 1}/${invoiceDate[Calendar.YEAR]}" }
-    }
-
-    filename = "${SimpleDateFormat("yyyyMMdd").format(date)}_${owner.id}_${client.id}_$number"
-      .replace(' ', '_').replace('.', '_').replace('/', '_')
-
-    saveInvoice(this)
-    PdfGenerator(settings).generate(this)
-  }
 
   private fun generateIssueDate(client: Client): Calendar = when (client.dateDayType) {
     InvoiceDate.LAST -> GregorianCalendar.getInstance().apply {

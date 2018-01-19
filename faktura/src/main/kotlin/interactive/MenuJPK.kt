@@ -59,7 +59,9 @@ object MenuJPK : BaseMenu() {
             faktura = invoices.map { JPK.Faktura().initialize(it) }
             fakturaCtrl = JPK.FakturaCtrl().initialize(invoices)
             stawkiPodatku = JPK.StawkiPodatku().initialize()
-            fakturaWiersz = invoices.map { JPK.FakturaWiersz().initialize(it) }
+            fakturaWiersz = invoices
+              .map { invoice -> invoice.products.map { JPK.FakturaWiersz().initialize(invoice, it) } }
+              .reduce { acc, list -> acc + list }
             fakturaWierszCtrl = JPK.FakturaWierszCtrl().initialize(invoices)
           }, file)
         }

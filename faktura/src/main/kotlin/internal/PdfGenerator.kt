@@ -41,17 +41,17 @@ class PdfGenerator(val settings: SettingsManager) {
       put("price", priceFormatter)
       put("productAmount", when (invoice.client.productType) {
         ProductType.TOTAL -> 1.toBigDecimal()
-        ProductType.HOURS -> invoice.amount
+        ProductType.HOURS -> invoice.products.first().amount
       })
       put("productPrice", DecimalFormat("0.00").format(when (invoice.client.productType) {
         ProductType.TOTAL -> invoice.netPrice
         ProductType.HOURS -> invoice.client.hourlyRate
       }))
     }.also { context ->
-      FileOutputStream(File(settings.pdfDir, invoice.filename + ".pdf")).use {
-        template.convert(context, Options.getFrom(DocumentKind.ODT).via(ConverterTypeVia.ODFDOM).to(ConverterTypeTo.PDF), it)
+        FileOutputStream(File(settings.pdfDir, invoice.filename + ".pdf")).use {
+          template.convert(context, Options.getFrom(DocumentKind.ODT).via(ConverterTypeVia.ODFDOM).to(ConverterTypeTo.PDF), it)
+        }
+        println("Invoice ${invoice.number} generated")
       }
-      println("Invoice ${invoice.number} generated")
-    }
   }
 }

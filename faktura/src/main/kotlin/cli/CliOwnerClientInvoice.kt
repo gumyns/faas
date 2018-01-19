@@ -5,6 +5,7 @@ import internal.InvoiceGenerator
 import model.Client
 import model.Owner
 import org.apache.commons.cli.CommandLine
+import pl.gumyns.faktura.api.product.Product
 import pl.gumyns.faktura.api.settings.SettingsManager
 
 class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
@@ -25,6 +26,12 @@ class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
       return
     }
 
+    val product = settings.productsDir.find(cli.getOptionValue("product"))?.reader()?.let { gson.fromJson(it, Product::class.java) }
+    if (product == null) {
+      println("Product '${cli.getOptionValue("product")}' doesn't exists, check config with --interactive")
+      return
+    }
+
     val amount = cli.getOptionValue("amount").toBigDecimal()
     if (amount <= 0.toBigDecimal()) {
       println("Amount '${cli.getOptionValue("amount")}' is too small")
@@ -32,7 +39,7 @@ class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
     }
 
     InvoiceGenerator(settings).apply {
-      generate(owner, client, amount, cli.getOptionValue("product-name"))
+      generate(owner, client, product)
     }
   }
 
