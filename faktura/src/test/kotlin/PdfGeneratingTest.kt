@@ -5,7 +5,6 @@ import fr.opensagres.xdocreport.converter.ConverterTypeVia
 import fr.opensagres.xdocreport.converter.Options
 import fr.opensagres.xdocreport.core.document.DocumentKind
 import internal.PdfGenerator
-import internal.SettingsManager
 import junit.framework.Assert.assertEquals
 import model.Invoice
 import org.jetbrains.spek.api.Spek

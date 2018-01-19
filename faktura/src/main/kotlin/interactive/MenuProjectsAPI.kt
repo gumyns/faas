@@ -1,9 +1,10 @@
 package interactive
 
 import com.google.gson.Gson
-import internal.SettingsManager
 import model.Owner
 import model.ProjectMap
+import pl.gumyns.faktura.api.settings.SettingsManager
+import pl.gumyns.faktura.api.settings.jsonFiles
 import utils.newRangeInputReader
 
 object MenuProjectsAPI : BaseMenu() {
@@ -14,8 +15,8 @@ object MenuProjectsAPI : BaseMenu() {
     main@ while (true) {
       app.clearScreen()
       var index = 1
-      val files = SettingsManager().ownersDir.listFiles()
-        .filter { it.extension == "json" }
+      val files = SettingsManager().ownersDir.jsonFiles
+
       files.forEach { textTerminal.println("${index++}. ${it.nameWithoutExtension}") }
       showBack(textTerminal, index++)
 
@@ -63,8 +64,8 @@ object MenuProjectsAPI : BaseMenu() {
     projects.projects.add(newStringInputReader().read("Nazwa projektu"))
     app.clearScreen()
     var index = 1
-    val files = manager.clientsDir.listFiles().map { it.nameWithoutExtension }
-    files.forEach { textTerminal.println("${index++}. ${it}") }
+    val files = manager.clientsDir.clientList
+    files.forEach { textTerminal.println("${index++}. $it") }
     projects.clients.add(files[newRangeInputReader(1..files.size)
       .read(BaseMenu.selectOption) - 1])
   }

@@ -10,6 +10,7 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind
 import fr.opensagres.xdocreport.template.velocity.internal.VelocityTemplateEngine
 import model.Invoice
 import model.ProductType
+import pl.gumyns.faktura.api.settings.SettingsManager
 import java.io.File
 import java.io.FileOutputStream
 import java.math.BigDecimal

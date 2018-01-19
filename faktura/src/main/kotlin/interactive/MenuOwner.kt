@@ -1,10 +1,11 @@
 package interactive
 
 import com.google.gson.Gson
-import internal.SettingsManager
 import model.InvoiceNumber
 import model.Owner
 import model.showUnorderedList
+import pl.gumyns.faktura.api.settings.SettingsManager
+import pl.gumyns.faktura.api.settings.jsonFiles
 import utils.newRangeInputReader
 import java.io.File
 
@@ -16,8 +17,7 @@ object MenuOwner : BaseMenu() {
       app.clearScreen()
       textTerminal.println("Lista wystawców faktur:")
       var index = 1
-      val files = SettingsManager().ownersDir.listFiles()
-        .filter { it.extension == "json" }
+      val files = SettingsManager().ownersDir.jsonFiles
 
       files.forEach { textTerminal.println("${index++}. ${it.nameWithoutExtension}") }
       textTerminal.println("${index++}. Nowa firma")
@@ -40,7 +40,7 @@ object MenuOwner : BaseMenu() {
       while (id == null || id.isEmpty()) {
         app.clearScreen()
         id = newStringInputReader().read("Krótka nazwa firmy (ID w systemie)")
-        val file = SettingsManager().ownersDir.listFiles().find { it.nameWithoutExtension == id }
+        val file = SettingsManager().ownersDir.find(id)
         if (file != null) {
           owner = gson.fromJson(file.reader(), Owner::class.java)
         } else {

@@ -1,6 +1,6 @@
 package interactive
 
-import internal.SettingsManager
+import pl.gumyns.faktura.api.settings.SettingsManager
 import java.io.File
 
 object MenuSettings {

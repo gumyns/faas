@@ -2,12 +2,12 @@ package cli
 
 import com.google.gson.Gson
 import internal.InvoiceGenerator
-import internal.SettingsManager
 import model.Owner
 import model.getClient
 import model.getProjects
 import model.getProjectsArray
 import org.apache.commons.cli.CommandLine
+import pl.gumyns.faktura.api.settings.SettingsManager
 import java.math.BigDecimal
 
 class CliFromProjectJson(cli: CommandLine) : BaseCliHandler(cli) {
@@ -52,11 +52,11 @@ class CliFromProjectJson(cli: CommandLine) : BaseCliHandler(cli) {
         }
       }
       // get client for each name
-      .let { it.mapKeys { entry -> gson.getClient(settings.clientsDir.listFiles().first { it.nameWithoutExtension == entry.key }) } }
+      .let { it.mapKeys { entry -> gson.getClient(settings.clientsDir.find(entry.key)!!) } }
       // convert to hours
       .let { it.mapValues { it.value.divide(60.toBigDecimal()) } }
 
-    val owner = gson.fromJson(settings.ownersDir.listFiles().first { it.nameWithoutExtension == cli.getOptionValue("owner") }.reader(), Owner::class.java)
+    val owner = gson.fromJson(settings.ownersDir.find(cli.getOptionValue("owner"))?.reader(), Owner::class.java)
 
 
     InvoiceGenerator(settings).apply {

@@ -2,10 +2,10 @@ package cli
 
 import com.google.gson.Gson
 import internal.InvoiceGenerator
-import internal.SettingsManager
 import model.Client
 import model.Owner
 import org.apache.commons.cli.CommandLine
+import pl.gumyns.faktura.api.settings.SettingsManager
 
 class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
   val gson = Gson()
@@ -13,13 +13,13 @@ class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
 
   fun handle() {
     validateInput()
-    val owner = settings.ownersDir.listFiles().firstOrNull { it.nameWithoutExtension == cli.getOptionValue("owner") }?.reader()?.let { gson.fromJson(it, Owner::class.java) }
+    val owner = settings.ownersDir.find(cli.getOptionValue("owner"))?.reader()?.let { gson.fromJson(it, Owner::class.java) }
     if (owner == null) {
       println("Owner '${cli.getOptionValue("owner")}' doesn't exists, check config with --interactive")
       return
     }
 
-    val client = settings.clientsDir.listFiles().firstOrNull { it.nameWithoutExtension == cli.getOptionValue("client") }?.reader()?.let { gson.fromJson(it, Client::class.java) }
+    val client = settings.clientsDir.find(cli.getOptionValue("client"))?.reader()?.let { gson.fromJson(it, Client::class.java) }
     if (client == null) {
       println("Client '${cli.getOptionValue("client")}' doesn't exists, check config with --interactive")
       return

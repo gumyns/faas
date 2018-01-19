@@ -2,6 +2,7 @@ package internal
 
 import com.google.gson.Gson
 import model.*
+import pl.gumyns.faktura.api.settings.SettingsManager
 import java.io.File
 import java.math.BigDecimal
 import java.text.SimpleDateFormat

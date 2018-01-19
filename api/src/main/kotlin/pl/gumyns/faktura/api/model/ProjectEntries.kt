@@ -1,6 +1,6 @@
-package model
+package pl.gumyns.faktura.api.model
 
-data class ProjectEntry(
+data class ProjectEntries(
   val minutesSpent: Int? = null,
   val project: String? = null
 )

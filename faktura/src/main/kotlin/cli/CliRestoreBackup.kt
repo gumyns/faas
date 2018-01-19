@@ -1,7 +1,7 @@
 package cli
 
-import internal.SettingsManager
 import org.apache.commons.cli.CommandLine
+import pl.gumyns.faktura.api.settings.SettingsManager
 import java.io.File
 import java.io.FileInputStream
 import java.util.zip.ZipInputStream

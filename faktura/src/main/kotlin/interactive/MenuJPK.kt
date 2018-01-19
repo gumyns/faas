@@ -2,11 +2,12 @@ package interactive
 
 import com.google.gson.Gson
 import generated.JPK
-import internal.SettingsManager
 import model.Currency
 import model.Invoice
 import model.Owner
 import model.initialize
+import pl.gumyns.faktura.api.settings.SettingsManager
+import pl.gumyns.faktura.api.settings.jsonFiles
 import utils.newDateInputReader
 import utils.newRangeInputReader
 import java.io.File
@@ -22,8 +23,7 @@ object MenuJPK : BaseMenu() {
       app.clearScreen()
       textTerminal.println("Lista wystawców faktur:")
       var index = 1
-      val files = SettingsManager().ownersDir.listFiles()
-        .filter { it.extension == "json" }
+      val files = SettingsManager().ownersDir.jsonFiles
 
       files.forEach { textTerminal.println("${index++}. ${it.nameWithoutExtension}") }
       showBack(textTerminal, index++)

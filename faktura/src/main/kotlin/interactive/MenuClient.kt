@@ -1,8 +1,9 @@
 package interactive
 
 import com.google.gson.Gson
-import internal.SettingsManager
 import model.*
+import pl.gumyns.faktura.api.settings.SettingsManager
+import pl.gumyns.faktura.api.settings.jsonFiles
 import utils.newBigDecimalInputReader
 import utils.newRangeInputReader
 import java.io.File
@@ -14,8 +15,7 @@ object MenuClient : BaseMenu() {
     main@ while (true) {
       app.clearScreen()
       var index = 1
-      val files = SettingsManager().clientsDir.listFiles()
-        .filter { it.extension == "json" }
+      val files = SettingsManager().clientsDir.jsonFiles
 
       files.forEach { textTerminal.println("${index++}. ${it.nameWithoutExtension}") }
       textTerminal.println("${index++}. Nowy klient")
@@ -38,7 +38,7 @@ object MenuClient : BaseMenu() {
       while (id == null || id.isEmpty()) {
         app.clearScreen()
         id = newStringInputReader().read("Krótka nazwa firmy (ID w systemie)")
-        val file = SettingsManager().clientsDir.listFiles().find { it.nameWithoutExtension == id }
+        val file = SettingsManager().clientsDir.find(id)
         if (file != null) {
           client = gson.fromJson(file.reader(), Client::class.java)
         } else {
@@ -91,10 +91,10 @@ object MenuClient : BaseMenu() {
       5 -> client.hourlyRate = newBigDecimalInputReader().read("Stawka godzinowa")
       6 -> client.currency = newEnumInputReader(Currency::class.java).read("Waluta")
       7 -> client.paymentDelay = newIntInputReader().withMinVal(0).read("Termin płatności w dniach")
-      8 -> client.template = SettingsManager().templatesDir.listFiles().filter { it.extension == "odt" }
+      8 -> client.template = SettingsManager().templatesDir.templateList
         .let {
-          it.forEachIndexed { index, file -> textTerminal.println("${index + 1}. ${file.nameWithoutExtension}") }
-          it[newRangeInputReader(1..it.size).read("Wzór faktury") - 1].nameWithoutExtension
+          it.forEachIndexed { index, name -> textTerminal.println("${index + 1}. $name") }
+          it[newRangeInputReader(1..it.size).read("Wzór faktury") - 1]
         }
       9 -> client.dateDayType = InvoiceDate.values()[newRangeInputReader(1..(InvoiceDate.values().size)).read(
         StringBuilder("Typ daty określa jaka data jest na fakturze przy założeniu, że generanowanie odbywa się do ostatniego dnia miesiąca.\n").apply {

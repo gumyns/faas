@@ -1,11 +1,11 @@
 import cli.AppCLI
 import cli.OptionSet
 import interactive.AppInteractive
-import internal.SettingsManager
 import org.apache.commons.cli.CommandLine
 import org.apache.commons.cli.DefaultParser
 import org.apache.commons.cli.HelpFormatter
 import org.apache.commons.cli.ParseException
+import pl.gumyns.faktura.api.settings.SettingsManager
 import utils.AppMode
 
 class Main {
