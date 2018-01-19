@@ -10,7 +10,10 @@ import fr.opensagres.xdocreport.template.TemplateEngineKind
 import fr.opensagres.xdocreport.template.velocity.internal.VelocityTemplateEngine
 import model.Invoice
 import model.ProductType
+import org.odftoolkit.odfdom.doc.OdfTextDocument
+import pl.gumyns.faktura.api.product.ProductEntry
 import pl.gumyns.faktura.api.settings.SettingsManager
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.math.BigDecimal
@@ -19,6 +22,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PdfGenerator(val settings: SettingsManager) {
+  val invoiceLineTemplates = arrayOf("\$no", "\$name", "\$amount", "\$price", "\$netPrice", "\$taxRate", "\$taxPrice", "\$grossPrice")
+  val productProperties = arrayOf(null, ProductEntry::name, ProductEntry::amount, ProductEntry::price, ProductEntry::netValue, ProductEntry::taxRate, ProductEntry::taxPrice, ProductEntry::totalPrice)
+  val invoiceLineIndexes = arrayOfNulls<Int>(invoiceLineTemplates.size)
   val gson by lazy { Gson() }
 
   private val priceFormatter = object {
@@ -27,10 +33,50 @@ class PdfGenerator(val settings: SettingsManager) {
 
   fun generate(file: File) = generate(gson.fromJson(file.reader(), Invoice::class.java))
   fun generate(invoice: Invoice) {
+    val file = invoice.client.template?.let { template -> settings.templatesDir.find(template)?.inputStream() }
+    val odt = OdfTextDocument.loadDocument(file)
+    odt.getTableByName("ProductTable").apply {
+      getRowByIndex(1).apply {
+        (0..(cellCount - 1))
+          .filter { invoiceLineTemplates.indexOf(getCellByIndex(it).displayText) >= 0 }
+          .forEach { invoiceLineIndexes[invoiceLineTemplates.indexOf(getCellByIndex(it).displayText)] = it }
+      }
+
+      insertRowsBefore(2, invoice.products.size)
+      invoice.products.forEachIndexed { index, entry ->
+        getRowByIndex(index + 1).apply {
+          invoiceLineIndexes.forEachIndexed { index, i ->
+            if (i != null) {
+              getCellByIndex(i).apply {
+                if (productProperties[index] != null) {
+                  val property = productProperties[index]
+                  val value = property?.get(entry)
+                  this.setDisplayText(when (property) {
+                    ProductEntry::amount -> value.toString()
+                    ProductEntry::taxRate -> DecimalFormat("0%").format(BigDecimal(value.toString()))
+                    else -> when (value) {
+                      is BigDecimal -> DecimalFormat("0.00").format(value)
+                      else -> value.toString()
+                    }
+                  }, when (property) {
+                    ProductEntry::name -> "ProductStyle"
+                    else -> "ProductStyleCenter"
+                  })
+                } else {
+                  this.setDisplayText("${i + 1}.", "ProductStyleCenter")
+                }
+              }
+            }
+          }
+        }
+      }
+      removeRowsByIndex(invoice.products.size + 1, 1)
+    }
+    // save copy in memory
+    val buffer = ByteArrayOutputStream()
+    odt.save(buffer)
     // load template
-    val template = XDocReportRegistry.getRegistry().loadReport(invoice.client.template?.let { template ->
-      settings.templatesDir.listFiles().firstOrNull { it.nameWithoutExtension == template }?.inputStream()
-    }, TemplateEngineKind.Velocity)
+    val template = XDocReportRegistry.getRegistry().loadReport(buffer.toByteArray().inputStream(), TemplateEngineKind.Velocity)
     template.templateEngine = VelocityTemplateEngine(Properties())
     // fill template with invoice data and save to file
     template.createContext().apply {

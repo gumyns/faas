@@ -9,7 +9,7 @@ val Directory.jsonFiles
   get() = listFiles().filter { it.extension == "json" }
 
 val Directory.odtFiles
-  get() = listFiles().filter { it.extension == "json" }
+  get() = listFiles().filter { it.extension == "odt" }
 
 //endregion
 
@@ -36,7 +36,7 @@ class TemplatesDir(directory: Directory) : Directory(directory, "templates") {
   val templateList
     get() = odtFiles.map { it.nameWithoutExtension }
 
-  fun find(name: String) = jsonFiles.find { it.nameWithoutExtension == name }
+  fun find(name: String) = odtFiles.find { it.nameWithoutExtension == name }
 }
 //endregion
 
