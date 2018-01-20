@@ -56,7 +56,6 @@ class PdfGenerator(val settings: SettingsManager) {
                     this.setDisplayText(when (property) {
                       ProductEntry::taxType -> (value as? TaxType)?.showValue
                       ProductEntry::amount -> value.toString()
-                      ProductEntry::taxRate -> DecimalFormat("0%").format(BigDecimal(value.toString()))
                       else -> when (value) {
                         is BigDecimal -> DecimalFormat("0.00").format(value)
                         else -> value.toString()
@@ -97,8 +96,6 @@ class PdfGenerator(val settings: SettingsManager) {
             }
           }
 
-        println("$taxMap")
-
         appendRows(taxMap.keys.size - 1)
         taxMap.values.forEachIndexed { index, taxType ->
           getRowByIndex(rowCount - 1 - index).apply {
@@ -109,7 +106,6 @@ class PdfGenerator(val settings: SettingsManager) {
                   val value = property.get(taxType)
                   this.setDisplayText(when (property) {
                     ProductEntry::taxType -> (value as? TaxType)?.showValue
-                    ProductEntry::taxRate -> DecimalFormat("0%").format(BigDecimal(value.toString()))
                     else -> when (value) {
                       is BigDecimal -> DecimalFormat("0.00").format(value)
                       else -> value.toString()
