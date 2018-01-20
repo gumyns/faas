@@ -6,6 +6,8 @@ import model.getClient
 import model.getOwner
 import org.apache.commons.cli.CommandLine
 import pl.gumyns.faktura.api.pipe.getTimesheetPipeInput
+import pl.gumyns.faktura.api.product.ProductEntry
+import pl.gumyns.faktura.api.product.getProduct
 import pl.gumyns.faktura.api.settings.SettingsManager
 
 class CliTimesheetPipe(cli: CommandLine) : BaseCliHandler(cli) {
@@ -16,6 +18,7 @@ class CliTimesheetPipe(cli: CommandLine) : BaseCliHandler(cli) {
     validateInput()
 
     val owner = gson.getOwner(settings.ownersDir.find(cli.getOptionValue("owner")))
+    println(cli.getOptionValue("json"))
     val products = gson.getTimesheetPipeInput(cli.getOptionValue("json"))?.products?.run {
       mapKeys {
         val client = settings.clientsDir.find(it.key)
@@ -31,8 +34,15 @@ class CliTimesheetPipe(cli: CommandLine) : BaseCliHandler(cli) {
       System.exit(-1)
     }
 
+    val array = products!!
+      .mapValues {
+        it.value
+          .map { ProductEntry(gson.getProduct(settings.productsDir.find(it.key)), it.value) }
+          .toTypedArray()
+      }
+
     InvoiceGenerator(settings).apply {
-      generate(owner, products!!)
+      generate(owner, array)
     }
   }
 

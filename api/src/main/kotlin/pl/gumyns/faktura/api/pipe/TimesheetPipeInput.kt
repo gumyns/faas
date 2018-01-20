@@ -1,12 +1,14 @@
 package pl.gumyns.faktura.api.pipe
 
 import com.google.gson.Gson
-import pl.gumyns.faktura.api.product.ProductEntry
+import java.math.BigDecimal
+
+class TimesheetProductEntry : HashMap<String, BigDecimal>()
 
 @PipeType(PipeTypes.Timesheet)
-class TimesheetPipeInput {
+data class TimesheetPipeInput(
   /** map of client names to array of products */
-  var products: Map<String, Array<ProductEntry>> = mapOf()
-}
+  var products: Map<String, TimesheetProductEntry> = mapOf()
+)
 
 fun Gson.getTimesheetPipeInput(it: String) = fromJson(it, TimesheetPipeInput::class.java)

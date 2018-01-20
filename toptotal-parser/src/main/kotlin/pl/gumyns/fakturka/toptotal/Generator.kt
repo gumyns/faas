@@ -1,32 +1,56 @@
 package pl.gumyns.fakturka.toptotal
 
 import com.google.gson.Gson
+import pl.gumyns.faktura.api.pipe.TimesheetPipeInput
+import pl.gumyns.faktura.api.pipe.TimesheetProductEntry
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 object Generator {
   private val PROJECT = "project"
   private val DURATION = "duration"
 
-  fun generate(path: String): String = File(path).let { file ->
-    if (file.exists()) parseFile(file) else "File $path doesn't exists, skipping"
+  private val gson = Gson()
+
+  fun generate(settings: ToptotalSettingsManager, path: String): String = File(path).let { file ->
+    if (file.exists()) parseFile(file, settings) else "File $path doesn't exists, skipping"
   }
 
-  private fun parseFile(file: File): String {
+  private fun getMinutes(duration: String) = duration.split(':').let {
+    TimeUnit.HOURS.toMinutes(it[0].toLong()) + it[1].toLong()
+  }.toBigDecimal()
+
+  private fun parseFile(file: File, settings: ToptotalSettingsManager): String {
     file.readText().lines()
       .map { parseLine(it, ',') }
       .let { list ->
         val projectIndex = list.first().indexOfFirst { it == PROJECT }
         val durationIndex = list.first().indexOfFirst { it == DURATION }
 
-        val entries = prepareProjects(projectIndex, list)
-          .apply {
-            list.map { parseLine(projectIndex, durationIndex, it) }
-              .forEach { this[it.project]?.add(it) }
-            remove(PROJECT)
+        // calculate hours per project
+        val entries = list
+          .filter { it[projectIndex] != PROJECT }
+          .groupBy({ it[projectIndex] })
+          .mapValues {
+            it.value
+              .map { getMinutes(it[durationIndex]) }
+              .reduce { acc, l -> acc + l }
+              .div(60.toBigDecimal())
           }
-          .map { ProjectSum.create(it.value) }
-        File(file.nameWithoutExtension + ".json").writeText(Gson().toJson(Json("projects", entries.toTypedArray())))
-        return Gson().toJson(Json("projects", entries.toTypedArray()))
+        // gather map of client -> map of product -> amount
+        val map = settings.topTotalSettings.readLines()
+          .map { it.split(",") }
+          .filter { it[0] != "project" }
+          .groupBy { it[1] }
+          .mapValues {
+            TimesheetProductEntry().apply {
+              putAll(it.value
+                .map { Pair(it[2], entries[it[0]]) }
+                .groupBy({ it.first }, { it.second!! })
+                .mapValues { it.value.reduce { acc, add -> acc.add(add) } })
+            }
+          }
+        return gson.toJson(TimesheetPipeInput(map))
       }
   }
 
@@ -50,15 +74,4 @@ object Generator {
     }
     return result
   }
-
-  private fun prepareProjects(projectIndex: Int, list: List<List<String>>): MutableMap<String, MutableList<ProjectEntry>> =
-    list.map { it[projectIndex] }
-      .toHashSet()
-      .groupBy { it }
-      .mapValues { mutableListOf<ProjectEntry>() }
-      .toMutableMap()
-
-
-  private fun parseLine(projectIndex: Int, durationIndex: Int, line: List<String>) =
-    ProjectEntry(line[projectIndex], line[durationIndex])
 }

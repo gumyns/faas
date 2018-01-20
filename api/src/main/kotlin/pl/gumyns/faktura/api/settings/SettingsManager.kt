@@ -76,7 +76,7 @@ open class SettingsManager {
       }
   }
 
-  private fun File.copyInputStreamToFile(inputStream: InputStream) {
+  protected fun File.copyInputStreamToFile(inputStream: InputStream) {
     inputStream.use { input ->
       this.outputStream().use { fileOut ->
         input.copyTo(fileOut)

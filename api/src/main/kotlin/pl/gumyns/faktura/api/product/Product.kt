@@ -1,6 +1,8 @@
 package pl.gumyns.faktura.api.product
 
+import com.google.gson.Gson
 import generated.CurrCodeType
+import java.io.File
 import java.math.BigDecimal
 
 open class Product(
@@ -11,3 +13,5 @@ open class Product(
   var currency: CurrCodeType = CurrCodeType.PLN,
   var taxRate: BigDecimal? = taxType.rate
 )
+
+fun Gson.getProduct(file: File?) = fromJson(file?.reader(), Product::class.java)
