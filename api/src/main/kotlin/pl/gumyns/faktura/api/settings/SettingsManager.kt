@@ -6,7 +6,7 @@ import java.io.FileReader
 import java.io.InputStream
 
 
-class SettingsManager {
+open class SettingsManager {
   private val jarDir = File(SettingsManager::class.java.protectionDomain.codeSource.location.path).parent
   private val settingsDir = File(jarDir, "settings")
   private val settingsFile = File(settingsDir, "settings.json")

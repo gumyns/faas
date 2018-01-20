@@ -39,7 +39,7 @@ class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
     }
 
     InvoiceGenerator(settings).apply {
-      generate(owner, client, product)
+      generate(owner, client, product, amount)
     }
   }
 

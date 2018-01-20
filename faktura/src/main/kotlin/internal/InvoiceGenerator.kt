@@ -18,14 +18,14 @@ class InvoiceGenerator(val settings: SettingsManager) {
     File(dir, invoice.filename + ".json").writeText(gson.toJson(invoice))
   }
 
-  fun generate(owner: Owner, map: Map<Client, BigDecimal>): List<Invoice> =
-    map.map { entry -> generate(owner, entry.key, arrayOf()) }
+  fun generate(owner: Owner, map: Map<Client, Array<ProductEntry>>): List<Invoice> =
+    map.map { entry -> generate(owner, entry.key, entry.value) }
 
-  fun generate(owner: Owner, client: Client, product: Product) =
-    generate(owner, client, arrayOf(product))
+  fun generate(owner: Owner, client: Client, product: Product, amount: BigDecimal) =
+    generate(owner, client, arrayOf(product).map { ProductEntry(it, amount) }.toTypedArray())
 
-  fun generate(owner: Owner, client: Client, products: Array<Product>): Invoice =
-    Invoice(owner, client, products.map { ProductEntry(it) }.toTypedArray()).apply {
+  fun generate(owner: Owner, client: Client, products: Array<ProductEntry>): Invoice =
+    Invoice(owner, client, products).apply {
       date = generateIssueDate(client).time
       dueDate = generateIssueDate(client).apply {
         set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) + (client.paymentDelay ?: 0))

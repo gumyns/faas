@@ -2,7 +2,6 @@ package model
 
 import com.google.gson.Gson
 import generated.CurrCodeType
-import interactive.MenuProjectsAPI.gson
 import java.io.File
 
 data class Client(
@@ -18,4 +17,4 @@ data class Client(
   var productType: ProductType = ProductType.TOTAL
 )
 
-fun Gson.getClient(it: File) = gson.fromJson(it.reader(), Client::class.java)
+fun Gson.getClient(it: File?) = fromJson(it?.reader(), Client::class.java)
