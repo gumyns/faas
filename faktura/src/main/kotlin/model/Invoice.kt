@@ -10,13 +10,12 @@ data class Invoice(
   var products: Array<ProductEntry>,
   var delivery: Client? = null,
   var date: Date? = null,
-  var netPrice: BigDecimal? = products.map { it.amount.multiply(it.netValue) }.reduce { acc, net -> acc.add(net) },
-  var grossPrice: BigDecimal? = products.map { it.amount.multiply(it.netValue).multiply(it.taxRate?.add(1.toBigDecimal())) }.reduce { acc, gross -> acc.add(gross) },
-  var taxPrice: BigDecimal? = products.map { it.amount.multiply(it.netValue).multiply(it.taxRate) }.reduce { acc, gross -> acc.add(gross) },
+  var netPrice: BigDecimal? = products.map { it.netValue }.reduce { acc, net -> acc?.add(net) },
+  var grossPrice: BigDecimal? = products.map { it.netValue?.multiply(it.taxRate?.add(1.toBigDecimal())) }.reduce { acc, gross -> acc?.add(gross) },
+  var taxPrice: BigDecimal? = products.map { it.netValue?.multiply(it.taxRate) }.reduce { acc, gross -> acc?.add(gross) },
   var dueDate: Date? = null,
   var number: String? = null,
-  var filename: String? = null,
-  var priceStringPL: String? = null) {
+  var filename: String? = null) {
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -34,7 +33,6 @@ data class Invoice(
     if (dueDate != other.dueDate) return false
     if (number != other.number) return false
     if (filename != other.filename) return false
-    if (priceStringPL != other.priceStringPL) return false
     if (!Arrays.equals(products, other.products)) return false
 
     return true
@@ -51,7 +49,6 @@ data class Invoice(
     result = 31 * result + (dueDate?.hashCode() ?: 0)
     result = 31 * result + (number?.hashCode() ?: 0)
     result = 31 * result + (filename?.hashCode() ?: 0)
-    result = 31 * result + (priceStringPL?.hashCode() ?: 0)
     result = 31 * result + Arrays.hashCode(products)
     return result
   }
