@@ -8,7 +8,8 @@ data class Address(
   var district: String? = null,  // powiat
   var commune: String? = null,  // gmina
   var city: String? = null,
-  var postalCode: String? = null
+  var postalCode: String? = null,
+  var post: String? = null
 ) {
   fun formatAddress() =
     "$street ${if (flatNumber == null) "" else "$flatNumber/"}$houseNumber,\n$postalCode $city"

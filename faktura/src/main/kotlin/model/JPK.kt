@@ -34,7 +34,7 @@ fun JPK.Podmiot1.initialize(owner: Owner) = apply {
     nrLokalu = owner.address.flatNumber?.toString()
     miejscowosc = owner.address.city
     kodPocztowy = owner.address.postalCode
-    poczta = owner.address.city // TODO wrong
+    poczta = owner.address.post
   }
 }
 

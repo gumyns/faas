@@ -21,6 +21,7 @@ object MenuAddress : BaseMenu() {
         showValue(textTerminal, index++, "Gmina", commune)
         showValue(textTerminal, index++, "Miejscowość", city)
         showValue(textTerminal, index++, "Kod pocztowy", postalCode)
+        showValue(textTerminal, index++, "Poczta", post)
       }
       showBack(textTerminal, index++)
       val selection = newRangeInputReader(1..(index - 1))
@@ -42,6 +43,7 @@ object MenuAddress : BaseMenu() {
       6 -> address.commune = newStringInputReader().read("Gmina")
       7 -> address.city = newStringInputReader().read("Miejscowość")
       8 -> address.postalCode = newStringInputReader().read("Kod pocztowy")
+      9 -> address.post = newStringInputReader().read("Poczta")
     }
   }
 }
