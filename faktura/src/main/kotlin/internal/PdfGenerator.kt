@@ -118,8 +118,6 @@ class PdfGenerator(val settings: SettingsManager) {
         }
       }
     }
-
-
     // save copy in memory
     val buffer = ByteArrayOutputStream()
     odt.save(buffer)

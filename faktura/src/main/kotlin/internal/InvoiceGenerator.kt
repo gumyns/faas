@@ -45,6 +45,13 @@ class InvoiceGenerator(val settings: SettingsManager) {
           .let { "$it/${invoiceDate[Calendar.MONTH] + 1}/${invoiceDate[Calendar.YEAR]}" }
       }
 
+      if (client.productType == ProductType.TOTAL) {
+        products.forEach {
+          it.amount = 1.toBigDecimal()
+          it.price = it.netValue
+        }
+      }
+
       filename = "${SimpleDateFormat("yyyyMMdd").format(date)}_${owner.id}_${client.id}_$number"
         .replace(' ', '_').replace('.', '_').replace('/', '_')
 

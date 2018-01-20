@@ -36,6 +36,8 @@ jar {
     }
 }
 
+jar.archiveName = "${jar.baseName}.${jar.extension}"
+
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
