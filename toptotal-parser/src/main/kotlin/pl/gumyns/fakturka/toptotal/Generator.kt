@@ -1,9 +1,11 @@
 package pl.gumyns.fakturka.toptotal
 
 import com.google.gson.Gson
+import org.apache.commons.csv.CSVFormat
 import pl.gumyns.faktura.api.pipe.TimesheetPipeInput
 import pl.gumyns.faktura.api.pipe.TimesheetProductEntry
 import java.io.File
+import java.io.FileReader
 import java.util.concurrent.TimeUnit
 
 object Generator {
@@ -21,23 +23,18 @@ object Generator {
   }.toBigDecimal()
 
   private fun parseFile(file: File, settings: ToptotalSettingsManager): String {
-    file.readText().lines()
-      .map { parseLine(it, ',') }
-      .let { list ->
-        val projectIndex = list.first().indexOfFirst { it == PROJECT }
-        val durationIndex = list.first().indexOfFirst { it == DURATION }
-
-        // calculate hours per project
-        val entries = list
-          .filter { it[projectIndex] != PROJECT }
-          .groupBy({ it[projectIndex] })
+    FileReader(file).use {
+      CSVFormat.DEFAULT.parse(it).apply {
+        val names = first()
+        val projectIndex = names.indexOfFirst { it == PROJECT }
+        val durationIndex = names.indexOfFirst { it == DURATION }
+        val entries = groupBy({ it[projectIndex] })
           .mapValues {
             it.value
               .map { getMinutes(it[durationIndex]) }
               .reduce { acc, l -> acc + l }
               .div(60.toBigDecimal())
           }
-        // gather map of client -> map of product -> amount
         val map = settings.topTotalSettings.readLines()
           .map { it.split(",") }
           .filter { it[0] != "project" }
@@ -52,26 +49,7 @@ object Generator {
           }
         return gson.toJson(TimesheetPipeInput(map))
       }
-  }
-
-  private fun parseLine(line: String, separator: Char): List<String> {
-    val result = mutableListOf<String>()
-    var builder = StringBuilder()
-    var quotes = 0
-    for (ch in line) {
-      when {
-        ch == '\"' -> {
-          quotes++
-        }
-        (ch == '\n') || (ch == '\r') -> {
-        }
-        (ch == separator) && (quotes % 2 == 0) -> {
-          result.add(builder.toString())
-          builder = StringBuilder()
-        }
-        else -> builder.append(ch)
-      }
     }
-    return result
+    return "Nope"
   }
 }
