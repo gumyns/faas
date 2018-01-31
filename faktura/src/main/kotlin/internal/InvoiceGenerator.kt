@@ -64,7 +64,7 @@ class InvoiceGenerator(val settings: SettingsManager) {
       clear()
       time = Date(System.currentTimeMillis())
       set(Calendar.MONTH, get(Calendar.MONTH) + 1) // set next month
-      set(Calendar.DAY_OF_MONTH, -1) // get last day of current month
+      set(Calendar.DAY_OF_MONTH, 0) // get last day of current month
       while (isHoliday(this))
         set(Calendar.DAY_OF_MONTH, get(Calendar.DAY_OF_MONTH) - 1)
     }
