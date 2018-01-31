@@ -44,8 +44,12 @@ class CliCreateBackup(cli: CommandLine) : BaseCliHandler(cli) {
         it.closeEntry()
       }
       it.closeEntry()
-      it.putNextEntry(ZipEntry("projects.json"))
-      it.write(settings.projectsFile.readBytes())
+      it.putNextEntry(ZipEntry("pdf/"))
+      settings.pdfDir.listFiles().forEach { file ->
+        it.putNextEntry(ZipEntry("pdf/${file.name}"))
+        it.write(file.readBytes())
+        it.closeEntry()
+      }
       it.closeEntry()
     }
     println("Backup created and saved to '${file.absolutePath}'")
