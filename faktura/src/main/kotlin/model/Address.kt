@@ -12,8 +12,8 @@ data class Address(
   var post: String? = null
 ) {
   fun formatAddress() =
-    "$street ${if (flatNumber == null) "" else "$flatNumber/"}$houseNumber,\n$postalCode $city"
+    "$street $houseNumber${if (flatNumber == null) "" else "/$flatNumber"},\n$postalCode $city"
 
   fun formatAddressJPK() =
-    "$postalCode $city, $street ${if (flatNumber == null) "" else "$flatNumber/"}$houseNumber"
+    "$postalCode $city, $street $houseNumber${if (flatNumber == null) "" else "/$flatNumber"}"
 }
