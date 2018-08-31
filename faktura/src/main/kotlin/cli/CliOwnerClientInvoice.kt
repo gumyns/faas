@@ -6,6 +6,7 @@ import model.Client
 import model.Owner
 import org.apache.commons.cli.CommandLine
 import pl.gumyns.faktura.api.product.Product
+import pl.gumyns.faktura.api.product.ProductEntry
 import pl.gumyns.faktura.api.settings.SettingsManager
 
 class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
@@ -26,20 +27,20 @@ class CliOwnerClientInvoice(cli: CommandLine) : BaseCliHandler(cli) {
       return
     }
 
-    val product = settings.productsDir.find(cli.getOptionValue("product"))?.reader()?.let { gson.fromJson(it, Product::class.java) }
-    if (product == null) {
+    val products = cli.getOptionValue("product").let { it.split(",") }.map { settings.productsDir.find(it)?.reader()?.let { gson.fromJson(it, Product::class.java) } }
+    if (products.any { it == null }) {
       println("Product '${cli.getOptionValue("product")}' doesn't exists, check config with --interactive")
       return
     }
 
-    val amount = cli.getOptionValue("amount").toBigDecimal()
-    if (amount <= 0.toBigDecimal()) {
+    val amounts = cli.getOptionValue("amount").let { it.split(",") }.map { it.toBigDecimal() }
+    if (amounts.any { it <= 0.toBigDecimal() }) {
       println("Amount '${cli.getOptionValue("amount")}' is too small")
       return
     }
 
     InvoiceGenerator(settings).apply {
-      generate(owner, client, product, amount)
+      generate(owner, client, products.mapIndexed { i, product -> ProductEntry(product, amounts[i]) }.toTypedArray())
     }
   }
 
