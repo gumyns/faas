@@ -126,13 +126,10 @@ class PdfGenerator(val settings: SettingsManager) {
     // load template
     val template = XDocReportRegistry.getRegistry().loadReport(buffer.toByteArray().inputStream(), TemplateEngineKind.Velocity)
     template.templateEngine = VelocityTemplateEngine(Properties())
-
-    val account = invoice.owner.accounts.find { it.currency == invoice.client.currency }
-    println()
     // fill template with invoice data and save to file
     template.createContext().apply {
       put("obj", invoice)
-      put("account", account)
+      put("account", invoice.owner.accounts.find { it.currency == invoice.client.currency })
       put("date", SimpleDateFormat("dd/MM/yyyy").format(invoice.date))
       put("dueDate", SimpleDateFormat("dd/MM/yyyy").format(invoice.dueDate))
       put("price", priceFormatter)
