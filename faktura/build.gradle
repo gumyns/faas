@@ -9,7 +9,7 @@ buildscript {
 }
 
 group 'pl.gumyns.fakturka'
-version '1.0'
+version '1.1'
 
 apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'application'
