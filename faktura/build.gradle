@@ -40,6 +40,7 @@ dependencies {
     compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.odt:2.0.1'
     compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter.odt.odfdom:2.0.1'
     compile 'fr.opensagres.xdocreport:fr.opensagres.xdocreport.template.velocity:2.0.1'
+    compile 'com.ibm.icu:icu4j:63.1'
     testCompile "junit:junit:4.12"
     testCompile 'org.jetbrains.spek:spek-api:1.1.5'
     testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.1.5'

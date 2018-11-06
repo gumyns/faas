@@ -1,6 +1,8 @@
 package internal
 
 import com.google.gson.Gson
+import com.ibm.icu.text.RuleBasedNumberFormat
+import com.ibm.icu.util.ULocale
 import fr.opensagres.xdocreport.converter.ConverterTypeTo
 import fr.opensagres.xdocreport.converter.ConverterTypeVia
 import fr.opensagres.xdocreport.converter.Options
@@ -124,10 +126,13 @@ class PdfGenerator(val settings: SettingsManager) {
     // load template
     val template = XDocReportRegistry.getRegistry().loadReport(buffer.toByteArray().inputStream(), TemplateEngineKind.Velocity)
     template.templateEngine = VelocityTemplateEngine(Properties())
+
+    val account = invoice.owner.accounts.find { it.currency == invoice.client.currency }
+    println()
     // fill template with invoice data and save to file
     template.createContext().apply {
       put("obj", invoice)
-      put("account", invoice.owner.accounts.find { it.currency == invoice.client.currency })
+      put("account", account)
       put("date", SimpleDateFormat("dd/MM/yyyy").format(invoice.date))
       put("dueDate", SimpleDateFormat("dd/MM/yyyy").format(invoice.dueDate))
       put("price", priceFormatter)
@@ -139,11 +144,19 @@ class PdfGenerator(val settings: SettingsManager) {
         ProductType.TOTAL -> invoice.netPrice
         ProductType.HOURS -> invoice.products.firstOrNull()?.price
       }))
+      put("priceSpelled", getPriceSpelled(invoice.grossPrice))
     }.also { context ->
-        FileOutputStream(File(settings.pdfDir, invoice.filename + ".pdf")).use {
-          template.convert(context, Options.getFrom(DocumentKind.ODT).via(ConverterTypeVia.ODFDOM).to(ConverterTypeTo.PDF), it)
-        }
-        println("Invoice ${invoice.number} generated")
+      FileOutputStream(File(settings.pdfDir, invoice.filename + ".pdf")).use {
+        template.convert(context, Options.getFrom(DocumentKind.ODT).via(ConverterTypeVia.ODFDOM).to(ConverterTypeTo.PDF), it)
       }
+      println("Invoice ${invoice.number} generated")
+    }
   }
+
+  private fun getPriceSpelled(price: BigDecimal?) = mapOf<String, String>(
+    "pl" to RuleBasedNumberFormat(ULocale("pl"), RuleBasedNumberFormat.SPELLOUT).format(price?.toInt()),
+    "en" to RuleBasedNumberFormat(ULocale("en"), RuleBasedNumberFormat.SPELLOUT).format(price?.toInt()),
+    "de" to RuleBasedNumberFormat(ULocale("de"), RuleBasedNumberFormat.SPELLOUT).format(price?.toInt()),
+    "rest" to ((price?.minus(price.toInt().toBigDecimal())?.multiply(100.toBigDecimal()))?.toInt().toString() + "/100")
+  )
 }
