@@ -154,6 +154,6 @@ class PdfGenerator(val settings: SettingsManager) {
     "pl" to RuleBasedNumberFormat(ULocale("pl"), RuleBasedNumberFormat.SPELLOUT).format(price?.toInt()),
     "en" to RuleBasedNumberFormat(ULocale("en"), RuleBasedNumberFormat.SPELLOUT).format(price?.toInt()),
     "de" to RuleBasedNumberFormat(ULocale("de"), RuleBasedNumberFormat.SPELLOUT).format(price?.toInt()),
-    "rest" to ((price?.minus(price.toInt().toBigDecimal())?.multiply(100.toBigDecimal()))?.toInt().toString() + "/100")
+    "rest" to (DecimalFormat("0").format(price?.minus(price.toInt().toBigDecimal())?.multiply(100.toBigDecimal())) + "/100")
   )
 }
