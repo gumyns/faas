@@ -11,88 +11,82 @@ package generated;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Skr�cony zestaw danych o osobie fizycznej lub niefizycznej z identyfikatorem NIP albo PESEL
- * 
- * <p>Java class for TPodmiotDowolnyBezAdresu1 complex type.
- * 
+ * Skr�cony zestaw danych o osobie fizycznej lub niefizycznej z identyfikatorem NIP - bez elementu numer REGON dla osoby niefizycznej
+ *
+ * <p>Java class for TPodmiotDowolnyBezAdresu3 complex type.
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
- * &lt;complexType name="TPodmiotDowolnyBezAdresu1">
+ * &lt;complexType name="TPodmiotDowolnyBezAdresu3">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice>
- *         &lt;element name="OsobaFizyczna" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TIdentyfikatorOsobyFizycznej1"/>
- *         &lt;element name="OsobaNiefizyczna" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TIdentyfikatorOsobyNiefizycznej"/>
+ *         &lt;element name="OsobaFizyczna" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TIdentyfikatorOsobyFizycznej2"/>
+ *         &lt;element name="OsobaNiefizyczna" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TIdentyfikatorOsobyNiefizycznej1"/>
  *       &lt;/choice>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TPodmiotDowolnyBezAdresu1", propOrder = {
+@XmlType(name = "TPodmiotDowolnyBezAdresu3", propOrder = {
         "osobaFizyczna",
         "osobaNiefizyczna"
 })
-public class TPodmiotDowolnyBezAdresu1 {
+@XmlSeeAlso({
+        TPodmiotDowolny2.class
+})
+public class TPodmiotDowolnyBezAdresu3 {
 
     @XmlElement(name = "OsobaFizyczna")
-    protected TIdentyfikatorOsobyFizycznej1 osobaFizyczna;
+    protected TIdentyfikatorOsobyFizycznej2 osobaFizyczna;
     @XmlElement(name = "OsobaNiefizyczna")
-    protected TIdentyfikatorOsobyNiefizycznej osobaNiefizyczna;
+    protected TIdentyfikatorOsobyNiefizycznej1 osobaNiefizyczna;
 
     /**
      * Gets the value of the osobaFizyczna property.
      *
-     * @return
-     *     possible object is
-     *     {@link TIdentyfikatorOsobyFizycznej1 }
-     *     
+     * @return possible object is
+     * {@link TIdentyfikatorOsobyFizycznej2 }
      */
-    public TIdentyfikatorOsobyFizycznej1 getOsobaFizyczna() {
+    public TIdentyfikatorOsobyFizycznej2 getOsobaFizyczna() {
         return osobaFizyczna;
     }
 
     /**
      * Sets the value of the osobaFizyczna property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TIdentyfikatorOsobyFizycznej1 }
-     *     
+     * @param value allowed object is
+     *              {@link TIdentyfikatorOsobyFizycznej2 }
      */
-    public void setOsobaFizyczna(TIdentyfikatorOsobyFizycznej1 value) {
+    public void setOsobaFizyczna(TIdentyfikatorOsobyFizycznej2 value) {
         this.osobaFizyczna = value;
     }
 
     /**
      * Gets the value of the osobaNiefizyczna property.
      *
-     * @return
-     *     possible object is
-     *     {@link TIdentyfikatorOsobyNiefizycznej }
-     *     
+     * @return possible object is
+     * {@link TIdentyfikatorOsobyNiefizycznej1 }
      */
-    public TIdentyfikatorOsobyNiefizycznej getOsobaNiefizyczna() {
+    public TIdentyfikatorOsobyNiefizycznej1 getOsobaNiefizyczna() {
         return osobaNiefizyczna;
     }
 
     /**
      * Sets the value of the osobaNiefizyczna property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TIdentyfikatorOsobyNiefizycznej }
-     *     
+     * @param value allowed object is
+     *              {@link TIdentyfikatorOsobyNiefizycznej1 }
      */
-    public void setOsobaNiefizyczna(TIdentyfikatorOsobyNiefizycznej value) {
+    public void setOsobaNiefizyczna(TIdentyfikatorOsobyNiefizycznej1 value) {
         this.osobaNiefizyczna = value;
     }
 

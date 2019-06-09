@@ -18,14 +18,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
- * Informacje opisuj�ce adres polski
- * 
- * <p>Java class for TAdresPolski complex type.
- * 
+ * Informacje opisuj�ce adres polski - bez elementu Poczta
+ *
+ * <p>Java class for TAdresPolski1 complex type.
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
- * &lt;complexType name="TAdresPolski">
+ * &lt;complexType name="TAdresPolski1">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -38,17 +38,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="NrLokalu" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TNrLokalu" minOccurs="0"/>
  *         &lt;element name="Miejscowosc" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TMiejscowosc"/>
  *         &lt;element name="KodPocztowy" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TKodPocztowy"/>
- *         &lt;element name="Poczta" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TMiejscowosc"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TAdresPolski", propOrder = {
+@XmlType(name = "TAdresPolski1", propOrder = {
         "kodKraju",
         "wojewodztwo",
         "powiat",
@@ -57,10 +54,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
         "nrDomu",
         "nrLokalu",
         "miejscowosc",
-        "kodPocztowy",
-        "poczta"
+        "kodPocztowy"
 })
-public class TAdresPolski {
+public class TAdresPolski1 {
 
     @XmlElement(name = "KodKraju", required = true)
     @XmlSchemaType(name = "normalizedString")
@@ -97,18 +93,12 @@ public class TAdresPolski {
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "token")
     protected String kodPocztowy;
-    @XmlElement(name = "Poczta", required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlSchemaType(name = "token")
-    protected String poczta;
 
     /**
      * Gets the value of the kodKraju property.
      *
-     * @return
-     *     possible object is
-     *     {@link TKodKraju }
-     *     
+     * @return possible object is
+     * {@link TKodKraju }
      */
     public TKodKraju getKodKraju() {
         return kodKraju;
@@ -117,10 +107,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the kodKraju property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TKodKraju }
-     *     
+     * @param value allowed object is
+     *              {@link TKodKraju }
      */
     public void setKodKraju(TKodKraju value) {
         this.kodKraju = value;
@@ -129,10 +117,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the wojewodztwo property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getWojewodztwo() {
         return wojewodztwo;
@@ -141,10 +127,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the wojewodztwo property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setWojewodztwo(String value) {
         this.wojewodztwo = value;
@@ -153,10 +137,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the powiat property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getPowiat() {
         return powiat;
@@ -165,10 +147,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the powiat property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPowiat(String value) {
         this.powiat = value;
@@ -177,10 +157,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the gmina property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getGmina() {
         return gmina;
@@ -189,10 +167,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the gmina property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setGmina(String value) {
         this.gmina = value;
@@ -201,10 +177,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the ulica property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getUlica() {
         return ulica;
@@ -213,10 +187,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the ulica property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setUlica(String value) {
         this.ulica = value;
@@ -225,10 +197,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the nrDomu property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getNrDomu() {
         return nrDomu;
@@ -237,10 +207,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the nrDomu property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setNrDomu(String value) {
         this.nrDomu = value;
@@ -249,10 +217,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the nrLokalu property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getNrLokalu() {
         return nrLokalu;
@@ -261,10 +227,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the nrLokalu property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setNrLokalu(String value) {
         this.nrLokalu = value;
@@ -273,10 +237,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the miejscowosc property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getMiejscowosc() {
         return miejscowosc;
@@ -285,10 +247,8 @@ public class TAdresPolski {
     /**
      * Sets the value of the miejscowosc property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMiejscowosc(String value) {
         this.miejscowosc = value;
@@ -297,10 +257,8 @@ public class TAdresPolski {
     /**
      * Gets the value of the kodPocztowy property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getKodPocztowy() {
         return kodPocztowy;
@@ -309,37 +267,11 @@ public class TAdresPolski {
     /**
      * Sets the value of the kodPocztowy property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setKodPocztowy(String value) {
         this.kodPocztowy = value;
-    }
-
-    /**
-     * Gets the value of the poczta property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getPoczta() {
-        return poczta;
-    }
-
-    /**
-     * Sets the value of the poczta property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setPoczta(String value) {
-        this.poczta = value;
     }
 
 }

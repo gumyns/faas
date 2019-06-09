@@ -16,19 +16,19 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Dane okre�laj�ce adres
- * 
- * <p>Java class for TAdres complex type.
- * 
+ * Dane okre�laj�ce adres - bez elementu Poczta w adresie polskim
+ *
+ * <p>Java class for TAdres1 complex type.
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
- * &lt;complexType name="TAdres">
+ * &lt;complexType name="TAdres1">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;choice>
  *         &lt;sequence>
- *           &lt;element name="AdresPol" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdresPolski"/>
+ *           &lt;element name="AdresPol" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdresPolski1"/>
  *         &lt;/sequence>
  *         &lt;sequence>
  *           &lt;element name="AdresZagr" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdresZagraniczny"/>
@@ -38,62 +38,56 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TAdres", propOrder = {
+@XmlType(name = "TAdres1", propOrder = {
         "adresPol",
         "adresZagr"
 })
 @XmlSeeAlso({
-        TPodmiotDowolny.AdresZamieszkaniaSiedziby.class,
-        TOsobaFizyczna1.AdresZamieszkania.class,
-        TOsobaNiefizyczna.AdresSiedziby.class,
-        TOsobaFizyczna2.AdresZamieszkania.class,
-        TOsobaNiefizycznaPelna.AdresSiedziby.class,
-        TOsobaFizyczna.AdresZamieszkania.class,
-        TPodmiotDowolnyPelny.AdresZamieszkaniaSiedziby.class,
-        TOsobaFizycznaPelna.AdresZamieszkania.class
+        TOsobaNiefizyczna1.AdresSiedziby.class,
+        TOsobaNiefizyczna2.AdresSiedziby.class,
+        TOsobaFizycznaPelna1.AdresZamieszkania.class,
+        TOsobaFizyczna5.AdresZamieszkania.class,
+        TOsobaFizyczna4.AdresZamieszkania.class,
+        TOsobaFizyczna3.AdresZamieszkania.class,
+        TPodmiotDowolny2.AdresZamieszkaniaSiedziby.class,
+        TPodmiotDowolnyPelny1.AdresZamieszkaniaSiedziby.class,
+        TPodmiotDowolny1.AdresZamieszkaniaSiedziby.class,
+        TOsobaNiefizycznaPelna1.AdresSiedziby.class
 })
-public class TAdres {
+public class TAdres1 {
 
     @XmlElement(name = "AdresPol")
-    protected TAdresPolski adresPol;
+    protected TAdresPolski1 adresPol;
     @XmlElement(name = "AdresZagr")
     protected TAdresZagraniczny adresZagr;
 
     /**
      * Gets the value of the adresPol property.
      *
-     * @return
-     *     possible object is
-     *     {@link TAdresPolski }
-     *     
+     * @return possible object is
+     * {@link TAdresPolski1 }
      */
-    public TAdresPolski getAdresPol() {
+    public TAdresPolski1 getAdresPol() {
         return adresPol;
     }
 
     /**
      * Sets the value of the adresPol property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TAdresPolski }
-     *     
+     * @param value allowed object is
+     *              {@link TAdresPolski1 }
      */
-    public void setAdresPol(TAdresPolski value) {
+    public void setAdresPol(TAdresPolski1 value) {
         this.adresPol = value;
     }
 
     /**
      * Gets the value of the adresZagr property.
      *
-     * @return
-     *     possible object is
-     *     {@link TAdresZagraniczny }
-     *     
+     * @return possible object is
+     * {@link TAdresZagraniczny }
      */
     public TAdresZagraniczny getAdresZagr() {
         return adresZagr;
@@ -102,10 +96,8 @@ public class TAdres {
     /**
      * Sets the value of the adresZagr property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TAdresZagraniczny }
-     *     
+     * @param value allowed object is
+     *              {@link TAdresZagraniczny }
      */
     public void setAdresZagr(TAdresZagraniczny value) {
         this.adresZagr = value;

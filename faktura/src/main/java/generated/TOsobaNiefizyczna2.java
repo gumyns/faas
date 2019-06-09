@@ -16,22 +16,22 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Podstawowy zestaw danych o osobie niefizycznej
- * 
- * <p>Java class for TOsobaNiefizyczna complex type.
- * 
+ * Podstawowy zestaw danych o osobie niefizycznej - bez elementu Numer REGON oraz bez elementu Poczta w adresie polskim
+ *
+ * <p>Java class for TOsobaNiefizyczna2 complex type.
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
- * &lt;complexType name="TOsobaNiefizyczna">
+ * &lt;complexType name="TOsobaNiefizyczna2">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="OsobaNiefizyczna" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TIdentyfikatorOsobyNiefizycznej"/>
+ *         &lt;element name="OsobaNiefizyczna" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TIdentyfikatorOsobyNiefizycznej1"/>
  *         &lt;element name="AdresSiedziby">
  *           &lt;complexType>
  *             &lt;complexContent>
- *               &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres">
+ *               &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres1">
  *                 &lt;attribute name="rodzajAdresu" use="required" type="{http://www.w3.org/2001/XMLSchema}string" fixed="RAD" />
  *               &lt;/extension>
  *             &lt;/complexContent>
@@ -42,52 +42,44 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TOsobaNiefizyczna", propOrder = {
+@XmlType(name = "TOsobaNiefizyczna2", propOrder = {
         "osobaNiefizyczna",
         "adresSiedziby"
 })
-public class TOsobaNiefizyczna {
+public class TOsobaNiefizyczna2 {
 
     @XmlElement(name = "OsobaNiefizyczna", required = true)
-    protected TIdentyfikatorOsobyNiefizycznej osobaNiefizyczna;
+    protected TIdentyfikatorOsobyNiefizycznej1 osobaNiefizyczna;
     @XmlElement(name = "AdresSiedziby", required = true)
     protected AdresSiedziby adresSiedziby;
 
     /**
      * Gets the value of the osobaNiefizyczna property.
      *
-     * @return
-     *     possible object is
-     *     {@link TIdentyfikatorOsobyNiefizycznej }
-     *     
+     * @return possible object is
+     * {@link TIdentyfikatorOsobyNiefizycznej1 }
      */
-    public TIdentyfikatorOsobyNiefizycznej getOsobaNiefizyczna() {
+    public TIdentyfikatorOsobyNiefizycznej1 getOsobaNiefizyczna() {
         return osobaNiefizyczna;
     }
 
     /**
      * Sets the value of the osobaNiefizyczna property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TIdentyfikatorOsobyNiefizycznej }
-     *     
+     * @param value allowed object is
+     *              {@link TIdentyfikatorOsobyNiefizycznej1 }
      */
-    public void setOsobaNiefizyczna(TIdentyfikatorOsobyNiefizycznej value) {
+    public void setOsobaNiefizyczna(TIdentyfikatorOsobyNiefizycznej1 value) {
         this.osobaNiefizyczna = value;
     }
 
     /**
      * Gets the value of the adresSiedziby property.
      *
-     * @return
-     *     possible object is
-     *     {@link AdresSiedziby }
-     *     
+     * @return possible object is
+     * {@link TOsobaNiefizyczna2 .AdresSiedziby }
      */
     public AdresSiedziby getAdresSiedziby() {
         return adresSiedziby;
@@ -96,10 +88,8 @@ public class TOsobaNiefizyczna {
     /**
      * Sets the value of the adresSiedziby property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link AdresSiedziby }
-     *     
+     * @param value allowed object is
+     *              {@link TOsobaNiefizyczna2 .AdresSiedziby }
      */
     public void setAdresSiedziby(AdresSiedziby value) {
         this.adresSiedziby = value;
@@ -108,25 +98,23 @@ public class TOsobaNiefizyczna {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
-     *     &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres">
+     *     &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres1">
      *       &lt;attribute name="rodzajAdresu" use="required" type="{http://www.w3.org/2001/XMLSchema}string" fixed="RAD" />
      *     &lt;/extension>
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     *
-     * 
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "")
     public static class AdresSiedziby
-            extends TAdres {
+            extends TAdres1 {
 
         @XmlAttribute(name = "rodzajAdresu", required = true)
         protected String rodzajAdresu;
@@ -134,10 +122,8 @@ public class TOsobaNiefizyczna {
         /**
          * Gets the value of the rodzajAdresu property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
+         * @return possible object is
+         * {@link String }
          */
         public String getRodzajAdresu() {
             if (rodzajAdresu == null) {
@@ -150,10 +136,8 @@ public class TOsobaNiefizyczna {
         /**
          * Sets the value of the rodzajAdresu property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setRodzajAdresu(String value) {
             this.rodzajAdresu = value;

@@ -17,14 +17,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
- * Podstawowy zestaw danych identyfikacyjnych o osobie niefizycznej
- * 
- * <p>Java class for TIdentyfikatorOsobyNiefizycznej complex type.
- * 
+ * Podstawowy zestaw danych identyfikacyjnych o osobie niefizycznej  - bez elementu Numer REGON
+ *
+ * <p>Java class for TIdentyfikatorOsobyNiefizycznej1 complex type.
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
- * &lt;complexType name="TIdentyfikatorOsobyNiefizycznej">
+ * &lt;complexType name="TIdentyfikatorOsobyNiefizycznej1">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -37,38 +37,30 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *             &lt;/restriction>
  *           &lt;/simpleType>
  *         &lt;/element>
- *         &lt;element name="REGON" type="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TNrREGON" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TIdentyfikatorOsobyNiefizycznej", propOrder = {
+@XmlType(name = "TIdentyfikatorOsobyNiefizycznej1", propOrder = {
         "nip",
-        "pelnaNazwa",
-        "regon"
+        "pelnaNazwa"
 })
-public class TIdentyfikatorOsobyNiefizycznej {
+public class TIdentyfikatorOsobyNiefizycznej1 {
 
     @XmlElement(name = "NIP", required = true)
     protected String nip;
     @XmlElement(name = "PelnaNazwa", required = true)
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     protected String pelnaNazwa;
-    @XmlElement(name = "REGON")
-    protected String regon;
 
     /**
      * Gets the value of the nip property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getNIP() {
         return nip;
@@ -77,10 +69,8 @@ public class TIdentyfikatorOsobyNiefizycznej {
     /**
      * Sets the value of the nip property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setNIP(String value) {
         this.nip = value;
@@ -89,10 +79,8 @@ public class TIdentyfikatorOsobyNiefizycznej {
     /**
      * Gets the value of the pelnaNazwa property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
+     * @return possible object is
+     * {@link String }
      */
     public String getPelnaNazwa() {
         return pelnaNazwa;
@@ -101,37 +89,11 @@ public class TIdentyfikatorOsobyNiefizycznej {
     /**
      * Sets the value of the pelnaNazwa property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setPelnaNazwa(String value) {
         this.pelnaNazwa = value;
-    }
-
-    /**
-     * Gets the value of the regon property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getREGON() {
-        return regon;
-    }
-
-    /**
-     * Sets the value of the regon property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setREGON(String value) {
-        this.regon = value;
     }
 
 }

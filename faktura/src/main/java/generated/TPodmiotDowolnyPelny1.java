@@ -16,14 +16,14 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Pe�ny zestaw danych o osobie fizycznej lub niefizycznej
- * 
- * <p>Java class for TPodmiotDowolnyPelny complex type.
- * 
+ * Pe�ny zestaw danych o osobie fizycznej lub niefizycznej - bez elementu Poczta w adresie polskim
+ *
+ * <p>Java class for TPodmiotDowolnyPelny1 complex type.
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
- * &lt;complexType name="TPodmiotDowolnyPelny">
+ * &lt;complexType name="TPodmiotDowolnyPelny1">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="AdresZamieszkaniaSiedziby">
  *           &lt;complexType>
  *             &lt;complexContent>
- *               &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres">
+ *               &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres1">
  *                 &lt;attribute name="rodzajAdresu" use="required" type="{http://www.w3.org/2001/XMLSchema}string" fixed="RAD" />
  *               &lt;/extension>
  *             &lt;/complexContent>
@@ -45,16 +45,14 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "TPodmiotDowolnyPelny", propOrder = {
+@XmlType(name = "TPodmiotDowolnyPelny1", propOrder = {
         "osobaFizyczna",
         "osobaNiefizyczna",
         "adresZamieszkaniaSiedziby"
 })
-public class TPodmiotDowolnyPelny {
+public class TPodmiotDowolnyPelny1 {
 
     @XmlElement(name = "OsobaFizyczna")
     protected TIdentyfikatorOsobyFizycznejPelny osobaFizyczna;
@@ -66,10 +64,8 @@ public class TPodmiotDowolnyPelny {
     /**
      * Gets the value of the osobaFizyczna property.
      *
-     * @return
-     *     possible object is
-     *     {@link TIdentyfikatorOsobyFizycznejPelny }
-     *     
+     * @return possible object is
+     * {@link TIdentyfikatorOsobyFizycznejPelny }
      */
     public TIdentyfikatorOsobyFizycznejPelny getOsobaFizyczna() {
         return osobaFizyczna;
@@ -78,10 +74,8 @@ public class TPodmiotDowolnyPelny {
     /**
      * Sets the value of the osobaFizyczna property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TIdentyfikatorOsobyFizycznejPelny }
-     *     
+     * @param value allowed object is
+     *              {@link TIdentyfikatorOsobyFizycznejPelny }
      */
     public void setOsobaFizyczna(TIdentyfikatorOsobyFizycznejPelny value) {
         this.osobaFizyczna = value;
@@ -90,10 +84,8 @@ public class TPodmiotDowolnyPelny {
     /**
      * Gets the value of the osobaNiefizyczna property.
      *
-     * @return
-     *     possible object is
-     *     {@link TIdentyfikatorOsobyNiefizycznejPelny }
-     *     
+     * @return possible object is
+     * {@link TIdentyfikatorOsobyNiefizycznejPelny }
      */
     public TIdentyfikatorOsobyNiefizycznejPelny getOsobaNiefizyczna() {
         return osobaNiefizyczna;
@@ -102,10 +94,8 @@ public class TPodmiotDowolnyPelny {
     /**
      * Sets the value of the osobaNiefizyczna property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link TIdentyfikatorOsobyNiefizycznejPelny }
-     *     
+     * @param value allowed object is
+     *              {@link TIdentyfikatorOsobyNiefizycznejPelny }
      */
     public void setOsobaNiefizyczna(TIdentyfikatorOsobyNiefizycznejPelny value) {
         this.osobaNiefizyczna = value;
@@ -114,10 +104,8 @@ public class TPodmiotDowolnyPelny {
     /**
      * Gets the value of the adresZamieszkaniaSiedziby property.
      *
-     * @return
-     *     possible object is
-     *     {@link AdresZamieszkaniaSiedziby }
-     *     
+     * @return possible object is
+     * {@link TPodmiotDowolnyPelny1 .AdresZamieszkaniaSiedziby }
      */
     public AdresZamieszkaniaSiedziby getAdresZamieszkaniaSiedziby() {
         return adresZamieszkaniaSiedziby;
@@ -126,10 +114,8 @@ public class TPodmiotDowolnyPelny {
     /**
      * Sets the value of the adresZamieszkaniaSiedziby property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link AdresZamieszkaniaSiedziby }
-     *     
+     * @param value allowed object is
+     *              {@link TPodmiotDowolnyPelny1 .AdresZamieszkaniaSiedziby }
      */
     public void setAdresZamieszkaniaSiedziby(AdresZamieszkaniaSiedziby value) {
         this.adresZamieszkaniaSiedziby = value;
@@ -138,25 +124,23 @@ public class TPodmiotDowolnyPelny {
 
     /**
      * <p>Java class for anonymous complex type.
-     * 
+     *
      * <p>The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
-     *     &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres">
+     *     &lt;extension base="{http://crd.gov.pl/xml/schematy/dziedzinowe/mf/2018/08/24/eD/DefinicjeTypy/}TAdres1">
      *       &lt;attribute name="rodzajAdresu" use="required" type="{http://www.w3.org/2001/XMLSchema}string" fixed="RAD" />
      *     &lt;/extension>
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     *
-     * 
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "")
     public static class AdresZamieszkaniaSiedziby
-            extends TAdres {
+            extends TAdres1 {
 
         @XmlAttribute(name = "rodzajAdresu", required = true)
         protected String rodzajAdresu;
@@ -164,10 +148,8 @@ public class TPodmiotDowolnyPelny {
         /**
          * Gets the value of the rodzajAdresu property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *     
+         * @return possible object is
+         * {@link String }
          */
         public String getRodzajAdresu() {
             if (rodzajAdresu == null) {
@@ -180,10 +162,8 @@ public class TPodmiotDowolnyPelny {
         /**
          * Sets the value of the rodzajAdresu property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *     
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setRodzajAdresu(String value) {
             this.rodzajAdresu = value;
